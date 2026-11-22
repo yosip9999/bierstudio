@@ -5,7 +5,7 @@
 Augustiner Lagerbier Hell	Augustiner|Augustiner Hell|Augustiner Helles	Augustiner-Bräu Wagner	Helles	5.2	DE	augustiner-braeu.de
 Augustiner Edelstoff	Edelstoff	Augustiner-Bräu Wagner	Export	5.6	DE	augustiner-braeu.de
 Augustiner Pils		Augustiner-Bräu Wagner	Pils	5.6	DE	augustiner-braeu.de
-Rothaus Pils Tannenzäpfle	Tannenzäpfle|Zäpfle|Rothaus Pils|Rothaus	Badische Staatsbrauerei Rothaus	Pils	5.1	DE	rothaus.de
+Rothaus Pils Tannenzäpfle	Rothaus Tannenzäpfle|Tannenzäpfle|Zäpfle|Rothaus Pils|Rothaus	Badische Staatsbrauerei Rothaus	Pils	5.1	DE	rothaus.de
 Rothaus Hefeweizen	Rothaus Weizen	Badische Staatsbrauerei Rothaus	Weizen	5.4	DE	rothaus.de
 Krombacher Pils	Krombacher	Krombacher Brauerei	Pils	4.8	DE	krombacher.de
 Krombacher Weizen		Krombacher Brauerei	Weizen	5.3	DE	krombacher.de
@@ -61,7 +61,7 @@ Chiemseer Hell	Chiemseer|Chiemseer Helles	Chiemseer Brauhaus	Helles		DE	chiemsee
 Bergmann Pils	Bergmann Pilsener	Bergmann Brauerei, Dortmund	Pils		DE	bergmann-bier.de
 Bergmann Export		Bergmann Brauerei, Dortmund	Export		DE	bergmann-bier.de
 Stiegl Goldbräu	Stiegl	Stieglbrauerei zu Salzburg	Märzen	4.9	AT	stiegl.at
-Corona Extra	Corona	Cervecería Modelo	Lager	4.5	MX	corona.com
+Corona Extra	Corona	Cervecería Modelo	Lager	4.5	MX	coronausa.com
 Heineken	Heineken Lager	Heineken	Lager	5.0	NL	heineken.com
 Carlsberg Pilsner	Carlsberg	Carlsberg	Lager	5.0	DK	carlsberg.com
 Budweiser Budvar	Budweiser|Budvar|Budweiser Budvar Original	Budějovický Budvar	Lager	5.0	CZ	budvar.cz
@@ -85,3 +85,258 @@ Westmalle Tripel	Westmalle	Brouwerij Westmalle	Tripel	9.5	BE	trappistwestmalle.b
 BrewDog Punk IPA	Punk IPA|BrewDog	BrewDog	IPA	5.4	GB	brewdog.com
 Sierra Nevada Pale Ale	Sierra Nevada	Sierra Nevada Brewing Co.	Pale Ale	5.6	US	sierranevada.com
 Lagunitas IPA	Lagunitas	Lagunitas Brewing Company	IPA	6.2	US	lagunitas.com
+Augustiner Weissbier		Augustiner-Bräu Wagner	Weizen	5.4	DE	augustiner-braeu.de
+Augustiner Dunkel		Augustiner-Bräu Wagner	Dunkel	5.6	DE	augustiner-braeu.de
+Augustiner Maximator	Maximator	Augustiner-Bräu Wagner	Bock	7.5	DE	augustiner-braeu.de
+Paulaner Salvator	Salvator	Paulaner Brauerei	Bock	7.9	DE	paulaner.de
+Paulaner Hefe-Weißbier Dunkel	Paulaner Weißbier Dunkel|Paulaner Dunkel	Paulaner Brauerei	Weizen	5.3	DE	paulaner.de
+Paulaner Weißbier 0,0 %	Paulaner Alkoholfrei|Paulaner 0,0	Paulaner Brauerei	Alkoholfrei	0.0	DE	paulaner.de
+Paulaner Oktoberfest Bier	Paulaner Wiesn	Paulaner Brauerei	Märzen	6.0	DE	paulaner.de
+Hacker-Pschorr Hefe Weisse	Hacker-Pschorr Weißbier	Hacker-Pschorr Bräu	Weizen	5.5	DE	hacker-pschorr.de
+Hacker-Pschorr Oktoberfest Märzen	Hacker-Pschorr Märzen	Hacker-Pschorr Bräu	Märzen	5.8	DE	hacker-pschorr.de
+Hacker-Pschorr Münchner Kellerbier	Hacker-Pschorr Kellerbier	Hacker-Pschorr Bräu	Kellerbier	5.5	DE	hacker-pschorr.de
+Spaten Oktoberfestbier	Spaten Wiesn	Spaten-Franziskaner-Bräu	Märzen	5.9	DE	
+Spaten Münchner Dunkel	Spaten Dunkel	Spaten-Franziskaner-Bräu	Dunkel	5.1	DE	
+Franziskaner Weissbier Dunkel	Franziskaner Dunkel	Spaten-Franziskaner-Bräu	Weizen	5.0	DE	
+Franziskaner Weissbier Kristallklar	Franziskaner Kristall	Spaten-Franziskaner-Bräu	Weizen	5.0	DE	
+Franziskaner Weissbier Alkoholfrei	Franziskaner Alkoholfrei	Spaten-Franziskaner-Bräu	Alkoholfrei	0.5	DE	
+Löwenbräu Oktoberfestbier	Löwenbräu Wiesn	Löwenbräu	Märzen	6.1	DE	
+Löwenbräu Triumphator	Triumphator	Löwenbräu	Bock	7.6	DE	
+Hofbräu Dunkel	HB Dunkel	Staatliches Hofbräuhaus in München	Dunkel	5.5	DE	
+Hofbräu Münchner Weisse	HB Weisse|Hofbräu Weißbier	Staatliches Hofbräuhaus in München	Weizen	5.1	DE	
+Hofbräu Oktoberfestbier	HB Oktoberfestbier	Staatliches Hofbräuhaus in München	Märzen	6.3	DE	
+Tegernseer Spezial		Herzoglich Bayerisches Brauhaus Tegernsee	Export	5.6	DE	
+Tegernseer Dunkel Export	Tegernseer Dunkel	Herzoglich Bayerisches Brauhaus Tegernsee	Dunkel	5.6	DE	
+Ayinger Celebrator	Celebrator	Brauerei Aying	Bock	6.7	DE	
+Ayinger Jahrhundert-Bier		Brauerei Aying	Export	5.5	DE	
+Ayinger Kellerbier		Brauerei Aying	Kellerbier	4.9	DE	
+Andechser Vollbier Hell	Andechser Hell	Klosterbrauerei Andechs	Helles	4.8	DE	andechs.de
+Andechser Doppelbock Dunkel	Andechser Doppelbock	Klosterbrauerei Andechs	Bock	7.1	DE	andechs.de
+Andechser Spezial Hell		Klosterbrauerei Andechs	Export	5.8	DE	andechs.de
+Schneider Weisse Tap 6 Unser Aventinus	Aventinus|Schneider Aventinus	Weisses Bräuhaus G. Schneider & Sohn	Bock	8.2	DE	schneider-weisse.de
+Schneider Weisse Tap 5 Meine Hopfenweisse	Hopfenweisse	Weisses Bräuhaus G. Schneider & Sohn	Weizen	8.2	DE	schneider-weisse.de
+Weihenstephaner Hefeweissbier Dunkel	Weihenstephaner Dunkel	Bayerische Staatsbrauerei Weihenstephan	Weizen	5.3	DE	weihenstephaner.de
+Weihenstephaner Kristallweissbier	Weihenstephaner Kristall	Bayerische Staatsbrauerei Weihenstephan	Weizen	5.4	DE	weihenstephaner.de
+Weihenstephaner Vitus	Vitus	Bayerische Staatsbrauerei Weihenstephan	Bock	7.7	DE	weihenstephaner.de
+Weihenstephaner Original Helles		Bayerische Staatsbrauerei Weihenstephan	Helles	5.1	DE	weihenstephaner.de
+Weihenstephaner Pilsner		Bayerische Staatsbrauerei Weihenstephan	Pils	5.1	DE	weihenstephaner.de
+Weihenstephaner Hefeweissbier Alkoholfrei	Weihenstephaner Alkoholfrei	Bayerische Staatsbrauerei Weihenstephan	Alkoholfrei	0.5	DE	weihenstephaner.de
+Erdinger Pikantus	Pikantus	Privatbrauerei Erdinger Weißbräu	Bock	7.3	DE	erdinger.de
+Erdinger Weißbier Kristallklar	Erdinger Kristall	Privatbrauerei Erdinger Weißbräu	Weizen	5.3	DE	erdinger.de
+Maisel's Weisse Alkoholfrei		Brauerei Gebr. Maisel	Alkoholfrei	0.4	DE	
+Maisel & Friends IPA	Maisel IPA	Brauerei Gebr. Maisel	IPA	6.3	DE	
+Weltenburger Kloster Barock Dunkel	Barock Dunkel|Weltenburger Dunkel	Klosterbrauerei Weltenburg	Dunkel	4.7	DE	
+Weltenburger Kloster Asam Bock	Asam Bock	Klosterbrauerei Weltenburg	Bock	6.9	DE	
+Weltenburger Kloster Anno 1050	Anno 1050	Klosterbrauerei Weltenburg	Märzen	5.5	DE	
+Aecht Schlenkerla Rauchbier Märzen	Schlenkerla|Schlenkerla Rauchbier|Rauchbier	Brauerei Heller-Trum	Märzen	5.1	DE	schlenkerla.de
+Kapuziner Weißbier	Kapuziner	Kulmbacher Brauerei	Weizen	5.4	DE	
+Würzburger Hofbräu Premium Pilsner	Würzburger Hofbräu	Würzburger Hofbräu	Pils	4.9	DE	
+Meckatzer Weiss-Gold	Meckatzer	Meckatzer Löwenbräu	Export	5.2	DE	
+Bitburger Radler		Bitburger Brauerei	Radler	2.5	DE	bitburger.de
+Krombacher Radler		Krombacher Brauerei	Radler	2.5	DE	krombacher.de
+Krombacher Hell		Krombacher Brauerei	Helles	5.0	DE	krombacher.de
+Warsteiner Radler		Warsteiner Brauerei Haus Cramer	Radler	2.5	DE	warsteiner.de
+Veltins Helles Pülleken	Veltins Helles|Pülleken	Brauerei C. & A. Veltins	Helles	4.8	DE	veltins.de
+Veltins V+ Lemon	V+|V+ Lemon	Brauerei C. & A. Veltins	Radler	2.5	DE	veltins.de
+Grevensteiner Original		Brauerei C. & A. Veltins	Kellerbier	5.2	DE	
+Beck's Gold	Becks Gold	Brauerei Beck	Pils	4.9	DE	becks.de
+Beck's Blue	Becks Blue|Becks Alkoholfrei	Brauerei Beck	Alkoholfrei	0.0	DE	becks.de
+Beck's Green Lemon	Becks Lemon	Brauerei Beck	Radler	2.3	DE	becks.de
+Jever Fun	Jever Alkoholfrei	Friesisches Brauhaus zu Jever	Alkoholfrei	0.5	DE	jever.de
+Flensburger Gold	Flens Gold	Flensburger Brauerei	Export	4.8	DE	flensburger.de
+Flensburger Weizen	Flens Weizen	Flensburger Brauerei	Weizen	5.1	DE	flensburger.de
+Flensburger Dunkel	Flens Dunkel	Flensburger Brauerei	Dunkel	4.8	DE	flensburger.de
+Flensburger Kellerbier	Flens Kellerbier	Flensburger Brauerei	Kellerbier	4.8	DE	flensburger.de
+Astra Rotlicht	Rotlicht	Holsten-Brauerei	Export	6.0	DE	astra-bier.de
+Astra Kiezmische	Kiezmische	Holsten-Brauerei	Radler	2.5	DE	astra-bier.de
+Holsten Edel		Holsten-Brauerei	Export	4.9	DE	
+Frankenheim Alt	Frankenheim	Brauerei Frankenheim	Alt	4.8	DE	
+Schlösser Alt	Schlösser	Brauerei Schlösser	Alt	4.8	DE	
+Uerige Alt	Uerige	Uerige Obergärige Hausbrauerei	Alt	4.7	DE	uerige.de
+Füchschen Alt	Füchschen	Brauerei Im Füchschen	Alt	4.5	DE	
+Schumacher Alt	Schumacher	Brauerei Ferdinand Schumacher	Alt	4.6	DE	
+Sion Kölsch	Sion	Brauerei Sion	Kölsch	4.8	DE	
+Peters Kölsch	Peters	Peters Brauhaus	Kölsch	4.8	DE	
+Mühlen Kölsch	Mühlen	Brauerei zur Malzmühle	Kölsch	4.8	DE	
+Päffgen Kölsch	Päffgen	Brauerei Päffgen	Kölsch	4.8	DE	
+Sünner Kölsch	Sünner	Brauerei Sünner	Kölsch	4.8	DE	
+Dom Kölsch		Dom-Brauerei	Kölsch	4.8	DE	
+Gilden Kölsch	Gilden	Gilden Brauerei	Kölsch	4.8	DE	
+Küppers Kölsch	Küppers	Küppers Brauerei	Kölsch	4.8	DE	
+DAB Original	Dortmunder Actien	Dortmunder Actien-Brauerei	Export	5.0	DE	dab.de
+Brinkhoff's No. 1	Brinkhoffs|Brinkhoff's	Dortmunder Actien-Brauerei	Pils	5.0	DE	
+Hövels Original		Dortmunder Actien-Brauerei	Alt	5.5	DE	
+Duckstein Original		Feldschlößchen Braunschweig	Alt	4.9	DE	
+Einbecker Brauherren Pils	Einbecker Pils|Einbecker	Einbecker Brauhaus	Pils	4.9	DE	einbecker.de
+Einbecker Ur-Bock Hell	Einbecker Ur-Bock	Einbecker Brauhaus	Bock	6.5	DE	einbecker.de
+Herforder Pils	Herforder	Brauerei Felsenkeller Herford	Pils	4.8	DE	herforder.de
+Wolters Pilsener	Wolters	Hofbrauhaus Wolters	Pils	4.9	DE	
+Gilde Ratskeller Edel-Pils	Gilde Ratskeller	Gilde Brauerei	Pils	4.9	DE	
+Rostocker Pilsener	Rostocker	Hanseatische Brauerei Rostock	Pils	4.9	DE	
+Störtebeker Keller-Bier 1402	Störtebeker Kellerbier	Störtebeker Braumanufaktur	Kellerbier	4.8	DE	stoertebeker.com
+Störtebeker Atlantik-Ale	Atlantik Ale	Störtebeker Braumanufaktur	Pale Ale	5.1	DE	stoertebeker.com
+Ratsherrn Pilsener	Ratsherrn	Ratsherrn Brauerei	Pils	4.9	DE	ratsherrn.de
+Freiberger Premium Pils	Freiberger	Freiberger Brauhaus	Pils	4.9	DE	
+Feldschlößchen Pilsner	Feldschlößchen Dresden	Feldschlößchen AG Dresden	Pils	4.9	DE	
+Köstritzer Kellerbier		Köstritzer Schwarzbierbrauerei	Kellerbier	4.8	DE	koestritzer.de
+Berliner Kindl Jubiläums Pilsener	Berliner Kindl|Kindl	Berliner-Kindl-Schultheiss-Brauerei	Pils	5.1	DE	berliner-kindl.de
+Berliner Kindl Weisse	Berliner Weisse	Berliner-Kindl-Schultheiss-Brauerei	Weizen	3.0	DE	berliner-kindl.de
+Berliner Pilsner		Berliner-Kindl-Schultheiss-Brauerei	Pils	5.0	DE	
+Schultheiss Pilsener	Schultheiss	Berliner-Kindl-Schultheiss-Brauerei	Pils	4.9	DE	
+Karlsberg UrPils	Karlsberg	Karlsberg Brauerei	Pils	4.8	DE	karlsberg.de
+Fürstenberg Premium Pilsener	Fürstenberg	Fürstlich Fürstenbergische Brauerei	Pils	4.8	DE	
+Alpirsbacher Klosterbräu Pils	Alpirsbacher Pils|Alpirsbacher	Alpirsbacher Klosterbräu	Pils	4.9	DE	alpirsbacher.de
+Alpirsbacher Spezial		Alpirsbacher Klosterbräu	Export	5.2	DE	alpirsbacher.de
+Waldhaus Diplom Pils	Waldhaus	Privatbrauerei Waldhaus	Pils	4.9	DE	
+Rothaus Märzen Export Eiszäpfle	Eiszäpfle	Badische Staatsbrauerei Rothaus	Export	5.6	DE	rothaus.de
+Distelhäuser Pils	Distelhäuser	Distelhäuser Brauerei	Pils	4.9	DE	distelhaeuser.de
+Dinkelacker CD-Pils	Dinkelacker	Dinkelacker-Schwabenbräu	Pils	4.9	DE	dinkelacker.de
+Stuttgarter Hofbräu Pilsner	Stuttgarter Hofbräu	Stuttgarter Hofbräu	Pils	4.9	DE	stuttgarter-hofbraeu.de
+Licher Pilsner	Licher	Licher Privatbrauerei	Pils	4.9	DE	licher.de
+Henninger Kaiser Pilsner	Henninger	Henninger-Bräu	Pils	4.8	DE	
+Binding Römer Pils	Römer Pils	Binding-Brauerei	Pils	4.8	DE	
+Königsbacher Pils	Königsbacher	Königsbacher Brauerei	Pils	4.8	DE	
+Iserlohner Pilsener	Iserlohner	Iserlohner Brauerei	Pils	4.8	DE	
+Schöfferhofer Grapefruit	Schöfferhofer Grapefruit Weizen	Binding-Brauerei	Radler	2.5	DE	
+Crew Republic Drunken Sailor	Drunken Sailor	Crew Republic	IPA	6.4	DE	crew-republic.de
+Gösser Märzen	Gösser	Brauerei Göss	Märzen	5.2	AT	goesser.at
+Gösser Naturradler	Gösser Radler	Brauerei Göss	Radler	2.0	AT	goesser.at
+Ottakringer Helles	Ottakringer	Ottakringer Brauerei	Helles	5.2	AT	ottakringer.at
+Zipfer Urtyp	Zipfer	Brauerei Zipf	Märzen	5.4	AT	zipfer.at
+Edelweiss Hefetrüb	Edelweiss	Brauerei Kaltenhausen	Weizen	5.3	AT	edelweissbier.at
+Puntigamer Märzen	Puntigamer	Brauerei Puntigam	Märzen	5.1	AT	puntigamer.at
+Murauer Märzen	Murauer	Brauerei Murau	Märzen	5.1	AT	murauerbier.at
+Hirter Privat Pils	Hirter	Brauerei Hirt	Pils	5.2	AT	hirterbier.at
+Trumer Pils	Trumer	Trumer Brauerei	Pils	4.9	AT	trumer.at
+Mohren Spezial	Mohrenbräu	Mohrenbrauerei	Märzen	5.2	AT	mohrenbrauerei.at
+Wieselburger Gold	Wieselburger	Brauerei Wieselburg	Märzen	5.4	AT	wieselburger.at
+Stiegl Radler Zitrone	Stiegl Radler	Stieglbrauerei zu Salzburg	Radler	2.0	AT	stiegl.at
+Feldschlösschen Original		Brauerei Feldschlösschen	Lager	4.8	CH	feldschloesschen.swiss
+Appenzeller Quöllfrisch	Quöllfrisch	Brauerei Locher	Lager	4.8	CH	appenzellerbier.ch
+Kozel Černý	Kozel Dunkel	Pivovar Velké Popovice	Dunkel	3.8	CZ	
+Gambrinus Originál 10	Gambrinus	Plzeňský Prazdroj	Lager	4.3	CZ	gambrinus.cz
+Bernard Sváteční ležák	Bernard	Rodinný pivovar Bernard	Lager	5.0	CZ	bernard.cz
+Krušovice Imperial	Krušovice	Královský pivovar Krušovice	Lager	5.0	CZ	krusovice.cz
+Svijany Máz	Svijany	Pivovar Svijany	Lager	4.8	CZ	svijany.cz
+Radegast Ryze hořká 12	Radegast	Pivovar Radegast	Lager	5.1	CZ	radegast.cz
+Żywiec		Browar Żywiec	Lager	5.6	PL	zywiec.com.pl
+Lech Premium		Kompania Piwowarska	Lager	5.0	PL	lech.pl
+Leffe Brune	Leffe Braun	Abbaye de Leffe	Dubbel	6.5	BE	leffe.com
+Jupiler		Brasserie Piedboeuf	Lager	5.2	BE	jupiler.be
+Chimay Rot	Chimay Rouge|Chimay Rood	Abbaye de Scourmont	Dubbel	7.0	BE	chimay.com
+Chimay Tripel	Chimay Blanche|Chimay Weiß	Abbaye de Scourmont	Tripel	8.0	BE	chimay.com
+Orval		Brasserie d'Orval	Trappist	6.2	BE	orval.be
+Rochefort 8	Trappistes Rochefort 8	Brasserie de Rochefort	Trappist	9.2	BE	
+Rochefort 10	Trappistes Rochefort 10	Brasserie de Rochefort	Trappist	11.3	BE	
+Westvleteren 12	Westvleteren	Brouwerij Westvleteren	Trappist	10.2	BE	
+Westmalle Dubbel		Brouwerij Westmalle	Dubbel	7.0	BE	
+La Chouffe	Chouffe	Brasserie d'Achouffe	Strong Ale	8.0	BE	
+Delirium Tremens	Delirium	Brouwerij Huyghe	Strong Ale	8.5	BE	delirium.be
+Pauwel Kwak	Kwak	Brouwerij Bosteels	Strong Ale	8.4	BE	
+Tripel Karmeliet	Karmeliet	Brouwerij Bosteels	Tripel	8.4	BE	
+Affligem Blond	Affligem	Affligem Brouwerij	Blonde	6.7	BE	
+Grimbergen Blonde	Grimbergen	Brouwerij Alken-Maes	Blonde	6.7	BE	
+Kasteel Rouge	Kasteel	Brouwerij Van Honsebrouck	Fruchtbier	8.0	BE	
+Lindemans Kriek	Kriek	Brouwerij Lindemans	Fruchtbier	3.5	BE	lindemans.be
+Liefmans Fruitesse	Fruitesse	Brouwerij Liefmans	Fruchtbier	3.8	BE	
+Cantillon Gueuze	Cantillon	Brasserie Cantillon	Lambic	5.5	BE	cantillon.be
+St. Bernardus Abt 12	St Bernardus	Brouwerij St. Bernardus	Quadrupel	10.0	BE	stbernardus.be
+Brugse Zot Blond	Brugse Zot	Brouwerij De Halve Maan	Blonde	6.0	BE	brugsezot.be
+Straffe Hendrik Tripel	Straffe Hendrik	Brouwerij De Halve Maan	Tripel	9.0	BE	
+Gulden Draak		Brouwerij Van Steenberge	Strong Ale	10.5	BE	
+Vedett Extra Blond	Vedett	Duvel Moortgat	Lager	5.2	BE	vedett.com
+Maes Pils	Maes	Brouwerij Alken-Maes	Pils	5.2	BE	
+Rodenbach Classic	Rodenbach	Brouwerij Rodenbach	Flanders Red	5.2	BE	rodenbach.be
+Grolsch Premium Pilsner	Grolsch	Grolsch Bierbrouwerij	Pils	5.0	NL	
+Amstel	Amstel Pils	Amstel Brouwerij	Lager	5.0	NL	amstel.com
+Bavaria Premium		Swinkels Family Brewers	Lager	5.0	NL	
+Hertog Jan Pilsener	Hertog Jan	Hertog Jan Brouwerij	Pils	5.1	NL	hertogjan.nl
+La Trappe Quadrupel	La Trappe	Bierbrouwerij De Koningshoeven	Quadrupel	10.0	NL	
+Brand Pilsener	Brand	Bierbrouwerij Brand	Pils	5.0	NL	
+Texels Skuumkoppe	Skuumkoppe	Texelse Bierbrouwerij	Weizen	6.0	NL	
+Heineken 0.0	Heineken Alkoholfrei|Heineken 0,0	Heineken	Alkoholfrei	0.0	NL	heineken.com
+Tuborg Grøn	Tuborg|Tuborg Green	Carlsberg	Lager	4.6	DK	tuborg.com
+Kilkenny	Kilkenny Irish Red	Guinness Brewery St. James's Gate	Red Ale	4.3	IE	
+Murphy's Irish Stout	Murphy's|Murphys	Heineken Ireland	Stout	4.0	IE	
+Smithwick's Red Ale	Smithwicks	Diageo	Red Ale	3.8	IE	
+Guinness 0.0		Guinness Brewery St. James's Gate	Alkoholfrei	0.0	IE	guinness.com
+Newcastle Brown Ale	Newcastle|Newkie Brown	Heineken UK	Brown Ale	4.7	GB	
+Fuller's London Pride	London Pride	Fuller's Brewery	Bitter	4.7	GB	fullers.co.uk
+Fuller's ESB	ESB	Fuller's Brewery	Bitter	5.9	GB	fullers.co.uk
+Old Speckled Hen	Speckled Hen	Greene King	Bitter	5.0	GB	
+Samuel Smith's Nut Brown Ale	Samuel Smith Nut Brown	Samuel Smith Old Brewery	Brown Ale	5.0	GB	
+Innis & Gunn Original	Innis and Gunn	Innis & Gunn	Scotch Ale	6.6	GB	innisandgunn.com
+BrewDog Elvis Juice	Elvis Juice	BrewDog	IPA	6.5	GB	brewdog.com
+BrewDog Hazy Jane	Hazy Jane	BrewDog	IPA	5.0	GB	brewdog.com
+Beavertown Neck Oil	Neck Oil	Beavertown Brewery	IPA	4.3	GB	beavertownbrewery.co.uk
+Camden Hells Lager	Camden Hells	Camden Town Brewery	Helles	4.6	GB	camdentownbrewery.com
+Kronenbourg 1664	1664|Kronenbourg	Brasseries Kronenbourg	Lager	5.5	FR	
+1664 Blanc	Kronenbourg Blanc	Brasseries Kronenbourg	Witbier	5.0	FR	
+Birra Moretti	Moretti	Birra Moretti	Lager	4.6	IT	birramoretti.com
+Menabrea Bionda	Menabrea	Birrificio Menabrea	Lager	4.8	IT	menabrea.it
+Ichnusa		Birra Ichnusa	Lager	4.7	IT	
+Mahou Cinco Estrellas	Mahou	Mahou San Miguel	Lager	5.5	ES	mahou.es
+Estrella Galicia		Hijos de Rivera	Lager	5.5	ES	estrellagalicia.es
+Alhambra Reserva 1925	Alhambra	Cervezas Alhambra	Lager	6.4	ES	
+Cruzcampo		Heineken España	Lager	4.8	ES	cruzcampo.es
+Voll-Damm		S.A. Damm	Märzen	7.2	ES	
+Super Bock		Super Bock Group	Lager	5.2	PT	superbock.pt
+Sagres		Sociedade Central de Cervejas	Lager	5.0	PT	sagres.pt
+Mythos		Mythos Brewery	Lager	4.7	GR	
+Fix Hellas	Fix	Olympic Brewery	Lager	5.0	GR	
+Ožujsko		Zagrebačka pivovara	Lager	5.0	HR	
+Karlovačko		Karlovačka pivovara	Lager	5.4	HR	karlovacko.hr
+Efes Pilsener	Efes	Anadolu Efes	Pils	5.0	TR	
+Dreher Classic	Dreher	Dreher Sörgyárak	Lager	5.2	HU	
+Soproni		Heineken Hungária	Lager	4.5	HU	
+Norrlands Guld		Spendrups	Lager	5.3	SE	
+Bud Light		Anheuser-Busch	Lager	4.2	US	
+Coors Light	Coors	Molson Coors	Lager	4.2	US	
+Miller Lite	Miller	Molson Coors	Lager	4.2	US	
+Michelob Ultra	Michelob	Anheuser-Busch	Lager	4.2	US	
+Samuel Adams Boston Lager	Sam Adams|Samuel Adams	Boston Beer Company	Lager	5.0	US	samueladams.com
+Blue Moon Belgian White	Blue Moon	Blue Moon Brewing Company	Witbier	5.4	US	bluemoonbrewingcompany.com
+Brooklyn Lager		Brooklyn Brewery	Lager	5.2	US	brooklynbrewery.com
+Goose Island IPA	Goose Island	Goose Island Beer Company	IPA	5.9	US	gooseisland.com
+Sierra Nevada Torpedo	Torpedo	Sierra Nevada Brewing Co.	IPA	7.2	US	sierranevada.com
+Founders All Day IPA	All Day IPA	Founders Brewing Co.	IPA	4.7	US	foundersbrewing.com
+Stone IPA		Stone Brewing	IPA	6.9	US	stonebrewing.com
+Anchor Steam Beer		Anchor Brewing Company	Lager	4.9	US	
+Pabst Blue Ribbon	PBR|Pabst	Pabst Brewing Company	Lager	4.8	US	pabstblueribbon.com
+Yuengling Traditional Lager	Yuengling	D. G. Yuengling & Son	Lager	4.5	US	yuengling.com
+Dogfish Head 60 Minute IPA	60 Minute IPA	Dogfish Head Craft Brewery	IPA	6.0	US	dogfish.com
+Bell's Two Hearted	Two Hearted	Bell's Brewery	IPA	7.0	US	bellsbeer.com
+Ballast Point Sculpin	Sculpin	Ballast Point Brewing	IPA	7.0	US	
+Elysian Space Dust	Space Dust	Elysian Brewing	IPA	8.2	US	
+Modelo Especial	Modelo	Cervecería Modelo	Lager	4.4	MX	
+Negra Modelo		Cervecería Modelo	Dunkel	5.4	MX	
+Pacifico		Cervecería del Pacífico	Lager	4.5	MX	
+Dos Equis Lager Especial	Dos Equis|XX	Cervecería Cuauhtémoc Moctezuma	Lager	4.2	MX	dosequis.com
+Sol	Sol Cerveza	Cervecería Cuauhtémoc Moctezuma	Lager	4.5	MX	
+Tecate Original		Cervecería Cuauhtémoc Moctezuma	Lager	4.5	MX	
+Victoria	Cerveza Victoria	Cervecería Modelo	Lager	4.0	MX	
+Corona Cero	Corona Alkoholfrei	Cervecería Modelo	Alkoholfrei	0.0	MX	coronausa.com
+Red Stripe		Desnoes & Geddes	Lager	4.7	JM	
+Quilmes Clásica	Quilmes	Cervecería Quilmes	Lager	4.9	AR	
+Brahma Chopp	Brahma	Ambev	Lager	5.0	BR	
+Cusqueña Dorada	Cusqueña	Backus	Lager	4.8	PE	
+Molson Canadian	Molson	Molson Coors	Lager	5.0	CA	
+Labatt Blue	Labatt	Labatt Brewing Company	Lager	5.0	CA	
+Moosehead Lager	Moosehead	Moosehead Breweries	Lager	5.0	CA	moosehead.ca
+Tsingtao		Tsingtao Brewery	Lager	4.7	CN	
+Sapporo Premium		Sapporo Breweries	Lager	4.9	JP	
+Kirin Ichiban	Kirin	Kirin Brewery	Lager	5.0	JP	
+Singha		Boon Rawd Brewery	Lager	5.0	TH	
+Chang Classic	Chang	ThaiBev	Lager	5.0	TH	
+Tiger		Asia Pacific Breweries	Lager	5.0	SG	tigerbeer.com
+San Miguel Pale Pilsen	San Miguel Pilsen	San Miguel Brewery	Pils	5.0	PH	
+Bintang		Multi Bintang	Lager	4.7	ID	
+Kingfisher Premium		United Breweries	Lager	4.8	IN	
+Cass Fresh	Cass	Oriental Brewery	Lager	4.5	KR	
+Victoria Bitter	VB	Carlton & United Breweries	Lager	4.9	AU	
+Coopers Pale Ale	Coopers	Coopers Brewery	Pale Ale	4.5	AU	coopers.com.au
+Carlton Draught	Carlton	Carlton & United Breweries	Lager	4.6	AU	
+XXXX Gold	XXXX|Four X	Castlemaine Perkins	Lager	3.5	AU	
+Steinlager Classic	Steinlager	Lion	Lager	5.0	NZ	
+Castle Lager	Castle	South African Breweries	Lager	5.0	ZA	
+Windhoek Lager	Windhoek	Namibia Breweries	Lager	4.0	NA	

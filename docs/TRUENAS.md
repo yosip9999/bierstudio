@@ -6,7 +6,7 @@ Die Anleitung gilt für TrueNAS SCALE ab 24.10 („Electric Eel“), wo Apps als
 
 Läuft Bierstudio bei dir schon mit einem anderen Image (z. B. `ghcr.io/l834-57/bierstudio`), stellst du nur die Image-Zeile um. Die Daten bleiben erhalten.
 
-1. Zur Sicherheit vorher in der App *Mehr → Backup (JSON)* herunterladen.
+1. Zur Sicherheit vorher in der App *Profil (Kreis oben rechts) → Backup herunterladen* herunterladen.
 2. *Apps → bierstudio → Edit*.
 3. Die Zeile `image:` ersetzen durch:
    ```yaml
@@ -58,10 +58,10 @@ Das Volume liegt im internen App-Speicher von TrueNAS. Willst du die Daten liebe
 ### 3. Öffnen
 `http://<IP-deines-TrueNAS>:8000`
 
-Teile den Link bzw. den QR-Code aus *Mehr → QR-Code zum Mitmachen zeigen* mit deinen Freunden.
+Teile den Link bzw. den QR-Code aus *Leute → Leute einladen (QR-Code)* mit deinen Freunden.
 
 ### Alte Daten übernehmen
-Hast du noch eine `tasting-data.json` oder `data.json` aus einer früheren Version, lade sie in der App unter *Mehr → Backup wiederherstellen* hoch. Mit eigenem Dataset geht auch: die Datei vor dem ersten Start hineinkopieren, sie wird dann automatisch übernommen.
+Hast du noch eine `tasting-data.json` oder `data.json` aus einer früheren Version, lade sie in der App unter *Profil → Backup einspielen* hoch. Mit eigenem Dataset geht auch: die Datei vor dem ersten Start hineinkopieren, sie wird dann automatisch übernommen.
 
 ## Update
 
@@ -106,7 +106,7 @@ Ohne HTTPS funktioniert alles außer Offline-Modus, App-Installation unter Andro
 | `Address already in use` / Port belegt | Links einen anderen Port eintragen, z. B. `"8420:8000"` |
 | Keine Logos, „Wikidata nicht erreichbar“ | Der Container braucht ausgehendes Internet zu `www.wikidata.org`, `commons.wikimedia.org` und `upload.wikimedia.org`. Ohne Internet bleiben die Anfangsbuchstaben. |
 | „Offline“ oben in der App | Das Handy erreicht den Server nicht (anderes WLAN, VPN aus). Bewertungen werden gespeichert und später übertragen. |
-| Etwas versehentlich gelöscht | *Mehr → Papierkorb* oder *Mehr → Server-Sicherungen* |
+| Etwas versehentlich gelöscht | *Profil → Papierkorb* oder *Profil → Server-Sicherungen* |
 
 Die Logs findest du unter *Apps → bierstudio → Logs*.
 
@@ -121,4 +121,4 @@ logos/            zwischengespeicherte Brauerei-Logos
 .app/             nur bei der Variante ohne Image: heruntergeladene Versionen
 ```
 
-**Sicherung:** Beim eigenen Dataset reicht ein normaler Snapshot oder eine Replikation. Beim Volume lädst du regelmäßig in der App unter *Mehr → Backup (JSON)* eine Sicherung herunter. **Achtung:** Wer die App in TrueNAS löscht und dabei die Volumes mitlöscht, verliert die Daten. Vorher also ein Backup herunterladen.
+**Sicherung:** Beim eigenen Dataset reicht ein normaler Snapshot oder eine Replikation. Beim Volume lädst du regelmäßig in der App unter *Profil (Kreis oben rechts) → Backup herunterladen* eine Sicherung herunter. **Achtung:** Wer die App in TrueNAS löscht und dabei die Volumes mitlöscht, verliert die Daten. Vorher also ein Backup herunterladen.

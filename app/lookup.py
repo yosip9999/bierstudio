@@ -2,10 +2,10 @@
 
 Nur Standardbibliothek. Alle Funktionen werfen bei Netzwerkfehlern Exceptions; der Aufrufer fängt sie ab.
 """
-import json, re, threading, time, urllib.error, urllib.parse, urllib.request
+import json, os, re, threading, time, urllib.error, urllib.parse, urllib.request
 from html.parser import HTMLParser
 
-VERSION = '2.1.1'
+VERSION = '3.0.0'
 PROJECT_URL = 'https://github.com/yosip9999/bierstudio'
 WD_API = 'https://www.wikidata.org/w/api.php?'
 CACHE = {}
@@ -56,7 +56,16 @@ def get_json(url, contact, ttl=86400):
     hit = CACHE.get(url)
     if hit and time.time() - hit[0] < ttl:
         return hit[1]
-    data, _, _ = http_get(url, contact)
+    try:
+        data, _, _ = http_get(url, contact)
+    except urllib.error.HTTPError as e:
+        if e.code < 500 and e.code != 429:
+            raise
+        time.sleep(0.8)
+        data, _, _ = http_get(url, contact)  # Wikidata ist manchmal kurz überlastet: einmal nachfassen
+    except (urllib.error.URLError, TimeoutError, OSError):
+        time.sleep(0.5)
+        data, _, _ = http_get(url, contact)
     j = json.loads(data.decode('utf-8'))
     if len(CACHE) > 500:
         CACHE.clear()
@@ -291,6 +300,49 @@ def get_logo(brewery, site, contact, cache_dir):
         meta.write_text(json.dumps({'ok': bool(found), 'type': found[1] if found else '', 'at': time.time(),
                                     'answered': getattr(_net, 'answers', 0) > 0}))
         return found
+
+
+LOGO_DEV = os.environ.get('LOGO_DEV_URL', 'https://img.logo.dev/')  # nur für Tests überschreibbar
+
+
+def get_logodev(site, token, contact, cache_dir):
+    """Logo einer Brauerei-Website über Logo.dev: quadratisch, 128 px, Graustufen, transparentes PNG.
+    Liefert (bytes, content_type) oder None. Treffer und „gibt es nicht“ werden zwischengespeichert,
+    Netz- und Schlüsselfehler nicht (die sollen beim nächsten Mal erneut versucht werden)."""
+    d = domain(site or '')
+    if not d or not token:
+        return None
+    key = 'ld-' + re.sub(r'[^a-z0-9]+', '-', d).strip('-')[:80]
+    cache_dir.mkdir(parents=True, exist_ok=True)
+    meta, img = cache_dir / f'{key}.json', cache_dir / f'{key}.img'
+    with _locks_guard:
+        lock = _locks.setdefault(key, threading.Lock())
+    with lock:
+        if meta.exists():
+            try:
+                m = json.loads(meta.read_text())
+                if m.get('ok') and img.exists():
+                    return img.read_bytes(), m['type']
+                if time.time() - m.get('at', 0) < 7 * 86400:
+                    return None
+            except (ValueError, KeyError):
+                pass
+        url = LOGO_DEV + urllib.parse.quote(d) + '?' + urllib.parse.urlencode(
+            {'token': token, 'size': 128, 'format': 'png', 'greyscale': 'true', 'fallback': '404'})
+        try:
+            data, _, _ = http_get(url, contact, max_bytes=500_000, timeout=8)
+            t = sniff(data)
+            if not t:
+                raise ValueError('kein Bild')
+        except urllib.error.HTTPError as e:
+            if e.code == 404:  # Logo.dev kennt kein Logo: eine Woche Ruhe
+                meta.write_text(json.dumps({'ok': False, 'at': time.time(), 'answered': True}))
+            return None
+        except Exception:
+            return None
+        img.write_bytes(data)
+        meta.write_text(json.dumps({'ok': True, 'type': t, 'at': time.time()}))
+        return data, t
 
 
 def forget_misses(cache_dir):

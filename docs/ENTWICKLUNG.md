@@ -54,9 +54,9 @@ Alle Antworten sind JSON. Schreibende Aufrufe sind `POST` mit JSON-Body. Fremde 
 | Methode | Pfad | Zweck |
 |---|---|---|
 | GET | `/api/state?user=&since=` | Daten (bei Blindverkostung serverseitig gefiltert); `{unchanged:true}`, wenn `since` aktuell ist |
-| GET | `/api/lookup?q=` | Weltweite Suche (Wikidata + Open Food Facts) |
-| GET | `/api/off/barcode?code=` | Produkt per Barcode |
-| GET | `/api/logo?b=<brauerei>&s=<domain>` | Brauerei-Logo (zwischengespeichert) oder 404 |
+| GET | `/api/lookup?q=` | Weltweite Suche (Wikidata + Open Food Facts), nach spätestens 12 s mit Teilergebnis |
+| GET | `/api/off/barcode?code=` | Produkt per Barcode: Open Food Facts, dann Such-API, dann UPCitemdb → `{products, notes}` |
+| GET | `/api/logo?s=<domain>` | Brauerei-Logo von Logo.dev (128 px, Graustufen, zwischengespeichert) oder 404; braucht `LOGO_DEV_TOKEN` bzw. den Schlüssel aus den Einstellungen |
 | GET | `/api/backups` | Liste der Server-Sicherungen |
 | GET | `/api/backup` | Komplettes JSON-Backup |
 | GET | `/api/csv?session=<id>\|all&user=` | CSV-Export |
@@ -64,8 +64,9 @@ Alle Antworten sind JSON. Schreibende Aufrufe sind `POST` mit JSON-Body. Fremde 
 | POST | `/api/person` | `{name}` |
 | POST | `/api/rate` | `{beer, user, session, value \| detail, tags, note, favorite}` |
 | POST | `/api/rating/delete` | `{beer, user, session}` → `{tid}` |
-| POST | `/api/beer` | Anlegen (gleicher Name = gleiches Bier) oder mit `id` bearbeiten |
+| POST | `/api/beer` | Anlegen (dasselbe Bier wird wiederverwendet, siehe „Bier-Zuordnung“) oder mit `id` bearbeiten |
 | POST | `/api/beer/delete` | `{id, user}` → `{tid}` |
+| POST | `/api/beer/merge` | `{keep, drop, user}` → `{tid}`: `drop` geht in `keep` auf (Bewertungen, Tastings, leere Felder) |
 | POST | `/api/session` | `{new}` oder `{id}` plus Felder, `reveal`, `closed`, `current` |
 | POST | `/api/session/beers` | `{session, op: add\|remove\|move, id, dir}` |
 | POST | `/api/session/delete` | `{id, user}` → `{tid}` |
@@ -77,9 +78,21 @@ Alle Antworten sind JSON. Schreibende Aufrufe sind `POST` mit JSON-Body. Fremde 
 
 Schlägt eine Aktion fehl, wird der Stand im Speicher zurückgerollt, damit nichts halb geändert bleibt.
 
+## Online-Quellen
+
+`net_json()` in `server.py` holt jede Antwort mit zwei Versuchen und legt sie in `DATA_DIR/cache/lookup.json` ab (bis 1500 Einträge, 60 Tage). Ist eine Quelle gerade weg, kommt das letzte bekannte Ergebnis zurück.
+Open Food Facts wird über die Such-API `search.openfoodfacts.org` abgefragt; die alte `cgi/search.pl` antwortet häufig mit 503 und dient nur noch als Ausweichweg.
+
+## Bier-Zuordnung
+
+`beer_key()` in `server.py` und `beerKey()` in `app.js` sind identisch: Kleinschreibung, Umlaute (ä→ae, ß→ss), Akzente und Satzzeichen weg, Füllwörter (`bier`, `brauerei`, `premium`, `original` …) weg, Varianten vereinheitlicht (`pilsener`→`pils`, `helles`→`hell`, `hefeweissbier`→`weizen`, `0,0`/`alkoholfrei`→`af`), Wörter sortiert.
+Beim Anlegen gilt ein Bier als vorhanden bei gleichem Barcode, gleichem Schlüssel oder wenn beide Namen zum selben Katalog-Eintrag gehören (Name oder Spitzname).
+Die unscharfe Suche im Frontend (`simTokens`) vergleicht Wort für Wort mit Präfix, Tippfehler-Toleranz (Levenshtein inkl. Buchstabendreher) und Teilwörtern. Sie schlägt nur vor; zusammengeführt wird nie automatisch.
+
 ## Frontend-Prinzipien
 
 - Alle Klicks laufen über `data-act="name"` → `ACT.name(el)`, Eingaben über `data-on` / `data-change`. Es gibt keine Inline-Handler, deshalb gilt eine strikte Content-Security-Policy.
+- Navigation über den Hash: `#/`, `#/biere`, `#/bier/<id>`, `#/leute`, `#/person/<name>`, `#/tastings`, `#/tasting/<id>`, `#/ich`.
 - Abfrage alle 4 s mit `?since=rev`. Neu gezeichnet wird nur bei Änderungen und nie, während jemand tippt.
 - Offline-Warteschlange (`localStorage: bs-outbox`) für Bewertungen und neue Biere.
 - Entwürfe von Bewertungen bleiben pro Bier und Person erhalten, bis sie gespeichert werden.

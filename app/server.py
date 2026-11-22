@@ -9,12 +9,12 @@ Umgebungsvariablen:
   BACKUP_KEEP   Anzahl automatischer Backups (Standard 60)
 """
 import csv, datetime, io, json, os, re, secrets, shutil, tempfile, threading, time
-import urllib.parse, urllib.request
+import urllib.error, urllib.parse, urllib.request
 import lookup
 from http.server import ThreadingHTTPServer, BaseHTTPRequestHandler
 from pathlib import Path
 
-VERSION = '2.1.1'
+VERSION = '3.0.0'
 BASE = Path(__file__).resolve().parent
 STATIC = BASE / 'static'
 DATA_DIR = Path(os.environ.get('DATA_DIR', BASE.parent / 'data')).resolve()
@@ -23,6 +23,8 @@ BACKUP_DIR = DATA_DIR / 'backups'
 BACKUP_KEEP = int(os.environ.get('BACKUP_KEEP', '60'))
 BACKUP_INTERVAL = 600  # höchstens alle 10 Minuten ein automatisches Backup
 LOGO_DIR = DATA_DIR / 'logos'
+PHOTO_DIR = DATA_DIR / 'photos'
+SERVINGS = ('Fass', 'Flasche', 'Dose')
 TRASH_DAYS = 30
 CATS = ['Aussehen', 'Geruch', 'Geschmack', 'Körper', 'Abgang']
 WEIGHTS = {'Aussehen': 1, 'Geruch': 1, 'Geschmack': 2, 'Körper': 1, 'Abgang': 1}
@@ -47,6 +49,70 @@ def norm(s):
 
 def clean(s, n=120):
     return re.sub(r'\s+', ' ', str(s or '')).strip()[:n]
+
+
+# ---------------------------------------------------------------- Bier-Zuordnung
+# Identisch zu fold()/beerKey() im Frontend: Umlaute, Satzzeichen, Füllwörter und
+# Schreibvarianten werden vereinheitlicht, die Reihenfolge der Wörter ist egal.
+# „Krombacher Pils“, „Pils, Krombacher“ und „Krombacher Premium Pilsener“ ergeben denselben Schlüssel.
+STOP = {'bier', 'beer', 'brauerei', 'brewery', 'premium', 'original', 'the', 'das', 'die', 'der'}
+SYN = {'helles': 'hell', 'lagerbier': 'lager', 'pilsener': 'pils', 'pilsner': 'pils',
+       'hefeweizen': 'weizen', 'weizenbier': 'weizen', 'weissbier': 'weizen', 'hefeweissbier': 'weizen',
+       'hefeweisse': 'weizen', 'weisse': 'weizen', 'weissebier': 'weizen', 'alkoholfrei': 'af', 'alcoholfree': 'af'}
+
+
+def fold(s):
+    import unicodedata
+    t = str(s or '').casefold().replace('ä', 'ae').replace('ö', 'oe').replace('ü', 'ue').replace('ß', 'ss')
+    t = ''.join(c for c in unicodedata.normalize('NFKD', t) if not unicodedata.combining(c))
+    t = re.sub(r'(\d)[,.](\d)', r'\1\2', t)  # 0,0 / 0.0 -> 00
+    return re.sub(r'[^a-z0-9]+', ' ', t).strip()
+
+
+def beer_tokens(s):
+    toks = [SYN.get(t, t) for t in fold(s).split()]
+    toks = ['af' if t in ('00', '0') else t for t in toks]
+    return [t for t in toks if t not in STOP] or toks
+
+
+def beer_key(s):
+    return ' '.join(sorted(set(beer_tokens(s))))
+
+
+_catalog = None
+
+
+def catalog_groups():
+    """Schlüssel-Gruppen aus dem Katalog: alle Namen/Spitznamen eines Bieres gehören zusammen."""
+    global _catalog
+    if _catalog is None:
+        try:
+            beers = json.loads((STATIC / 'catalog.json').read_text(encoding='utf-8'))['beers']
+        except (OSError, ValueError, KeyError):
+            beers = []
+        _catalog = {}
+        for i, c in enumerate(beers):
+            for n in [c['name'], *c.get('aliases', [])]:
+                _catalog.setdefault(beer_key(n), i)
+    return _catalog
+
+
+def find_same_beer(name, barcode=''):
+    """Bestehendes Bier, das sicher dasselbe ist: gleicher Barcode, gleicher Schlüssel oder gleicher Katalog-Eintrag."""
+    if barcode:
+        hit = next((b for b in DB['beers'] if b.get('barcode') and b['barcode'] == barcode), None)
+        if hit:
+            return hit
+    k = beer_key(name)
+    if not k:
+        return None
+    hit = next((b for b in DB['beers'] if beer_key(b['name']) == k), None)
+    if hit:
+        return hit
+    g = catalog_groups().get(k)
+    if g is not None:
+        return next((b for b in DB['beers'] if catalog_groups().get(beer_key(b['name'])) == g), None)
+    return None
 
 
 def parse_abv(v):
@@ -96,7 +162,7 @@ def save(force_backup=False):
 # ---------------------------------------------------------------- migration
 def empty_db():
     return {'version': 3, 'rev': 1, 'people': [], 'beers': [], 'sessions': [], 'ratings': [],
-            'active': None, 'settings': {}, 'trash': []}
+            'active': None, 'settings': {}, 'trash': [], 'wishlist': {}}
 
 
 def from_v1(o):
@@ -201,6 +267,7 @@ def validate_v3(d):
             raise ValueError('Ungültige Bewertung im Backup')
     d.setdefault('settings', {})
     d.setdefault('trash', [])
+    d.setdefault('wishlist', {})
     d.setdefault('rev', 1)
 
 
@@ -254,53 +321,142 @@ def redacted(user):
         else:
             ratings.append(r)
     return {'version': 3, 'rev': DB['rev'], 'people': DB['people'], 'beers': beers,
-            'sessions': DB['sessions'], 'ratings': ratings, 'active': DB.get('active'),
+            'sessions': DB['sessions'], 'ratings': ratings, 'active': DB.get('active'), 'wishlist': DB.get('wishlist', {}),
             'trash': [{'tid': t['tid'], 'kind': t['kind'], 'at': t['at'], 'by': t['by'], 'label': t['label'],
                        'n': len(t.get('ratings', []))} for t in reversed(DB.get('trash', []))],
-            'off': bool(os.environ.get('OFF_CONTACT') or DB['settings'].get('off_contact'))}
+            'off': True, 'off_contact': bool(off_contact()), 'logos': bool(logo_token()),
+            'logo_env': bool(os.environ.get('LOGO_DEV_TOKEN')),
+            'logo_map': {**LOGO_FIXES, **DB['settings'].get('logo_overrides', {})},
+            'logo_overrides': DB['settings'].get('logo_overrides', {})}
 
 
-# ---------------------------------------------------------------- Open Food Facts
-OFF_CACHE = {}
+# ---------------------------------------------------------------- Online-Quellen
+# Open Food Facts (neue Such-API, alte als Ausweichweg), Wikidata (lookup.py) und UPCitemdb für Barcodes.
+# Jede Abfrage wird zweimal versucht und landet in einem Cache auf der Platte. Ist eine Quelle gerade weg,
+# kommt notfalls das letzte bekannte Ergebnis zurück, auch nach einem Neustart.
+NET_CACHE, NET_LOCK = {}, threading.Lock()
+_net_state = {'dirty': False, 'saved': 0.0}
 STYLES = [('alkoholfrei', 'Alkoholfrei'), ('alcohol-free', 'Alkoholfrei'), ('non-alcoholic', 'Alkoholfrei'),
-          ('radler', 'Radler'), ('weizen', 'Weizen'), ('wheat', 'Weizen'), ('weiss', 'Weizen'),
+          ('radler', 'Radler'), ('shandy', 'Radler'), ('weizen', 'Weizen'), ('wheat', 'Weizen'), ('weiss', 'Weizen'),
           ('ipa', 'IPA'), ('pale-ale', 'Pale Ale'), ('stout', 'Stout'), ('porter', 'Porter'),
           ('bock', 'Bock'), ('kellerbier', 'Kellerbier'), ('zwickel', 'Kellerbier'), ('helles', 'Helles'),
-          ('kolsch', 'Kölsch'), ('koelsch', 'Kölsch'), ('altbier', 'Alt'), ('dunkel', 'Dunkel'),
+          ('kolsch', 'Kölsch'), ('koelsch', 'Kölsch'), ('altbier', 'Alt'), ('dunkel', 'Dunkel'), ('schwarzbier', 'Schwarzbier'),
           ('export', 'Export'), ('marzen', 'Märzen'), ('pils', 'Pils'), ('lager', 'Lager')]
+BEER_HINT = re.compile(r'beer|bier|pils|lager|weizen|ale\b|stout|porter|bock|radler|kölsch|kolsch', re.I)
+
+
+def cache_file():
+    return DATA_DIR / 'cache' / 'lookup.json'
+
+
+def net_cache_load():
+    try:
+        raw = json.loads(cache_file().read_text(encoding='utf-8'))
+        cutoff = time.time() - 60 * 86400
+        NET_CACHE.update({k: tuple(v) for k, v in raw.items() if v[0] > cutoff})
+    except (OSError, ValueError, TypeError, IndexError):
+        pass
+
+
+def net_cache_save(force=False):
+    with NET_LOCK:
+        if not _net_state['dirty'] or (not force and time.time() - _net_state['saved'] < 30):
+            return
+        items = sorted(NET_CACHE.items(), key=lambda kv: kv[1][0])[-1500:]
+        _net_state['dirty'], _net_state['saved'] = False, time.time()
+    try:
+        cache_file().parent.mkdir(parents=True, exist_ok=True)
+        atomic_write(cache_file(), dict(items))
+    except OSError:
+        pass
+
+
+# Bekannte Fehlzuordnungen bei Logo.dev: Website der Marke -> Website, unter der das richtige Logo liegt
+LOGO_FIXES = {'corona.com': 'coronausa.com'}
+
+
+def logo_site(site, raw=False):
+    """Welche Website für das Logo gilt: eigene Korrektur > bekannte Korrektur > Website selbst. '' = kein Logo."""
+    d = lookup.domain(site or '')
+    if not d or raw:
+        return d
+    ov = DB['settings'].get('logo_overrides', {})
+    if d in ov:
+        return ov[d]
+    return LOGO_FIXES.get(d, d)
+
+
+def act_logo_override(q):
+    """Logo einer Brauerei-Website korrigieren: andere Website (use), kein Logo (use=''), oder zurücksetzen (reset)."""
+    d = lookup.domain(str(q.get('site') or ''))
+    if not d:
+        raise ValueError('Keine gültige Website')
+    ov = DB['settings'].setdefault('logo_overrides', {})
+    if q.get('reset'):
+        ov.pop(d, None)
+        return {}
+    use = str(q.get('use') or '').strip()
+    if use:
+        use = lookup.domain(use)
+        if not use:
+            raise ValueError('Bitte eine gültige Website angeben, z. B. coronausa.com')
+    ov[d] = use
+    return {'use': use}
+
+
+def logo_token():
+    """Publishable Key von Logo.dev (pk_…): Umgebungsvariable LOGO_DEV_TOKEN oder in der App hinterlegt."""
+    return os.environ.get('LOGO_DEV_TOKEN') or DB['settings'].get('logo_token', '')
 
 
 def off_contact():
     return os.environ.get('OFF_CONTACT') or DB['settings'].get('off_contact', '')
 
 
-def off_get(url):
-    hit = OFF_CACHE.get(url)
-    if hit and time.time() - hit[0] < 86400:
+def net_json(url, ttl=7 * 86400, timeout=8, tries=2, headers=None):
+    """JSON holen: Cache, zwei Versuche, bei Ausfall das letzte bekannte Ergebnis. Liefert (daten, aus_cache)."""
+    hit = NET_CACHE.get(url)
+    if hit and time.time() - hit[0] < ttl:
         return hit[1], True
-    contact = off_contact()
-    if not contact:
-        raise ValueError('Online-Suche: bitte zuerst unter „Mehr“ eine Kontakt-E-Mail für Open Food Facts hinterlegen')
-    req = urllib.request.Request(url, headers={'User-Agent': f'Bierstudio/{VERSION} ({contact})'})
-    try:
-        with urllib.request.urlopen(req, timeout=10) as r:
-            data = json.loads(r.read().decode('utf-8'))
-    except Exception as e:
-        raise ValueError(f'Open Food Facts nicht erreichbar ({e.__class__.__name__})')
-    if len(OFF_CACHE) > 300:
-        OFF_CACHE.clear()
-    OFF_CACHE[url] = (time.time(), data)
+    last, data = None, None
+    for i in range(tries):
+        try:
+            req = urllib.request.Request(url, headers={'User-Agent': lookup.ua(off_contact()), 'Accept': 'application/json', **(headers or {})})
+            with urllib.request.urlopen(req, timeout=timeout) as r:
+                data = json.loads(r.read(4_000_000).decode('utf-8'))
+            break
+        except urllib.error.HTTPError as e:
+            last = e
+            if e.code == 404:  # „nicht gefunden“ ist eine gültige Antwort
+                data = {}
+                break
+            if 400 <= e.code < 500 and e.code != 408:
+                break  # Anfragefehler oder Limit: Wiederholen hilft nicht
+        except Exception as e:
+            last = e
+        if i < tries - 1:
+            time.sleep(0.5 * (i + 1))
+    if data is None:
+        if hit:
+            return hit[1], True
+        raise ValueError(f'nicht erreichbar ({getattr(last, "code", None) or last.__class__.__name__})')
+    with NET_LOCK:
+        NET_CACHE[url] = (time.time(), data)
+        _net_state['dirty'] = True
+    net_cache_save()
     return data, False
 
 
 def off_product(p):
+    brands = p.get('brands') or ''
+    brand = brands[0] if isinstance(brands, list) and brands else str(brands).split(',')[0]
     cats = ' '.join(p.get('categories_tags') or []) + ' ' + norm(p.get('product_name'))
     style = next((s for k, s in STYLES if k in cats), '')
     n = p.get('nutriments') or {}
-    abv = parse_abv(n.get('alcohol_100g', n.get('alcohol_value', p.get('alcohol_value'))))
+    abv = parse_abv(n.get('alcohol_100g', n.get('alcohol_value', n.get('alcohol', p.get('alcohol_value')))))
     code = str(p.get('code', ''))
     return {'code': code, 'name': clean(p.get('product_name_de') or p.get('product_name')) or 'Ohne Namen',
-            'brand': clean(str(p.get('brands', '')).split(',')[0]), 'quantity': clean(p.get('quantity'), 40),
+            'brand': clean(brand), 'quantity': clean(p.get('quantity'), 40),
             'style': style, 'abv': abv, 'image': p.get('image_front_small_url') or '',
             'source_url': f'https://world.openfoodfacts.org/product/{code}'}
 
@@ -309,11 +465,35 @@ FIELDS = 'code,product_name,product_name_de,brands,quantity,categories_tags,nutr
 
 
 def off_search(q):
-    url = 'https://world.openfoodfacts.org/cgi/search.pl?' + urllib.parse.urlencode({
-        'search_terms': q, 'search_simple': 1, 'action': 'process', 'json': 1, 'page_size': 15,
-        'tagtype_0': 'categories', 'tag_contains_0': 'contains', 'tag_0': 'beers', 'fields': FIELDS})
-    data, cached = off_get(url)
-    return {'products': [off_product(p) for p in data.get('products', []) if p.get('code')], 'cached': cached}
+    """Biere bei Open Food Facts. Zuerst die schnelle Such-API, dann die klassische Suche als Ausweichweg."""
+    terms = re.sub(r'[\\"\':()\[\]{}^~*?!+\-&|/]+', ' ', q).strip()
+    if not terms:
+        return []
+    errors, answered = [], False
+    for query, beer_only in ((f'{terms} categories_tags:"en:beers"', False), (terms, True)):
+        try:
+            data, _ = net_json('https://search.openfoodfacts.org/search?' + urllib.parse.urlencode(
+                {'q': query, 'page_size': 15, 'langs': 'de,en', 'fields': FIELDS}), timeout=7)
+            answered = True
+            hits = [h for h in data.get('hits') or [] if h.get('code')]
+            if beer_only:
+                hits = [h for h in hits if BEER_HINT.search(' '.join(h.get('categories_tags') or []) + ' ' + str(h.get('product_name', '')))]
+            if hits:
+                return [off_product(h) for h in hits]
+        except ValueError as e:
+            errors.append(str(e))
+            break
+    if answered:
+        return []  # Such-API hat geantwortet, nur eben ohne Treffer
+    try:
+        data, _ = net_json('https://world.openfoodfacts.org/cgi/search.pl?' + urllib.parse.urlencode({
+            'search_terms': terms, 'search_simple': 1, 'action': 'process', 'json': 1, 'page_size': 15,
+            'tagtype_0': 'categories', 'tag_contains_0': 'contains', 'tag_0': 'beers', 'fields': FIELDS}), timeout=10)
+        return [off_product(p) for p in data.get('products', []) if p.get('code')]
+    except ValueError as e:
+        if errors:
+            raise ValueError('Open Food Facts ' + errors[0])
+        raise ValueError('Open Food Facts ' + str(e))
 
 
 def off_unified(p):
@@ -322,7 +502,7 @@ def off_unified(p):
 
 
 def world_lookup(q):
-    """Sucht parallel bei Wikidata und Open Food Facts."""
+    """Sucht parallel bei Wikidata und Open Food Facts. Nach spätestens 12 Sekunden gibt es, was da ist."""
     if len(q) < 2:
         raise ValueError('Mindestens zwei Zeichen eingeben')
     results, notes = {}, []
@@ -331,27 +511,62 @@ def world_lookup(q):
         try:
             results['wd'] = lookup.wd_beers(q, off_contact())
         except Exception as e:
-            notes.append(f'Wikidata nicht erreichbar ({e.__class__.__name__})')
+            notes.append(f'Wikidata gerade nicht erreichbar ({e.__class__.__name__})')
 
     def off():
         try:
-            results['off'] = [off_unified(p) for p in off_search(q)['products']]
+            results['off'] = [off_unified(p) for p in off_search(q)]
         except ValueError as e:
-            notes.append(str(e))
-    threads = [threading.Thread(target=f) for f in (wd, off)]
+            notes.append(str(e).replace('nicht erreichbar', 'gerade nicht erreichbar'))
+    threads = [threading.Thread(target=f, daemon=True) for f in (wd, off)]
     for t in threads:
         t.start()
+    deadline = time.time() + 12
     for t in threads:
-        t.join(15)
-    return {'results': results.get('wd', []) + results.get('off', []), 'notes': notes}
+        t.join(max(0.1, deadline - time.time()))
+    if any(t.is_alive() for t in threads):
+        notes.append('Eine Quelle antwortet langsam, die Ergebnisse sind evtl. unvollständig.')
+    # Doppelte zwischen den Quellen zusammenfassen (gleicher Barcode bzw. gleicher Name)
+    out, seen = [], set()
+    for r in results.get('wd', []) + results.get('off', []):
+        k = r.get('barcode') or beer_key(r['name'])
+        if k and k not in seen:
+            seen.add(k)
+            out.append(r)
+    return {'results': out, 'notes': notes}
 
 
-def off_barcode(code):
+def barcode_lookup(code):
+    """Produkt per Barcode: Open Food Facts, dann die Such-API, dann UPCitemdb."""
     if not re.fullmatch(r'\d{8,14}', code):
         raise ValueError('Barcode mit 8–14 Ziffern eingeben')
-    data, cached = off_get(f'https://world.openfoodfacts.org/api/v2/product/{code}.json?fields={FIELDS}')
-    p = data.get('product')
-    return {'products': [off_product({**p, 'code': code})] if p else [], 'cached': cached}
+    notes = []
+    try:
+        data, _ = net_json(f'https://world.openfoodfacts.org/api/v2/product/{code}.json?fields={FIELDS}', ttl=30 * 86400)
+        if data.get('product'):
+            return {'products': [off_product({**data['product'], 'code': code})], 'notes': notes}
+    except ValueError as e:
+        notes.append('Open Food Facts ' + str(e))
+    try:
+        data, _ = net_json('https://search.openfoodfacts.org/search?' + urllib.parse.urlencode({'q': f'code:{code}', 'page_size': 1, 'fields': FIELDS}), timeout=7)
+        hits = [h for h in data.get('hits') or [] if str(h.get('code')) == code]
+        if hits:
+            return {'products': [off_product(hits[0])], 'notes': notes}
+    except ValueError:
+        pass
+    try:
+        data, _ = net_json(f'https://api.upcitemdb.com/prod/trial/lookup?upc={code}', ttl=30 * 86400, tries=1)
+        items = data.get('items') or []
+        if items:
+            it = items[0]
+            return {'products': [{'code': code, 'name': clean(it.get('title')) or 'Ohne Namen', 'brand': clean(it.get('brand')),
+                                  'quantity': clean(it.get('size'), 40), 'style': lookup.style_from(it.get('title')),
+                                  'abv': None, 'image': next((u for u in it.get('images') or [] if str(u).startswith('https://')), ''),
+                                  'source_url': ''}], 'notes': notes}
+    except ValueError as e:
+        if '(400)' not in str(e):  # 400 = Code dort unbekannt bzw. ungültig
+            notes.append('UPCitemdb ' + str(e))
+    return {'products': [], 'notes': notes}
 
 
 # ---------------------------------------------------------------- actions
@@ -411,12 +626,90 @@ def act_rate(q):
         for r in DB['ratings']:
             if r['user'] == user and r['session'] == sid:
                 r['favorite'] = False
-    DB['ratings'] = [r for r in DB['ratings'] if not (r['user'] == user and r['beer'] == beer['id'] and r['session'] == sid)]
+    old = next((r for r in DB['ratings'] if r['user'] == user and r['beer'] == beer['id'] and r['session'] == sid), None)
+    DB['ratings'] = [r for r in DB['ratings'] if r is not old]
     tags = [clean(t, 24) for t in (q.get('tags') or [])[:12] if clean(t, 24)]
+    serving = q.get('serving') if q.get('serving') in SERVINGS else ''
+    photo = q.get('photo') if ID_RE.match(str(q.get('photo') or '')) and (PHOTO_DIR / f"{q['photo']}.jpg").exists() else ''
     DB['ratings'].append({'beer': beer['id'], 'user': user, 'session': sid, 'value': round(value, 2),
                           'detail': detail, 'note': str(q.get('note') or '')[:1000], 'tags': tags,
-                          'favorite': favorite, 'ts': q.get('ts') or now()})
+                          'favorite': favorite, 'ts': q.get('ts') or now(), 'serving': serving,
+                          'place': clean(q.get('place'), 80), 'photo': photo, 'cheers': (old or {}).get('cheers', [])})
     return {}
+
+
+def act_photo(q):
+    """Foto zu einer Bewertung. Das Handy verkleinert vorher auf ca. 1200 px; hier wird nur geprüft und gespeichert."""
+    import base64
+    data = str(q.get('data') or '')
+    if not data.startswith('data:image/jpeg;base64,'):
+        raise ValueError('Bitte ein JPEG-Bild senden')
+    raw = base64.b64decode(data.split(',', 1)[1], validate=True)
+    if len(raw) > 2_500_000 or not raw.startswith(b'\xff\xd8'):
+        raise ValueError('Bild ist zu groß oder kein JPEG')
+    PHOTO_DIR.mkdir(parents=True, exist_ok=True)
+    pid = uid()
+    (PHOTO_DIR / f'{pid}.jpg').write_bytes(raw)
+    return {'id': pid}
+
+
+def act_cheers(q):
+    """„Prost!“ für die Bewertung einer anderen Person (an/aus)."""
+    by = clean(q.get('by'), 40)
+    if by not in DB['people']:
+        raise ValueError('Bitte zuerst eine Person wählen')
+    sid = q.get('session') or None
+    r = next((r for r in DB['ratings'] if r['user'] == q.get('user') and r['beer'] == q.get('beer') and r['session'] == sid), None)
+    if not r:
+        raise ValueError('Bewertung nicht gefunden')
+    if r['user'] == by:
+        raise ValueError('Eigene Bewertungen kann man nicht anstoßen')
+    c = r.setdefault('cheers', [])
+    if by in c:
+        c.remove(by)
+    else:
+        c.append(by)
+    return {'on': by in c}
+
+
+def act_wish(q):
+    """Merkliste: Biere, die man noch probieren will."""
+    user = clean(q.get('user'), 40)
+    if user not in DB['people']:
+        raise ValueError('Bitte zuerst eine Person wählen')
+    if not beer_of(q.get('beer')):
+        raise ValueError('Bier nicht gefunden')
+    lst = DB.setdefault('wishlist', {}).setdefault(user, [])
+    if q.get('on') and q['beer'] not in lst:
+        lst.append(q['beer'])
+    if not q.get('on') and q['beer'] in lst:
+        lst.remove(q['beer'])
+    return {'on': q['beer'] in lst}
+
+
+def act_person_rename(q):
+    old, new = clean(q.get('old'), 40), clean(q.get('new'), 40)
+    if old not in DB['people']:
+        raise ValueError('Person nicht gefunden')
+    if not new:
+        raise ValueError('Neuer Name fehlt')
+    if new != old and new in DB['people']:
+        raise ValueError('Diesen Namen gibt es schon')
+    DB['people'] = [new if p == old else p for p in DB['people']]
+    for r in DB['ratings']:
+        if r['user'] == old:
+            r['user'] = new
+        if old in (r.get('cheers') or []):
+            r['cheers'] = [new if x == old else x for x in r['cheers']]
+    for s_ in DB['sessions']:
+        s_['people'] = [new if p == old else p for p in s_['people']]
+    for b in DB['beers']:
+        if b.get('created_by') == old:
+            b['created_by'] = new
+    wl = DB.setdefault('wishlist', {})
+    if old in wl:
+        wl[new] = wl.pop(old)
+    return {'name': new}
 
 
 def act_rating_delete(q):
@@ -441,7 +734,9 @@ def act_beer(q):
         name = clean(q.get('name'))
         if not name:
             raise ValueError('Name fehlt')
-        existing = next((x for x in DB['beers'] if norm(x['name']) == norm(name)), None)
+        existing = find_same_beer(name, clean(q.get('barcode'), 20))
+        if existing and existing['id'] in blind_beer_ids() and existing.get('created_by') != clean(q.get('user'), 40):
+            existing = None  # verdeckte Biere nicht über den Namen verraten
         if existing and not q.get('force_new'):
             b = existing  # gleicher Name -> gleiches Bier, damit alle dasselbe bewerten
         else:
@@ -486,11 +781,62 @@ def act_beer_delete(q):
                                                        'ratings': [r for r in DB['ratings'] if r['beer'] == bid]})
     DB['beers'] = [b for b in DB['beers'] if b['id'] != bid]
     DB['ratings'] = [r for r in DB['ratings'] if r['beer'] != bid]
+    for lst in DB.setdefault('wishlist', {}).values():
+        if bid in lst:
+            lst.remove(bid)
     for s in DB['sessions']:
         s['beers'] = [x for x in s['beers'] if x != bid]
         if s.get('current') == bid:
             s['current'] = None
     return {'tid': tid}
+
+
+def act_beer_merge(q):
+    """Doppelte Biere zusammenführen: drop geht in keep auf. Bewertungen, Abende und Lücken werden übernommen.
+    Gibt es für dieselbe Person im selben Kontext zwei Noten, bleibt die neuere."""
+    keep, drop = beer_of(q.get('keep')), beer_of(q.get('drop'))
+    if not keep or not drop or keep['id'] == drop['id']:
+        raise ValueError('Bitte zwei verschiedene Biere wählen')
+    blind = blind_beer_ids()
+    if keep['id'] in blind or drop['id'] in blind:
+        raise ValueError('Verdeckte Biere können erst nach der Auflösung zusammengeführt werden')
+    backup(force=True)
+    filled = {k: keep.get(k) for k in ('brewery', 'style', 'abv', 'barcode', 'brand', 'image', 'country', 'site', 'source')}
+    for k in filled:
+        if keep.get(k) in (None, '') and drop.get(k) not in (None, ''):
+            keep[k] = drop[k]
+    moved, replaced = [], []
+    for r in [r for r in DB['ratings'] if r['beer'] == drop['id']]:
+        other = next((x for x in DB['ratings'] if x['beer'] == keep['id'] and x['user'] == r['user'] and x['session'] == r['session']), None)
+        if other and (other.get('ts') or '') >= (r.get('ts') or ''):
+            DB['ratings'].remove(r)
+            replaced.append(r)  # ältere Doppel-Note fällt weg
+            continue
+        if other:
+            DB['ratings'].remove(other)
+            replaced.append(other)
+        moved.append({'user': r['user'], 'session': r['session']})
+        r['beer'] = keep['id']
+    places = []
+    for s in DB['sessions']:
+        if drop['id'] in s['beers']:
+            places.append({'session': s['id'], 'index': s['beers'].index(drop['id']), 'current': s.get('current') == drop['id'],
+                           'had_keep': keep['id'] in s['beers']})
+            if keep['id'] in s['beers']:
+                s['beers'].remove(drop['id'])
+            else:
+                s['beers'][s['beers'].index(drop['id'])] = keep['id']
+            if s.get('current') == drop['id']:
+                s['current'] = keep['id']
+    DB['beers'] = [b for b in DB['beers'] if b['id'] != drop['id']]
+    for lst in DB.setdefault('wishlist', {}).values():
+        if drop['id'] in lst:
+            lst.remove(drop['id'])
+            if keep['id'] not in lst:
+                lst.append(keep['id'])
+    tid = trash_put('merge', q.get('user'), f"{drop['name']} → {keep['name']}",
+                    {'beer': drop, 'keep': keep['id'], 'filled': filled, 'moved': moved, 'replaced': replaced, 'places': places})
+    return {'tid': tid, 'id': keep['id']}
 
 
 def act_session(q):
@@ -602,6 +948,31 @@ def act_trash_restore(q):
                 if pl.get('current') and not s.get('current'):
                     s['current'] = b['id']
         _add_ratings(t.get('ratings', []))
+    elif t['kind'] == 'merge':
+        b, keep = t['beer'], beer_of(t['keep'])
+        if beer_of(b['id']):
+            raise ValueError('Das Bier ist schon wieder da')
+        if not keep:
+            raise ValueError('Das Ziel-Bier ist inzwischen gelöscht – zuerst das wiederherstellen')
+        DB['beers'].append(b)
+        for k, v in t.get('filled', {}).items():
+            keep[k] = v
+        for m in t.get('moved', []):
+            r = next((x for x in DB['ratings'] if x['beer'] == keep['id'] and x['user'] == m['user'] and x['session'] == m['session']), None)
+            if r:
+                r['beer'] = b['id']
+        _add_ratings(t.get('replaced', []))
+        for pl in t.get('places', []):
+            s = session_of(pl['session'])
+            if not s:
+                continue
+            if pl.get('had_keep'):
+                if b['id'] not in s['beers']:
+                    s['beers'].insert(min(pl['index'], len(s['beers'])), b['id'])
+            elif keep['id'] in s['beers']:
+                s['beers'][s['beers'].index(keep['id'])] = b['id']
+            if pl.get('current'):
+                s['current'] = b['id']
     elif t['kind'] == 'session':
         s = t['session']
         if session_of(s['id']):
@@ -655,6 +1026,11 @@ def act_settings(q):
         if c and not re.fullmatch(r'[^@\s]+@[^@\s]+\.[^@\s]+|https?://\S+', c):
             raise ValueError('Bitte eine gültige E-Mail oder URL angeben')
         DB['settings']['off_contact'] = c
+    if 'logo_token' in q:
+        t = clean(q['logo_token'], 120)
+        if t and not re.fullmatch(r'pk_[A-Za-z0-9_-]{6,}', t):
+            raise ValueError('Bitte den Publishable Key von Logo.dev eintragen (beginnt mit pk_)')
+        DB['settings']['logo_token'] = t
     return {}
 
 
@@ -671,11 +1047,11 @@ def act_logos_retry(q):
     return {'cleared': lookup.forget_misses(LOGO_DIR) if LOGO_DIR.exists() else 0}
 
 
-ACTIONS = {'person': act_person, 'rate': act_rate, 'rating/delete': act_rating_delete, 'beer': act_beer,
-           'beer/delete': act_beer_delete, 'session': act_session, 'session/beers': act_session_beers,
+ACTIONS = {'person': act_person, 'person/rename': act_person_rename, 'photo': act_photo, 'cheers': act_cheers, 'wish': act_wish, 'rate': act_rate, 'rating/delete': act_rating_delete, 'beer': act_beer,
+           'beer/delete': act_beer_delete, 'beer/merge': act_beer_merge, 'session': act_session, 'session/beers': act_session_beers,
            'session/delete': act_session_delete, 'active': act_active, 'settings': act_settings,
            'restore': act_restore, 'trash/restore': act_trash_restore, 'backup/restore': act_backup_restore,
-           'logos/retry': act_logos_retry}
+           'logos/retry': act_logos_retry, 'logo/override': act_logo_override}
 
 
 def csv_export(user, sid):
@@ -702,7 +1078,7 @@ def csv_export(user, sid):
 # ---------------------------------------------------------------- HTTP
 MIME = {'.html': 'text/html', '.js': 'text/javascript', '.css': 'text/css', '.svg': 'image/svg+xml',
         '.png': 'image/png', '.webmanifest': 'application/manifest+json', '.json': 'application/json',
-        '.ico': 'image/x-icon'}
+        '.ico': 'image/x-icon', '.woff': 'font/woff', '.woff2': 'font/woff2'}
 
 
 class Handler(BaseHTTPRequestHandler):
@@ -737,7 +1113,7 @@ class Handler(BaseHTTPRequestHandler):
         f = (STATIC / path.lstrip('/')).resolve()
         if STATIC not in f.parents or not f.is_file():
             return self.send(404, {'error': 'Nicht gefunden'})
-        extra = {'Cache-Control': 'no-cache'}
+        extra = {'Cache-Control': 'public, max-age=31536000, immutable'} if f.suffix in ('.woff', '.woff2') else {'Cache-Control': 'no-cache'}
         if path == '/sw.js':
             extra['Service-Worker-Allowed'] = '/'
         if path == '/index.html':
@@ -759,10 +1135,16 @@ class Handler(BaseHTTPRequestHandler):
                 return self.static(path)
             if path == '/api/lookup':
                 return self.send(200, world_lookup(clean(q.get('q'))))
+            if path.startswith('/api/photo/'):
+                pid = path.rsplit('/', 1)[-1]
+                f = PHOTO_DIR / f'{pid}.jpg'
+                if not ID_RE.match(pid) or not f.is_file():
+                    return self.send(404, {'error': 'Kein Foto'})
+                return self.send(200, f.read_bytes(), 'image/jpeg', {'Cache-Control': 'public, max-age=31536000, immutable'})
             if path == '/api/logo':
-                if not q.get('b') and not q.get('s'):
-                    return self.send(404, {'error': 'Kein Logo'})
-                hit = lookup.get_logo(clean(q.get('b')), clean(q.get('s')), off_contact(), LOGO_DIR)
+                with LOCK:
+                    site = logo_site(clean(q.get('s')), raw=q.get('raw') == '1')
+                hit = lookup.get_logodev(site, logo_token(), off_contact(), LOGO_DIR) if site else None
                 if not hit:
                     return self.send(404, {'error': 'Kein Logo'}, headers={'Cache-Control': 'public, max-age=600'})
                 return self.send(200, hit[0], hit[1], {'Cache-Control': 'public, max-age=2592000',
@@ -770,9 +1152,9 @@ class Handler(BaseHTTPRequestHandler):
             if path == '/api/backups':
                 return self.send(200, {'backups': list_backups()})
             if path == '/api/off/search':
-                return self.send(200, off_search(clean(q.get('q'))))
+                return self.send(200, {'products': off_search(clean(q.get('q')))})
             if path == '/api/off/barcode':
-                return self.send(200, off_barcode(clean(q.get('code'), 20)))
+                return self.send(200, barcode_lookup(clean(q.get('code'), 20)))
             with LOCK:
                 if path == '/api/state':
                     if q.get('since') == str(DB['rev']):
@@ -843,6 +1225,13 @@ def drop_privileges():
 def main():
     drop_privileges()
     load_db()
+    net_cache_load()
+
+    def flusher():
+        while True:
+            time.sleep(60)
+            net_cache_save(force=True)
+    threading.Thread(target=flusher, daemon=True).start()
     port = int(os.environ.get('PORT', '8000'))
     srv = ThreadingHTTPServer(('0.0.0.0', port), Handler)
     srv.daemon_threads = True

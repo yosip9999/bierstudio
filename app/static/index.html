@@ -4,9 +4,9 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>Bierstudio</title>
-<meta name="description" content="Gemeinsam oder allein Bier verkosten und bewerten.">
-<meta name="theme-color" content="#f7f5f0" media="(prefers-color-scheme: light)">
-<meta name="theme-color" content="#0f0e0c" media="(prefers-color-scheme: dark)">
+<meta name="description" content="Das Bierbuch für dich und deine Leute: Bier eintragen, bewerten, sehen, was die anderen trinken.">
+<meta name="theme-color" content="#F8F6EA" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#3A3D57" media="(prefers-color-scheme: dark)">
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-title" content="Bierstudio">
@@ -14,26 +14,29 @@
 <link rel="manifest" href="/manifest.webmanifest">
 <link rel="icon" href="/icons/icon.svg" type="image/svg+xml">
 <link rel="apple-touch-icon" href="/icons/apple-touch-icon.png">
+<link rel="preload" href="/fonts/instrument-sans.woff" as="font" type="font/woff" crossorigin>
 <link rel="stylesheet" href="/app.css">
 </head>
 <body>
-<header class="topbar">
+<header class="topbar" id="topbar">
   <div class="topbar-in">
-    <span class="brand"><img src="/icons/icon.svg" alt="" width="26" height="26">Bierstudio</span>
+    <button class="back" id="back" data-act="back" aria-label="Zurück" hidden><svg viewBox="0 0 24 24"><path d="M15 5l-7 7 7 7"/></svg><span id="back-label">Zurück</span></button>
+    <span class="topbar-title" id="topbar-title"></span>
     <span id="net" class="net" hidden></span>
-    <button id="me" class="avatar-btn" data-act="pickUser" aria-label="Person wählen"></button>
+    <button id="me" class="me-btn" data-act="go" data-to="#/ich" aria-label="Profil und Einstellungen"></button>
   </div>
 </header>
-<main id="main" tabindex="-1"><div class="loading">Lade …</div></main>
-<nav class="tabbar" aria-label="Hauptnavigation">
-  <button data-act="tab" data-v="abend" id="t-abend"><svg viewBox="0 0 24 24"><path d="M7 3h10l-1 16a2 2 0 0 1-2 2h-4a2 2 0 0 1-2-2L7 3Z"/><path d="M7.3 8h9.4"/></svg><span>Abend</span></button>
-  <button data-act="tab" data-v="buch" id="t-buch"><svg viewBox="0 0 24 24"><path d="M4 5a2 2 0 0 1 2-2h13v16H6a2 2 0 0 0-2 2V5Z"/><path d="M4 21a2 2 0 0 1 2-2h13v2H6M9 7h6"/></svg><span>Bierbuch</span></button>
-  <button data-act="add" class="fab" aria-label="Bier eintragen"><svg viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg></button>
-  <button data-act="tab" data-v="stats" id="t-stats"><svg viewBox="0 0 24 24"><path d="M5 20v-7h3v7M11 20V5h3v15M17 20V9h3v11"/></svg><span>Statistik</span></button>
-  <button data-act="tab" data-v="mehr" id="t-mehr"><svg viewBox="0 0 24 24"><circle cx="5" cy="12" r="1.3"/><circle cx="12" cy="12" r="1.3"/><circle cx="19" cy="12" r="1.3"/></svg><span>Mehr</span></button>
+<main id="main" tabindex="-1"><div class="boot"><img src="/icons/icon.svg" alt="" width="56" height="56"></div></main>
+<nav class="tabbar" id="tabbar" aria-label="Hauptnavigation">
+  <span class="lens" id="lens" aria-hidden="true"></span>
+  <a href="#/" data-tab="start"><svg viewBox="0 0 24 24"><path d="M4 11.5 12 5l8 6.5V19a1 1 0 0 1-1 1h-4.5v-5h-5v5H5a1 1 0 0 1-1-1z"/></svg><span>Übersicht</span></a>
+  <a href="#/biere" data-tab="biere"><svg viewBox="0 0 24 24"><path d="M6 6h9v12.5A1.5 1.5 0 0 1 13.5 20h-6A1.5 1.5 0 0 1 6 18.5z"/><path d="M15 9h1.5a2.5 2.5 0 0 1 0 5H15M6 6c0-1.7 1.3-2.5 2.5-2 .7-1 2.6-1.3 3.6-.2 1.4-.4 2.9.6 2.9 2.2"/></svg><span>Biere</span></a>
+  <button class="tab-add" data-act="add" aria-label="Bier eintragen"><svg viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg></button>
+  <a href="#/leute" data-tab="leute"><svg viewBox="0 0 24 24"><circle cx="9" cy="8.5" r="3.2"/><path d="M3.5 19c.6-3 2.8-4.8 5.5-4.8s4.9 1.8 5.5 4.8"/><circle cx="17" cy="9.5" r="2.4"/><path d="M15.8 14.4c2.3-.3 4.2 1.2 4.7 3.9"/></svg><span>Leute</span></a>
+  <a href="#/tastings" data-tab="tastings"><svg viewBox="0 0 24 24"><path d="M5 4h5l-.6 7.2A2 2 0 0 1 7.4 13h-.3a2 2 0 0 1-2-1.8zM14 4h5l-.6 7.2a2 2 0 0 1-2 1.8h-.3a2 2 0 0 1-2-1.8zM7.3 13v6M16.7 13v6M5 19.5h4.6M14.4 19.5H19"/></svg><span>Tastings</span></a>
 </nav>
-<dialog id="sheet" aria-labelledby="sheet-title"><div class="grab" aria-hidden="true"></div><div id="sheet-body"></div></dialog>
-<dialog id="ask"><div id="ask-body"></div></dialog>
+<dialog id="sheet" aria-labelledby="sheet-title"><div class="sheet-panel" id="sheet-panel"><div class="grab" id="grab" aria-hidden="true"><i></i></div><div id="sheet-body"></div></div></dialog>
+<dialog id="ask" class="ask"><div id="ask-body"></div></dialog>
 <div id="toast" class="toast" role="status" aria-live="polite"></div>
 <script src="/vendor/qrcode.js" defer></script>
 <script src="/app.js" defer></script>

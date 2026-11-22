@@ -10,6 +10,7 @@ services:
       - bierstudio-data:/data      # eigenes Dataset statt Volume: - /mnt/tank/bierstudio:/data
     environment:
       TZ: Europe/Berlin
+      # LOGO_DEV_TOKEN: pk_…   # optional: Brauerei-Logos von logo.dev (kostenloser Schlüssel)
 
 volumes:
   bierstudio-data:
