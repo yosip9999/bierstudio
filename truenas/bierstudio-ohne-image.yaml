@@ -12,7 +12,7 @@ services:
     restart: unless-stopped
     environment:
       BIERSTUDIO_VERSION: "4c864841d71a8e49571bf9f676471d5919e9c54e"   # = Version 2.1.0
-      BIERSTUDIO_REPO: "L834-57/bierstudio"
+      BIERSTUDIO_REPO: "yosip9999/bierstudio"
       PUID: "3100"          # eigener Benutzer, getrennt von anderen Apps
       PGID: "3100"
       PORT: "8000"

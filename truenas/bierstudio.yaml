@@ -2,7 +2,7 @@
 # Einfach einfügen: TrueNAS legt den Speicher (Volume „bierstudio-data“) selbst an.
 services:
   bierstudio:
-    image: ghcr.io/l834-57/bierstudio:latest
+    image: ghcr.io/yosip9999/bierstudio:latest
     restart: unless-stopped
     ports:
       - "8000:8000"                # links ggf. anderen freien Port, z. B. "8420:8000"

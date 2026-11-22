@@ -6,7 +6,7 @@ import json, re, threading, time, urllib.error, urllib.parse, urllib.request
 from html.parser import HTMLParser
 
 VERSION = '2.1.1'
-PROJECT_URL = 'https://github.com/L834-57/bierstudio'
+PROJECT_URL = 'https://github.com/yosip9999/bierstudio'
 WD_API = 'https://www.wikidata.org/w/api.php?'
 CACHE = {}
 BEERISH = re.compile(r'bier|beer|pils|lager|\bale\b|weizen|weiß|weiss|stout|porter|bock|kölsch|brauerei|brewery|brewed|cerveza|birra|pivo', re.I)

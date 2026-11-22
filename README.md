@@ -51,7 +51,7 @@
 ```yaml
 services:
   bierstudio:
-    image: ghcr.io/l834-57/bierstudio:latest
+    image: ghcr.io/yosip9999/bierstudio:latest
     restart: unless-stopped
     ports:
       - "8000:8000"
@@ -71,7 +71,7 @@ TrueNAS legt den Speicher selbst an, Rechte setzt der Container (eigener Benutze
 ### Docker Compose
 
 ```bash
-git clone https://github.com/L834-57/bierstudio.git
+git clone https://github.com/yosip9999/bierstudio.git
 ```
 ```bash
 cd bierstudio

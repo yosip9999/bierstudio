@@ -2,6 +2,21 @@
 
 Die Anleitung gilt für TrueNAS SCALE ab 24.10 („Electric Eel“), wo Apps als Docker-Compose laufen. Bierstudio läuft dabei getrennt von deinen anderen Apps (eigenes Dataset, eigener Benutzer, eigenes Netzwerk).
 
+## Umstieg: bestehende App auf dieses Repo umstellen
+
+Läuft Bierstudio bei dir schon mit einem anderen Image (z. B. `ghcr.io/l834-57/bierstudio`), stellst du nur die Image-Zeile um. Die Daten bleiben erhalten.
+
+1. Zur Sicherheit vorher in der App *Mehr → Backup (JSON)* herunterladen.
+2. *Apps → bierstudio → Edit*.
+3. Die Zeile `image:` ersetzen durch:
+   ```yaml
+   image: ghcr.io/yosip9999/bierstudio:latest
+   ```
+   Alles andere (Ports, `volumes`) **unverändert lassen**, sonst landet die App in einem leeren Speicher.
+4. *Save*. TrueNAS lädt das neue Image und startet die App neu.
+
+Ab dann gilt: Jeder Push auf `main` baut automatisch ein neues Image, und *Apps → bierstudio → Update* holt es auf den Server.
+
 ## Installation
 
 ### 1. App per YAML installieren
@@ -13,7 +28,7 @@ Die Anleitung gilt für TrueNAS SCALE ab 24.10 („Electric Eel“), wo Apps als
 ```yaml
 services:
   bierstudio:
-    image: ghcr.io/l834-57/bierstudio:latest
+    image: ghcr.io/yosip9999/bierstudio:latest
     restart: unless-stopped
     ports:
       - "8000:8000"
