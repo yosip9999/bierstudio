@@ -1,0 +1,1419 @@
+# Automatisch erzeugt von tools/import_off.py aus Open Food Facts (ODbL, https://world.openfoodfacts.org).
+# Nicht von Hand bearbeiten – Korrekturen gehören in tools/catalog.tsv (hat Vorrang).
+# name	aliases	brewery	style	abv	country	website	barcodes (|)
+30429 stone go to ipa			IPA		DE		4260451623739
+5,0 Original Weizen			Weizen		DE		4014086093302
+Alpirsbacher Radler Natur			Radler		DE		40477459
+Alus EICHBAUM HEFEWEIZEN			Weizen	5.2	DE		4054500620103
+Alus KINGSMAN LAGER			Lager		DE		4054500144401
+Alus PADERBORNER EXPORT sk			Export	5.5	DE		4101120004711
+Alus SCHLOSSFELS HEFEWEIZEN			Weizen		DE		4054500133542
+Benediktiner Hell			Helles		DE		4052197003599|4052197003902|4052197005203
+Blonde abbaye de vauclaor			Blonde		DE		4056489522577
+Brauerei Simon Hell			Helles		DE		40716657
+BRLO IPA			IPA		DE		4260402631851
+Cannonball India pale ale			IPA		DE		42245070
+Celebrator Doppelbock			Bock		DE		4104170029000
+Coffee stout			Stout		DE		4088600474533
+Cold cliff ipa			IPA		DE		4260473892120
+Craftwerk Tripel			Tripel		DE		4102430050221
+Crew Republic Roundhouse Kick Imperial Stout			Stout		DE		42266495
+Darguner maibock			Bock		DE		4015042031253
+Diebels Premium Altbier			Alt		DE		4001479255010|41411797
+Eibauer dunkel bock			Bock		DE		4015576080208
+Eichbaum Naturradler			Radler		DE		4054500115456
+Eichbaum Pils			Pils		DE		40545875
+EKU Hell			Helles		DE		41041819
+Festbier 5.8			Märzen		DE		4103210200119
+Franz Pils			Pils		DE		42030287
+Förster Pils			Pils		DE		4022022002097
+Garden of Eden - Fruit IPA			IPA		DE		4260402680019
+Greif Hell			Helles		DE		4260101780034
+Grevensteiner Westfälisch Hell			Helles		DE		4005249005690
+Hanalei Island IPA			IPA		DE		4260473891468
+Hard weat			Weizen		DE		4061463827869
+Hatz Hefeweizen			Weizen		DE		42003489
+Hatz Pils			Pils		DE		42003830
+Hazy IPA			IPA		DE		4088600549507
+Hefeweizen leicht			Weizen		DE		4006298013902
+Hellers Maibock			Bock		DE		42176985
+Helles Schankbier			Helles		DE		4042269111031
+Hochstift Pils			Pils		DE		4018387111000
+Hoepfner Helles			Helles		DE		4008109350305
+Hofmühle Original Rother Kellerbier			Kellerbier		DE		4042595001327
+Hopping Nomad IPA			IPA		DE		4099100132205
+Juicy ipa			IPA		DE		4056489310679
+Karlskrone pils			Pils		DE		4088500697537|42141273
+Keiler Weißbier			Weizen		DE		4000171002038
+Kitsler. hell&sexuell			Helles		DE		4270003195706
+Kloster Pilsner			Pils		DE		4007606002526
+Knärzje Helles Kellerbier			Kellerbier		DE		4260413734206
+Konigsbacher weizen			Weizen		DE		4002631025830
+Krautheimer Pilsner			Pils		DE		4021204002252
+Kulmbacher Festbier - Kulmbacher Brauerei AG			Märzen		DE		41016992
+Lager Blonde Demeter Bio			Blonde	4.6	DE		4023216000196
+Lager Pils			Pils		DE		4060148023183
+Landskron Hell			Helles		DE		4013791001213
+Löwenbräu Festbier			Märzen		DE		4250982410083
+Moninger Kleiner Karl Helles			Helles		DE		4054300402251
+Moninger Naturradler			Radler		DE		4054300402879
+Mönchshof Hell			Helles		DE		4082100007710
+Natur radler			Radler		DE		4004866321145
+NEW Yorker FINE Lager			Lager		DE		4054500144104
+Oberdorfer Helles			Helles		DE		4103210206722
+Paderborner Export			Export		DE		4101120006654
+Pedigree Amber Ale			Amber		DE		42414131
+Schimpfle Weizenperle			Weizen		DE		4028577000236
+Session ipa			IPA		DE		4088600522708
+Spezial Hell			Helles		DE		4013024000211
+St.M dunkel			Dunkel		DE		4015576001661
+Staffelberg Bräu Hopfen Gold Pils			Pils		DE		4260237930013
+Steam Jasmine Ipa			IPA		DE		4260423143388
+Turmbräu Primium Pils			Pils		DE		4388860220100
+Vierzehnheiligener Nothelfer Pils			Pils		DE		4260093970024
+Vulkan India Pale Ale Vollbier			IPA		DE		4028996660332
+Weiherer India Pale Ale			IPA		DE		4260007460405
+Wirts Madl bayrisch Hell			Helles		DE		4021483021401
+1079 Project Pilsner		1079 Project	Pils		DE		4088600217024
+5 5,0 Original Pils		5	Pils		DE		4014086093364
+5,0 Hell		5.0 Original	Helles		DE		4014086093319
+Abbaye de Vauclair		Abbaye de vauclair	Lager		DE		4056489091806|4056489100478
+Abbaye de Vauclair Imperiale		Abbaye de Vauclair	Lager		DE		4056489522676
+ABK Hell Das Blaue		ABK	Helles		DE		4017719020010
+Achtern Diek Landbier Pils		Achtern Diek	Kellerbier		DE		42026341
+Acrobräu Moos Arcobräu Moos		Acrobräu Moos	Lager		DE		4005154012011
+Aecht Schlenkerla Rauchbier Weizen		Aecht Schlenkerla Rauchbier	Weizen		DE		4037458000159
+Ahornberger Landbier		Ahornberger	Kellerbier		DE		4005446002256
+Aktienbrauerei Kaufbeuren ABK Hell Das Blaue		Aktienbrauerei Kaufbeuren	Helles		DE		4017719001156
+Aldi Karlskrone Weißbier		Aldi	Weizen		DE		42141181
+Allgäuer Brauhaus Oberdorfer weissbier		Allgäuer Brauhaus	Weizen		DE		4103930200826
+Allgäuer Brauhaus Urtyp Export		Allgäuer Brauhaus	Export		DE		4103210283853
+Hefeweissbier Allgäuer Büble		Allgäuer Brauhaus	Weizen		DE		4103210274639
+Alpine Summit Brewery Dent-Blanche White		Alpine Summit Brewery	Witbier		DE		4099200417868
+Alpirsbach Kloster Weizen Dunkel		Alpirsbach	Weizen		DE		42342328
+Alpirsbacher Alkoholfreies Schwarzwaldbier		Alpirsbacher	Alkoholfrei	0.0	DE		40477435
+Alpirsbacher Kloster Dunkel		Alpirsbacher	Dunkel		DE		40477213
+Alpirsbacher Kloster Helles		Alpirsbacher	Helles		DE		40477756
+Altenauer Harzer Gebirgswinter		Altenauer	Bock		DE		4250790683037
+Altenburger Bock		Altenburger	Bock		DE		4016763000290
+Altenburger Premium Pils		Altenburger	Pils		DE		4016763000207
+Angler-Bräu Aal-Pils		Angler-Bräu	Pils		DE		4260235089959
+Apoldaer Festbock		Apoldaer	Bock		DE		42017677
+Apoldaer Pils Spezial		Apoldaer	Pils		DE		42017738
+Arcobräu Pilsener		Arcobräu	Pils		DE		4005154001053
+Arcobräu Schloss Dunkel		Arcobräu	Dunkel		DE		4005154008007
+Argus 10 Pils		Argus	Pils		DE		4056489580751
+Argus Clásica		Argus	Lager		DE		4056489367123
+Argus Shandy		Argus	Radler		DE		4056489351801
+Asgaard Das Göttliche		Asgaard	Lager		DE		4028268012012
+Asgaard Premium Pils		Asgaard	Pils		DE		4028268011015
+Auerbräu Rosenheimer Helles		Auerbräu	Helles		DE		4006693800114
+Augustinerbräu München Lagerbier Hell		Augustinerbräu München	Helles		DE		4105250022003|4105250022331
+Ayinger Altbayrisch Dunkel		Ayinger	Dunkel		DE		4104170020700
+Ayinger Lager Hell		Ayinger	Helles		DE		4104170020007
+Ayinger Urweisse		Ayinger	Weizen		DE		4104170030006
+Badische Staatsbrauerei Rothaus Pils		Badische Staatsbrauerei	Pils		DE		41051818
+Badische Staatsbrauerei Rothaus AG Rothaus Radler Zäpfle ohne Zucker		Badische Staatsbrauerei Rothaus AG	Radler		DE		41051887
+Bapbap Vertigo IPA		Bapbap	IPA		DE		4104118210033
+Bauhöfer Maibock		Bauhöfer	Bock		DE		4015590000305
+Bayreuther Bierbrauerei Aktien Landbier		Bayreuther Bierbrauerei	Kellerbier		DE		40173979
+Bayreuther Bierbrauerei AG Aktien Zwick'l Kellerbier		Bayreuther Bierbrauerei AG	Kellerbier		DE		40173801
+Bayreuther Bio-Weisse naturtrüb		Bayreuther Bio-Brauer	Weizen		DE		40173962
+Bayreuther Bock		Bayreuther Brauhaus	Bock		DE		40173283
+Beck's Pale Ale		Beck's	Pale Ale		DE		4100130002410
+Beck's Unfiltered pils		Beck's	Pils		DE		4100130014352
+Beck's, Pils Alk		Beck's	Pils	4.9	DE		42178170
+Becks Blue alcohol-free		Beck's	Alkoholfrei	0.0	DE		4100130037771
+Becks Pils		Beck's	Pils		DE		41001301
+Beck'sAnheuser-Busch Inbev Beck's Alkoholfrei Blue		Beck'sAnheuser-Busch Inbev	Alkoholfrei	0.0	DE		42021322
+Becker's Pils		Becker's	Pils		DE		4002631019044
+Beeraclez Imperial ipa		Beeraclez	IPA		DE		4054500142223|4054500142254
+Beeraclez IPA Session		Beeraclez	IPA		DE		4054500142230
+Benediktiner Hefeweissbier hell		Benediktiner	Weizen		DE		4052197001175
+Benediktiner Weissbier		Benediktiner	Weizen		DE		4052197000017|4052197000390
+Berg Hefe-Weizen		Berg	Weizen		DE		42045786
+Berg Mai-Bock		Berg	Bock		DE		4029257012372
+Berg Original Hell		Berg	Helles		DE		42045748
+Berg Radler		Berg	Radler		DE		42071631
+Bergkönig Dizzy Grizzly Hazy IPA		Bergkönig	IPA		DE		4061464600737
+Berliner Kindl Helles Bockbier		Berliner Kindl	Bock		DE		4100080000528
+Berliner Kindl Zwickel naturtrüb		Berliner Kindl	Kellerbier		DE		4053400287348
+Berliner Kindl Brauerei AG Jubiläums Pilsener		Berliner Kindl Brauerei AG	Pils		DE		4100080000931
+Berliner Radler Naturtrüb		Berliner Pilsner	Radler		DE		4053400205212
+Binding Export		Binding	Export		DE		40534060
+Binding Radler naturtrüb		Binding	Radler		DE		4053400206660
+Bitburger Herb 0		Bitburger	Alkoholfrei	0.0	DE		4102430079512
+Bitburger Kellerbier		Bitburger	Kellerbier		DE		4102430067717
+Bitburger Maibock		Bitburger	Bock		DE		4102430076641|4102430079833
+Bitburger Radler naturtrüb alkoholfrei		Bitburger	Alkoholfrei	0.0	DE		4102430070915
+Bitburger Radler Zitrone		Bitburger	Radler		DE		4102430017125
+Bitburger Winterbock		Bitburger	Bock		DE		4102430072360|4102430072391
+Blanq Eifeler Helles		Blanq	Helles		DE		4270002435933
+Alus BLREOR HEFEWEIZEN		Blreor	Weizen	5.2	DE		4054500133382
+Bolten Ur-Weizen		Bolten	Weizen		DE		4019046402521
+Brauerei Gebr. Maisel's Weisse Kristall		Brauerei Gebr. Maisel	Weizen		DE		4017300020016
+Brauerei Gebr. Maisel KG Maisel's Weise alkoholfrei		Brauerei Gebr. Maisel KG	Alkoholfrei	0.0	DE		40173832
+Brauerei Grohe GmBH Grohe Pils		Brauerei Grohe GmBH	Pils		DE		4260052433102
+Brauerei Heller Aecht Schlenkerla Rauchbier Märzen		Brauerei Heller	Märzen		DE		4037458000012
+Brauerei Kesselring Urfränkisches Landbier		Brauerei Kesselring	Kellerbier		DE		42007227
+Brauerei Königshof Pils		Brauerei Königshof	Pils		DE		4260133693043
+BraufactuM Palor		BraufactuM	Lager		DE		4051522177776
+BraufactuM The Brale		BraufactuM	Lager		DE		4051522181179
+Brauhaus Hohenaschau Hell		Brauhaus Hohenaschau	Helles		DE		4270002540705
+Brauhaus Riegele Weizen Doppelbock		Brauhaus Riegele	Weizen		DE		4026900101162
+Brauhaus Tegernseer Hell		Brauhaus Tegernsee	Helles		DE		4022396000125
+Braumanufaktur Hell Frei		Braumanufaktur	Alkoholfrei	0.0	DE		4260122525607
+Wüllner's Braumeister Premium Pilsener		Braumeister	Pils		DE		4106070310257
+Braustolz Radler		Braustolz	Radler		DE		4105680006505
+Braustolz Weihnachts-Bockbier		Braustolz	Bock		DE		4105680007625
+Brautradition St. Wendeler Pils		Brautradition	Pils		DE		4002631022792
+Brauwerk Export Hell		Brauwerk	Export		DE		4060148023657
+Brewdog Aldipa		Brewdog	IPA		DE		4260649362129
+BrewDog Lost Lager		BrewDog	Lager		DE		4260649360033
+Brewdog Pale Ale West Coast Classic		Brewdog	Pale Ale		DE		4260649360286
+Brewheart Bob Barley		Brewheart	Stout		DE		4260605280344
+BRLO Berliner Weiße		BRLO	Weizen		DE		4260402630175
+BRLO Pale Ale		BRLO	Pale Ale		DE		4260402630021
+Brookston American Style Lager		Brookston	Lager		DE		4088600250656
+Bruckmüller Hell		Bruckmüller	Helles		DE		4033804000019
+Büble Bayrisch Hell		Büble	Helles		DE		4103210274547
+Bürgenbräu Weissbier		Bürgenbräu	Weizen		DE		4004591030732
+Bürgerbräu Hersbruck Natur-Radler mit Zitronensaft		Bürgerbräu Hersbruck	Radler		DE		4017665000395
+Camba Hell		Camba	Helles		DE		4260226252300
+Cape Cyan Natural Blonde		Cape Cyan	Blonde		DE		4088700136515
+Carlsberg 0.0 Lager		Carlsberg	Alkoholfrei	0.0	DE		4101010010624
+Chiemsee Hell		Chiemseer	Helles		DE		4260248223616
+Clausthaler alkoholfrei		Clausthaler	Alkoholfrei	0.0	DE		4053400003481|40534305
+Clausthaler Analcolica		Clausthaler	Alkoholfrei	0.0	DE		4053400183596
+Clausthaler Classic Premium Non-Alcoholic		Clausthaler	Alkoholfrei	0.0	DE		40534695
+CR HELL		CR	Helles		DE		4030165002867
+Craft Werk Lager Mad Callista		Craft Werk	Lager		DE		4102430064761
+CREW Republic HOP Junkie Session IPA		CREW Republic	IPA		DE		42274728
+Darmstädter Privatbrauerei GmbH Braustüb'l Radler		Darmstädter Privatbrauerei GmbH	Radler		DE		4003767003693
+Detmolder Pilsner		Detmolder Pilsner	Pils		DE		4016855002010
+Die toten Hosen hell		Die toten Hosen	Helles		DE		4022109010250
+Dinkelacker alkoholfrei		Dinkelacker	Alkoholfrei	0.0	DE		40617435
+Distelhausen Heller Bock		Distelhausen	Bock		DE		4069300003438|40693613
+Dithmarscher Dunkel		Dithmarscher	Dunkel		DE		42026327
+Dithmarscher Pilsener		Dithmarscher	Pils		DE		42007852|42007876
+Dortmunder Actien-Brauerei DAB Pilsener		Dortmunder Actien-Brauerei	Pils		DE		4001982148182
+Dortmunder Union Export		Dortmunder Union	Export		DE		4072800010592
+Duff		Duff	Lager		DE		4260379680098
+Eichbaum Export		Eichbaum	Export		DE		40545837
+Eichbaum Kurpfälzer NaturRadler		Eichbaum	Radler		DE		4054500115012|4054500115081
+Eichbaum Natur Radler alkoholfrei		Eichbaum	Alkoholfrei	0.0	DE		4054500115166
+Eichbaum UREICH Premium Pils		Eichbaum	Pils		DE		40545059|40545102
+Eichhofener Helles		Eichhofener	Helles		DE		4021315000109
+Einbecker Mai Ur Bock		Einbecker	Bock		DE		4004078004508
+Einbecker Winter-Bock		Einbecker	Bock		DE		4004078005345
+Einbecker Brauhaus AG Einbecker Brauherren Pils		Einbecker Brauhaus AG	Pils		DE		4004078001392|4004078004201
+Einbecker Brauhaus AG Einbecker Dunkel		Einbecker Brauhaus AG	Dunkel		DE		4004078018741
+Einbecker Brauhaus AG Einbecker Landbier hell		Einbecker Brauhaus AG	Kellerbier		DE		4004078004010
+Einsiedler Brauhaus GmbH Retter Premium Hell		Einsiedler Brauhaus GmbH	Helles		DE		4019437002842
+Engel Hell		Engelbräu	Helles		DE		4016670030311
+Engelbräu Grünten-Pils		Engelbräu	Pils		DE		4016670000154
+Erdinger Alcohol Free Weissbrau		Erdinger	Alkoholfrei	0.0	DE		4002103266501
+Erdinger hveteøl		Erdinger	Weizen	5.3	DE		4002103248521
+Erdinger Kristallweizen		Erdinger	Weizen		DE		4002103000020
+Erdinger wheat		Erdinger	Weizen		DE		4002103250487
+Erdinger Brauhaus Helles		Erdinger Brauhaus	Helles		DE		4005873210040|4005873210088
+Erdinger Weissbräu Erdinger Alcohol-Free Wheat		Erdinger Weissbräu	Alkoholfrei	0.0	DE		4002103283270
+Erdinger Weissbräu Non-Alcoholic Wheat		Erdinger Weissbräu	Alkoholfrei	0.0	DE		4002103282020
+Erzquell Pils		Erzquell Brauerei	Pils		DE		4006725110303
+Falkenfelser Premium Pilsener		Falkenfelser	Pils		DE		4316268291873
+Falkenfelser Radler Naturtrüb		Falkenfelser	Radler		DE		4316268551304
+Falkenfelser Weißbier		Falkenfelser	Weizen		DE		4316268291897
+Falkenfelser Weissbier alkoholfrei		Falkenfelser	Alkoholfrei	0.0	DE		4316268291910
+Falkenfelser Weißbier Leicht		Falkenfelser	Weizen		DE		4316268291903
+Faust Doppelbock		Faust	Bock		DE		4106120006277
+Faust Pils		Faust	Pils		DE		4106120006628
+Faust Winter Festbier		Faust	Märzen		DE		4106120004020
+Feldschlößchen Naturtrübes Radler		Feldschlößchen	Radler		DE		4250594205695
+Feldschlößchen Urbock Starkbier		Feldschlößchen	Bock		DE		4250594200188
+Feldschlößchen AG Coschützer Pils		Feldschlößchen AG	Pils		DE		4250594200584
+Festbier		Festbier	Märzen		DE		4304493261488
+Finne Natur Radler		Finne	Radler		DE		4060469790146
+Finne Pale Ale		Finne	Pale Ale		DE		4260469790027
+Finne Pils		Finne	Pils		DE		4260469790089
+Finne Weizen		Finne	Weizen		DE		4260469790010
+Fischer Landbräu Das Pils		Fischer Landbräu	Pils		DE		4280000436030
+Fleißbacher Brauerei Summer Pale Ale		Fleißbacher Brauerei	Pale Ale		DE		4260594840154
+Flensburger -Edles helles		Flensburger	Helles		DE		41030875
+Flensburger Blonde		Flensburger	Blonde		DE		4103080063630|42334255
+Flensburger Dark Amber		Flensburger	Amber		DE		4103080063647|42334262
+Flensburger Frühlingsbock		Flensburger	Bock		DE		4103080000017
+Flensburger Pilsener Swingtop		Flensburger	Pils		DE		41030837
+Flensburger Radler		Flensburger	Radler		DE		42095088
+Flensburger Strand-Lager		Flensburger	Lager		DE		42456698
+Flensburger Winterbock		Flensburger	Bock		DE		4103080000727
+Flötzinger 1543 Hefe Weißbier kellertrüb		Flötzinger	Weizen		DE		4016843002947
+Flötzinger Wiesn-Märzen		Flötzinger	Märzen		DE		4016843002459
+Flötzinger Bräu Flötzinger Hell		Flötzinger Bräu	Helles		DE		4016843002008
+Frankenwälder Bürgerbräu Weizen		Frankenwälder Bürgerbräu	Weizen		DE		4022996010579
+Frankfurter Brauhaus GmbH Eber Pils		Frankfurter Brauhaus GmbH	Pils		DE		4014239005480
+Frankfurter Brauhuas GmbH Echt Brandenburg Frankfurter Export		Frankfurter Brauhuas GmbH	Export		DE		4042269111109
+Franz Radler		Franz	Radler		DE		4019577010837
+Franziskaner Hefe Weissbier		Franziskaner	Weizen		DE		4072700001775|4072700003649
+Franziskaner Weissbier Naturtrüb		Franziskaner Weissbier	Weizen		DE		4072100001726
+Freiberger Export		Freiberger	Export		DE		4013246102106
+Freiberger Brauhaus Freiberger Alkoholfrei		Freiberger Brauhaus	Alkoholfrei	0.0	DE		4013246269205
+Friedensreiter bräu Pale Ale		Friedensreiter bräu	Pale Ale		DE		42344162
+Früh Radler		Früh	Radler		DE		4003227031105
+Fürstenberg Getränke Natur Radler		Fürstenberg	Radler		DE		4006770310260
+Fürstenberg Naturtrübes Helles		Fürstenberg	Helles		DE		4006770110778
+G. Schneider & Sohn Schneider Weisse Weissbier TAP 01		G. Schneider & Sohn	Weizen		DE		4003669016807
+Gasthof Zwönitz Stout Craft		Gasthof Zwönitz	Stout		DE		4042616270008
+Genossenschaftsbrauerei Rötz e. G Josefi Märzen		Genossenschaftsbrauerei Rötz e. G	Märzen		DE		4280001089051
+Germania ŠVIESUSIS pilsner		Germania	Pils		DE		4054500144203
+Gerstel Mon-alcoholic		Gerstel	Alkoholfrei	0.0	DE		40518473
+Gessner Dunkler Bock		Gessner	Bock		DE		4019298000032
+Gessner Original Festbier		Gessner	Märzen		DE		4019298000070
+Gessner Premium Pils		Gessner	Pils		DE		4019298000049
+Giesinger Lemondrop Triple		Giesinger	Helles		DE		42329350
+Giesinger Münchner Hell		Giesinger	Helles		DE		42268932
+Giesinger Untergiesinger Erhellung		Giesinger	Kellerbier		DE		42268888
+Glaabsbräu Naturradler		Glaabsbräu	Radler		DE		4002817025609
+Glucks Pils		Glucks	Pils		DE		4270000189227
+Gold Ochsen Ulmer Hell		Gold Ochsen	Helles		DE		4103030128037|4103030128471
+Grafensteiner Pils		Grafensteiner	Pils		DE		42256021
+Grevensteiner Natur-Radler		Grevensteiner	Radler		DE		4005249001340
+Grimbergen Double Ambree		Grimbergen	Amber		DE		4101010009284
+Grohe Hell		Grohe	Helles		DE		4260052433003
+Gruthaus Gold Hafer Tripel		Gruthaus	Tripel		DE		4260392550101
+Gröninger Pils		Gröninger	Pils		DE		4260089090026
+Grünbacher Altweisse Dunkel		Grünbacher	Dunkel		DE		4042134000026
+Grünbacher Prinzen-Bock Weisse		Grünbacher	Bock		DE		4042134000057
+Grüner Radler Natur alkoholfrei		Grüner	Alkoholfrei	0.0	DE		4076300209043
+Guinness Extra Stout		Guinness	Stout		DE		4053400211428
+Gutmann Hefeweizen Alkoholfrei		Gutmann	Alkoholfrei	0.0	DE		4030439008007
+Gutmann Leichtes Weizen		Gutmann	Weizen		DE		4030439002005
+Gutmann Weizenbock		Gutmann	Weizen		DE		4030439003002
+Gutmann Hefeweizen, Hell		Gutmanns	Weizen		DE		4030439001008
+Gutshaus Pilsener		Gutshaus	Pils		DE		4316268367356
+Haake Beck Pils		Haake Beck	Pils		DE		4100130913303
+Hachenburger Zwickel		Hachenburg	Kellerbier		DE		4011094103627
+Hachenburger Hell		Hachenburger	Helles		DE		4011094104099
+Hacker Pschorr Hell		Hacker Pschorr	Helles		DE		4004866721556
+Hacker Pschorr Hell Alkoholfrei		Hacker Pschorr	Alkoholfrei	0.0	DE		4004866721020
+Hacker Pschorr Radler		Hacker Pschorr	Radler		DE		4004866721532
+Hacker-Pschorr Superier festbier		Hacker-Pschorr	Märzen		DE		4004866721495
+Hacker-Pschorrm Weissbier		Hacker-Pschorrm	Weizen		DE		4004866222237
+Hannen Alt		Hannen-Brauerei	Alt		DE		4100790001112
+Hasen-Bräu Hasen hell		Hasen-Bräu	Helles		DE		40179322
+Hasen-Bräu Oster-Festbier		Hasen-Bräu	Märzen		DE		4006298512009
+Hasseröder Export		Hasseröder	Export		DE		4014558313587
+Held Hell		Held	Helles		DE		4260407160011
+Hellers Kölsch		Hellers	Kölsch		DE		42151029
+Helles Pülleken		Helles Pülleken	Helles		DE		42462989
+Radler Henninger		Henninger	Radler		DE		40518855
+Hertl Das Kellerbier		Hertl	Kellerbier		DE		4260472210543
+Herzoglich Bayerisches Brauhaus Tegernseer Hell		Herzoglich Bayerisches Brauhaus Tegernsee	Helles		DE		4022396000026
+Hessenquell Landbier		Hessenquell	Kellerbier		DE		4002798021591
+Hirsch Helles		Hirsch	Helles		DE		4001179010506
+Hirsch Natürliches Donau Radler		Hirsch	Radler		DE		4001179001634
+Hochstift Pils, klein		Hochstift	Pils		DE		4018387111017
+Hoepfner Natur Radler		Hoepfner	Radler		DE		4008109434302
+Hofbrauhaus Freising Lagerbier alkoholfrei		Hofbrauhaus Freising	Alkoholfrei	0.0	DE		4005338000575
+Hofbräu Helles Münchiner art		Hofbräu	Helles		DE		4005686001156
+Hofbräu München Hofbräu Weisse Alkoholfrei		Hofbräu München	Alkoholfrei	0.0	DE		4005686025381
+Hofbräuhaus Helles Vollbier		Hofbräuhaus	Helles		DE		4005686001361
+Hofbräuhaus Freising Moy Helles		Hofbräuhaus Freising	Helles		DE		4005338000759
+Holsten Alkoholfrei		Holsten	Alkoholfrei	0.0	DE		40678313
+Holsten Bernstein Lager		Holsten	Lager		DE		42341727|42341734
+Holsten Edel Würzig		Holsten	Amber	4.9	DE		4101010007389
+Hop Rider Session IPA		Hop Rider	IPA		DE		4054500141363
+Höpfner Pilsner		Höpfner	Pils		DE		4008109300300|4008109300508|4008109600554
+Hövels Hop Pale Ale		Hövels	Pale Ale		DE		4053400201498
+Hürner GmbH Hürner Vollbier Hell		Hürner GmbH	Helles		DE		4006298009004
+Hütt Hefe-Weißbier Hell		Hütt	Weizen		DE		4005773002868
+Hütt Radler		Hütt	Radler		DE		4005773002257
+Lindauer Insel Weisse		Inselbrauerei Lindau	Weizen		DE		4260172435178
+Jacob Weissbier naturtrüb alkokohlfrei		Jacob	Weizen		DE		4028942008614
+Kaiser Export 1881		Kaiser	Export		DE		4104250700003
+Kaiser Sonnenradler		Kaiser	Radler		DE		4104250012502
+Kapuziner Hefe Dunkel Naturtrüb		Kapuziner	Dunkel		DE		40821146
+Karlsberg Kalsberg Pils		Karlsberg	Pils		DE		4002631015961
+Karlsberg Natur Radler		Karlsberg	Radler		DE		4002631015688
+Karlsberg Weizen Radler		Karlsberg	Radler		DE		4002631015275
+Karlsbrau Allemande		Karlsbrau	Lager		DE		4002631027520
+Karlskrone Alkoholfreies		Karlskrone	Alkoholfrei	0.0	DE		4099200047775
+KarlsKrone Premium Karls Krone gold		KarlsKrone	Pils		DE		4061458279109
+Karlskrone Weissbier		Karlskrone	Weizen		DE		4061458279147|42212546
+Karlskrone Weissbier Alkoholfrei		Karlskrone	Alkoholfrei	0.0	DE		4061458279093
+Kirin Ichiban Blonde		Kirin Ichiban	Blonde		DE		4260134390019
+Kirner Pils		Kirner	Pils		DE		4016084030006
+Kloster Andechs Hefeweissbier Hell		Kloster Andechs	Weizen		DE		4013024001317
+Kloster Scheyern Kloster-Gold Dunkel		Kloster Scheyern	Dunkel		DE		40179650
+Kloster Scheyern Kloster-Gold Hell		Kloster Scheyern	Helles		DE		40179643
+Klosterbrauerei Baumburg Pils		Klosterbrauerei Baumburg	Pils		DE		4260164143517
+Klosterbrauerei Neuzelle GmbH Radler Fritz		Klosterbrauerei Neuzelle GmbH	Radler		DE		4016144008013
+Klosterbräu Bamberger Braunbier		Klosterbräu	Amber		DE		4030493000276
+Klosterbräu Bamberger Kellerbier		Klosterbräu	Kellerbier		DE		4030493000368
+Klosterbräu Bamberger Rauchbier		Klosterbräu	Märzen		DE		4030493000375
+Knabe Malz		Knabe	Alkoholfrei	0.0	DE		4008287959192
+Kneitinger Bock		Kneitinger	Bock		DE		4021817000188
+Kneitinger Heller Hans		Kneitinger	Helles		DE		4021817003240
+Kordaat Premium Pilsener		Kordaat	Pils		DE		4056489052074
+German Krombacher Pils		Krombacher	Pils		DE		4008287050134
+Krombacher Dunkel		Krombacher	Dunkel		DE		4008287910650
+Krombacher Natur Radler alkoholfrei		Krombacher	Alkoholfrei	0.0	DE		4008287956245
+Krombacher Naturtrübes Kellerbier		Krombacher	Kellerbier		DE		4008287910544
+Krombacher Radler Alkoholfrei		Krombacher	Alkoholfrei	0.0	DE		4008287073522|4008287919752
+Krombacher Radler Naturtrüb		Krombacher	Radler		DE		4008287910582|4008287910612|4008287910629
+Krombacher wacken		Krombacher	Pils		DE		4008287948349
+Krombacher Brauerei Naturtrübes Dunkel		Krombacher Brauerei	Dunkel		DE		4008287910681
+Kronburger Hell		Kronburger	Helles		DE		4040086001016
+Kuchlbauer Hefeweissbier hell		Kuchlbauer	Weizen		DE		4011740000140
+Kulmbacher Mönchshof Original Pils		Kulmbacher	Pils		DE		40821931
+Kulmbacher Brauerei Kapuziner Weißbier		Kulmbacher Brauerei	Weizen		DE		40821122
+Kurpfalz Brau Kellerbier		Kurpfalz Brau	Kellerbier		DE		4043800015122
+König Ludwig Dunkel		König Ludwig	Dunkel		DE		4003304122009|4003304168007
+König Ludwig Weissbier hell		König Ludwig Brauerei	Weizen		DE		4003304142205
+König-Brauerei Duisburg-Beek König Pilsener		König-Brauerei Duisburg-Beek	Pils		DE		41007785
+Königbacher Pils		Königsbacher brauerei	Pils		DE		4104390011335|4104390025080
+Köstritzer Edel Pils		Köstritzer	Pils		DE		4014964111340
+Köstritzer Schwarzbierbrauerei Pale Ale		Köstritzer Schwarzbierbrauerei	Pale Ale		DE		4014964017970
+Lahnsteiner Brauerei Martinator, Heller Doppelbock		Lahnsteiner Brauerei	Bock		DE		4031335001055
+Lammsbrau Edel Hell		Lammsbrau	Helles		DE		4012852001209
+Neumarkter Lammsbräu Weiße alkoholfrei		Lammsbräu	Alkoholfrei	0.0	DE		4012852001629
+Landsberger Stolzer Hahn		Landsberger	Pils		DE		4026637000004
+Landskron Premium Pilsner		Landskron	Pils		DE		4013791000018
+Lang Bräu Burggraf Dunkel -Urfranke- untergärig		Lang Bräu	Dunkel		DE		4030541005185
+Lang Bräu Hell - untergärig		Lang Bräu	Helles		DE		4030541005116
+Lang Bräu Pils		Lang Bräu	Pils		DE		4030541005123
+Lasser Kellerbier Naturtrüb		Lasser	Kellerbier		DE		4007588000763
+Lausitzer Brauspezialitäten Lausitzer Porter		Lausitzer Brauspezialitäten	Porter		DE		4018588003302
+Leikeim Premium, Pilsener Brauart		Leikeim	Pils		DE		4016762020084
+Les Clandestines de Montferri Gaianada IPA		Les Clandestines de Montferri	IPA		DE		438100
+Licher 1854 Kellerbier		Licher	Kellerbier		DE		4002798021225
+Licher Natur Radler		Licher	Radler		DE		4002798019260|4002798021294
+Blonde lidl		Lidl	Blonde		DE		4056489259190
+Lidl De garde blonde		Lidl	Blonde		DE		4056489522591
+Lidl Finkräu		Lidl	Lager		DE		4056489098010
+Lidl Kotimainen Olut		Lidl		4.2	DE		4056489454809
+Lidl Patronus Weissbier		Lidl	Weizen		DE		4056489321231
+Lidl Perlenbacher		Lidl	Alkoholfrei	0.0	DE		4056489127321
+Liebharts Heller Bock		Liebharts	Bock		DE		4260079845650
+Lille Lager		Lille	Lager		DE		4260426700014|4260426770017
+Lille Pale Ale		Lille	Pale Ale		DE		4260426770031
+Lille Stout		Lille	Stout		DE		4260426770093
+Lock Ten American IPA		Lock Ten	IPA		DE		4088600522715
+Luther Urtyp Dunkel		Luther	Dunkel		DE		4106180112116|4106180612111
+Löwenbrau Lowenweisse		Löwenbrau	Weizen		DE		40786575
+Löwenbrauerei Passau AG Urtyp Hell		Löwenbrauerei Passau AG	Helles		DE		4021483021005
+Löwenbräu Karpfen Weisse		Löwenbräu	Weizen		DE		4250982410038
+Lübzer Alkoholfrei		Lübzer	Alkoholfrei	0.0	DE		42152828
+Lübzer Lemon Radler Klassisch		Lübzer	Radler		DE		42102243
+Lübzer Schwarzbier		Lübzer	Schwarzbier		DE		42221418
+Maisel Marc's Chocolate Bock		Maisel	Bock		DE		40173702
+Maisel & Friend IPA		Maisel & Friend	IPA		DE		40173597
+Maisel & Friends Pale Ale		Maisel & Friends	Pale Ale		DE		40173306
+Maisel's Weisse Dunkel Hefe-Weißbier		Maisel's Weisse	Weizen		DE		40173689
+Malzmühle Mühlen Kölsch		Malzmühle	Kölsch		DE		4044164100059
+Maxlrainer Helles		Maxlrainer	Helles		DE		42065227
+Meckatzer Hell		Meckatzer	Helles		DE		4105670006003
+Meinel-Bräu Helles		Meinel-Bräu	Helles		DE		4250253302208
+Meinel-Bräu Meinel Pils		Meinel-Bräu	Pils		DE		4250253302215
+Memminger blanche		Memminger	Witbier		DE		4105230001493
+Mission Passion-Technique Premium Lager World 2018		Mission	Lager		DE		4304493263413
+Fiege Helles		Moritz Fiege	Helles		DE		4104670004842
+Moritz Fiege Pilsener		Moritz Fiege	Pils		DE		41046760
+Moritz Fiege Radler		Moritz Fiege	Radler		DE		4104670004262
+Mönchshof Bayrisch Hell		Mönchshof	Helles		DE		4082100003453
+Mönchshof Landbier		Mönchshof	Kellerbier		DE		40821214
+Mönchshof Märzen		Mönchshof	Märzen		DE		4082100002227
+Mönchshof original naturtrüb Alkoholfrei		Mönchshof	Alkoholfrei	0.0	DE		4082100003552
+Mönchshof Radler Blutorange		Mönchshof	Radler		DE		4082100006102
+Mönchshof Brauerei Natur Radler		Mönchshof Brauerei	Radler	0.0	DE		4082100005044|4082100006508
+Naabecker Dunkel		Naabecker	Dunkel		DE		4250279600098
+Nankendorfer Bockbier		Nankendorfer	Bock		DE		4260579680034
+Nebuleuse Embuscade American IPA		Nebuleuse	IPA		DE		4313042628047
+Neder Festbier		Neder	Märzen		DE		4260120630037
+Netto Falkenfelser Export		Netto	Export		DE		4316268291880
+Neumakter Lammsbrau		Neumarkter Lammsbrau	Lager		DE		4012852101312
+Neumarkter Lammsbräu , glutenfrei, alkoholfrei		Neumarkter Lammsbräu	Alkoholfrei	0.0	DE		4012852001681
+Neumarkter Lammsbräu Dunkel		Neumarkter Lammsbräu	Dunkel		DE		4012852001018|4012852001667
+Neumarkter Lammsbräu Dunkle Weiße		Neumarkter Lammsbräu	Weizen		DE		4012852001551
+Neumarkter Lammsbräu Leichtes Helles		Neumarkter Lammsbräu	Helles		DE		4012852001612
+Neumarkter Lammsbräu Urstoff		Neumarkter Lammsbräu	Helles		DE		4012852001100
+Neumarkter Lammsbräu Zzzisch Bio-Edelpils		Neumarkter Lammsbräu	Pils		DE		4012852001056
+Neunspringer Grenzenlos Wandern im Eichsfeld Helles		Neunspringer	Helles		DE		4106180113144
+Nikl-Bräu Lagerbier Helles Zwickelbier		Nikl-Bräu	Kellerbier		DE		4260486730068
+Nörten-Hardenberger Pils		Nörten-Hardenberger	Pils		DE		4069800005871|4069800300204
+Nörten-Hardenberger Weizen		Nörten-Hardenberger	Weizen		DE		4069800005949
+Oettinger Dunkles Hefeweizen Naturtrüb		Oettinger	Weizen		DE		4014086010354
+Oettinger Export		Oettinger	Export		DE		4014086010330|4014086020339
+Oettinger Hefeweißbier		Oettinger	Weizen		DE		4014086010309
+Oettinger Helles		Oettinger	Helles		DE		4014086010316
+Oettinger Kellerbier		Oettinger	Kellerbier		DE		4014086010491
+Original Landbier		Original	Kellerbier		DE		40173207
+Osser Ostern hell		Osser	Helles		DE		4041888011500
+Ottakringer Kühles blondes		Ottakringer	Blonde		DE		4099200026510
+Ottweiler Pils		Ottweiler Pils	Pils		DE		4002631023706
+Paderborner Pilger Landbier		Paderborner	Kellerbier		DE		4101120006074
+Paderborner Pilsener		Paderborner	Pils		DE		4101120006661|4101120006685
+Paderborner Brauerei Haus Cramer GmbH Paderborner Pilsener		Paderborner Brauerei Haus Cramer GmbH	Pils		DE		4101120006777
+Palmbräu Des Monats - Tripel		Palmbräu	Tripel		DE		4100390000010
+Park Natur Radler		Park	Radler		DE		4001436930752
+Patronus Weissbier-Radler Grapefrucht		Patronus	Radler		DE		42372394
+Paulanen Weissbier Munich Wheat		Paulanen	Weizen		DE		4066600192367
+Paulaner		Paulaner	Weizen		DE		4066600641964
+Paulaner Blanche sans alcool au citron		Paulaner	Alkoholfrei	0.0	DE		4066600145264
+Paulaner Hefe Weißbier		Paulaner	Weizen		DE		4066600641995
+Paulaner Hefe weißbier Alkoholfrei		Paulaner	Alkoholfrei	0.0	DE		4066600641919
+Paulaner Hefe-Weißbier Non-Alcoholic		Paulaner	Alkoholfrei	0.0	DE		4066600192510
+Paulaner Hefe-weissbier White		Paulaner	Weizen		DE		4066600611301
+Paulaner Lemon Radler		Paulaner	Radler		DE		4066600219514
+Paulaner Müncher hell		Paulaner	Helles		DE		4066600611028
+Paulaner Münchner Hell alkoholfrei		Paulaner	Alkoholfrei	0.0	DE		4066600641018
+Paulaner Salvator doppelbock		Paulaner	Bock		DE		4066600641803
+Paulaner Weißbier Zitrone Alkoholfrei		Paulaner	Alkoholfrei	0.0	DE		4066600242024|4066600645245
+Paulaner Weißbier, kristallklar		Paulaner	Weizen		DE		4066600641902
+Paulaner Weißbier-Zitrone, naturtrüb		Paulaner	Weizen		DE		4066600145080
+Paulaner München Natur Radler		Paulaner München	Radler		DE		4066600241195
+PAULANER München PAULANER Oktoberfest		PAULANER München	Märzen		DE		4066600610663
+Paulaner München Paulaner Ulane Münchner HELL		Paulaner München	Helles		DE		4066600611363
+Perlembourg Blonde		Perlembourg	Blonde		DE		4056489011880|4056489023500
+Perlembourg Blonde Bio		Perlembourg	Blonde		DE		4334035452876
+Perlembourg DE Garde		Perlembourg	Pale Ale		DE		4056489525291
+Perlembourg Extra Strong		Perlembourg		10.0	DE		4335619018570
+Perlembourg Pils		Perlembourg	Pils		DE		4056489103790
+Perlenbacher Alkoholfrei		Perlenbacher	Alkoholfrei	0.0	DE		42276036
+Perlenbacher Export		Perlenbacher	Export		DE		42391845
+Perlenbacher Hefe Weißbier		Perlenbacher	Weizen		DE		42143598
+Perlenbacher Lagerbier Hell		Perlenbacher	Helles		DE		42426110
+Perlenbacher Natur Radler		Perlenbacher	Radler		DE		42341598
+Perlenbacher Patronus - Premium weissbier		Perlenbacher	Weizen		DE		4056489305224
+Perlenbacher Pils		Perlenbacher	Pils		DE		4056489025054|4056489237204|42143789|42143833|42270249|42372387
+Perlenbacher Radler		Perlenbacher	Radler	0.0	DE		42143697|4304493261426
+Perlenbacher Radler Natur Trüb		Perlenbacher	Radler		DE		42391913
+Perlenbacher Strong		Perlenbacher		7.9	DE		42391739
+Pfungstädter Alkoholfrei		Pfungstädter	Alkoholfrei	0.0	DE		4001187104754
+Pfungstädter Edel Pils		Pfungstädter	Pils		DE		4001187101074
+Pilsner		Pilsator	Pils		DE		4042269121207
+Original Pinkus Obergärig Münstersch Alt		Pinkus	Alt		DE		4023216000004
+Pinkus Bock		Pinkus	Bock		DE		4023216001230
+Pinkus Hefe Weizen naturtrüb		Pinkus	Weizen		DE		4023216000042
+Pott's Landbier		Pott's	Kellerbier		DE		4020803020209
+Pott's Landbier Hell		Pott's	Kellerbier		DE		4020803020704
+Prinz Luipold Brauerei König Ludwig Weissbier Naturtrüb		Prinz Luipold Brauerei	Weizen		DE		4003304086004
+Privat-Brauerei Reissdorf Kölsch		Privat-Brauerei Reissdorf	Kölsch		DE		4013060003306
+Hösl Märzen		Privatbrauerei Hösl	Märzen		DE		4016905714085
+Privatbrauerei Stöttner Neues Helles		Privatbrauerei Stöttner	Helles		DE		4040942000016
+Privatbraurei Eichbaum GmbH Steam Brew Pale Ale Session Ipa		Privatbraurei Eichbaum GmbH	IPA		DE		4054500140182
+Private Landbrauerei Schönram Schönramer Pils		Private Landbrauerei Schönram	Pils		DE		4036328000060
+Progusta India Pale Ale		Progusta	IPA		DE		4051522105595
+Prostel Non-alcoholic		Prostel	Alkoholfrei	0.0	DE		4004591038516
+Quartiermeister Bio-Helles		Quartiermeister	Helles		DE		4038188000266
+Quartiermeister'in Pils		Quartiermeister'in	Pils		DE		4016262020614
+Radeberger Pilsner 0		Radeberger	Pils		DE		4014388001012
+Radeberger Exportbrauerei GmbH Radeberger Pilsner		Radeberger Exportbrauerei GmbH	Export		DE		4014388001036
+Ratsherren Pilsener		Ratsherren	Pils		DE		4041473100244
+Ratsherrn Coast Guard Westküsten IPA		Ratsherrn	IPA		DE		4041473434042
+Ratsherrn Hamburg Hell		Ratsherrn	Helles		DE		4041473908512
+Ratsherrn Matrosenschluck Weizen IPA		Ratsherrn	Weizen		DE		4041473900417
+Ratskrone Export		Ratskrone	Export		DE		4311501067109
+Ratskrone Pils		Ratskrone	Pils		DE		4311596435784
+Reeper B		Reeper B	IPA		DE		4260556082196
+Der dunkle Reh-Bock		Reh	Bock		DE		4027483000088
+Reissdorf Reisdorf Alkoholfrei		Reissdorf	Alkoholfrei	0.0	DE		4013060003559
+Rhön Radler Natur alkoholfrei		Rhön Radler	Alkoholfrei	0.0	DE		4000173135000|4000173335059
+Richmodis Kölsch		Richmodis	Kölsch		DE		4337256211413
+De Trigo Riedenburger		Riedenburger	Weizen		DE		4027013028001
+Riedenburger Hefe-Weizen		Riedenburger	Weizen		DE		4027013024003
+Riedenburger Pilsner		Riedenburger	Pils		DE		4027013006030
+Riedenburger Ur-Helles		Riedenburger	Alkoholfrei	0.0	DE		4027013029008
+Riedenburger Viva Bavaria Festbier		Riedenburger	Märzen		DE		4027013021026
+Riedenburger Brauhaus Dolden Hell		Riedenburger Brauhaus	Helles		DE		4027013041031
+Riedenburger Brauhaus Dolden Null		Riedenburger Brauhaus	Alkoholfrei	0.0	DE		4027013040034
+Riedenburger Brauhaus Riedenb Dolden Sud Bavarian Ipa		Riedenburger Brauhaus	IPA		DE		4027013035030
+Riegele Biermanufaktur IPA Liberis 2+3, alkoholfrei		Riegele Biermanufaktur	Alkoholfrei	0.0	DE		42359838
+Rostocker Radler naturtrüb		Rostocker	Radler		DE		4053400288611
+Roth Helles		Roth	Helles		DE		42237600
+Rothaus Hefeweizen Alkoholfrei		Rothaus	Alkoholfrei	0.0	DE		41051894
+Rothaus Märzen		Rothaus	Märzen		DE		41051832
+Rügen Insel-Brauerei Baltic Dubbel		Rügen Insel-Brauerei	Dubbel		DE		4251135910733
+Sachsengold Landbier		Sachsengold	Kellerbier		DE		40617992
+Sainte Etienne Premium Lager ohol Free		Sainte Etienne	Alkoholfrei	0.0	DE		4088600325637
+Salitos Tequila		Salitos	Radler		DE		4025127014972
+Sans marque AC/DC German		Sans marque	Lager		DE		4002631024222
+Schalchner Ursprung		Schalchner	Weizen		DE		4024478235838
+Schanzenbräu Helles		Schanzenbräu	Helles		DE		4251459610210
+Schimpf Gäu Radler		Schimpf	Radler		DE		4035287052028
+Schimpf Kleines Radler naturtrüb		Schimpf	Radler		DE		4035287052035
+Schlappe-seppel edel Weissbier		Schlappe-seppel	Weizen		DE		4102250073080
+Schleicher Natural Helles glutenfreies Bio		Schleicher	Helles		DE		4260236348512
+Schloss Export		Schloss	Export		DE		42275169
+Schloss Hell		Schloss	Helles		DE		42275190
+Schloss Pilsener		Schloss	Pils		DE		42186830|42275176
+Schloss Privat Premium		Schloss	Lager		DE		4002631020811
+Schlossbrauerei Maxlrain Helles		Schlossbrauerei Maxlrain	Helles		DE		42220138
+Schlossbrauerei Maxlrain Original Maxl Helles		Schlossbrauerei Maxlrain	Helles		DE		42382621
+Schlüssel Altbier		Schlüssel	Alt		DE		4260257742719
+Schmucker Doppel Bock Dunkel		Schmucker	Bock		DE		4011698021136
+Schneider Weiße Aventinus - Weizen Doppelbock		Schneider Weiße	Weizen		DE		4003669018337
+Schneider Weisse Eisbock		Schneider Weisse	Bock		DE		4003669018269
+Schneider Weisse Leichte Weisse Weissbier Tap11		Schneider Weisse	Weizen		DE		4003669016708
+Schneider Weisse Original Weissbier, TAP 07		Schneider Weisse	Weizen		DE		4003669016258
+Schneider Weisse Weizendoppelbock, Hopfenweisse		Schneider Weisse	Weizen		DE		4003669016104
+Schneider's Helles Landbier		Schneider's	Kellerbier		DE		4003669012229
+Schnitzlbaumer Lagerbier Hell		Schnitzlbaumer	Helles		DE		4032303001206
+Schnoor Bräu Dunkelbier		Schnoor Bräu	Dunkel		DE		4260057160010
+Schoppe Bräu Schoppes Blauer BÄR - IPA		Schoppe Bräu	IPA		DE		4260454640351
+Schreckenskammer		Schreckenskammer	Kölsch		DE		4003227802019
+Schulten Bräu Premium pilsener		Schulten Bräu	Pils		DE		4065019000744
+Schulten Bräu Radler alkoholfrei		Schulten Bräu	Alkoholfrei	0.0	DE		4047247021074
+Schultenbräu Lagerbier Hell		Schultenbräu	Helles		DE		4061458130745
+Schultenbräu Premium-Pils		Schultenbräu	Pils		DE		42289623
+Schultenbräu Winterbock dunkles Starkbier		Schultenbräu	Bock		DE		4061458212311
+Schwaben Bräu Das Echte Märzen		Schwaben Bräu	Märzen		DE		4007606000324
+Schwaben Bräu Das Helle		Schwaben Bräu	Helles		DE		4007606000287
+Schwaben Bräu Das Landbier		Schwaben Bräu	Kellerbier		DE		4007606000515
+Schwaben Bräu Das Schwarze		Schwaben Bräu	Amber		DE		4007606000355|4007606103070
+Schwarzbräu Feines Helles		Schwarzbräu	Helles		DE		41053700
+Schweiger 1516 Bayrisch Hell		Schweiger	Helles		DE		4105750000839
+Schädelbräu Kühles Blondes		Schädelbräu	Blonde		DE		4260429590018
+Schäffler Bräu Allgäuer Hell		Schäffler Bräu	Helles		DE		4021974005170|4021974017548
+Schäffler Bräu Schäffler Weissbier		Schäffler Bräu	Weizen		DE		4021974000076
+Schöfferhofer Grape Fruit Weizen-Mix		Schöfferhofer	Weizen		DE		4053400058528
+Schöfferhofer Hefeweizen alkoholfrei		Schöfferhofer	Alkoholfrei	0.0	DE		4053400257181
+Schöfferhofer Hefeweizen naturtrüb		Schöfferhofer	Weizen		DE		4053400257679
+Schöfferhofer Kaktus Feige Weizen-Mix		Schöfferhofer	Weizen		DE		4053400065687
+Schöfferhofer Schofferhofer Hefeweizen Grapefruit		Schöfferhofer	Weizen		DE		4053400202501
+Schöfferhofer Weizen Dunkel		Schöfferhofer	Weizen		DE		4053400001944
+Schöfferhofer Weizen-Mix Granatapfel		Schöfferhofer	Weizen		DE		4053400278834
+Schöfferhofer Weizen-Mix Grapefruit		Schöfferhofer	Weizen		DE		4053400258515|4053400271729
+Schöfferhofer Weizen-Mix Kirsche		Schöfferhofer	Weizen		DE		4053400207537
+Schöfferhofer Weizen-Mix Maracuja		Schöfferhofer	Weizen		DE		4053400202556
+Schöfferhofer Weizen-Mix Zitrone naturtrüb		Schöfferhofer	Weizen		DE		4053400278827
+Schönbuch Braumanufaktur Naturpark-Radler		Schönbuch Braumanufaktur	Radler		DE		4012545501467
+Schönbuch Braumanufaktur Schönbuch Hefeweizen Hell		Schönbuch Braumanufaktur	Weizen		DE		4012545201602
+Schönramer Hell		Schönramer	Helles		DE		4036328000015
+Session IPA Fat Rhino		Session IPA	IPA		DE		42372585
+Simseer Braumanufaktur Schloßberger Kellerpils		Simseer Braumanufaktur	Pils		DE		4260604750022
+Spalter Nr. 1 Pils		Spalter	Pils		DE		4014566001353
+Spaten-Franziskaner-Bräu GmbH Franziskaner Weissbier		Spaten-Franziskaner-Bräu GmbH	Weizen		DE		4072700001126
+St. Peter's Brewery Suffolk Blonde		St. Peter's Brewery	Blonde		DE		4088600537672
+Staffelberg-Bräu Helles Vollbier		Staffelberg-Bräu	Helles		DE		4260237930419
+Starnberger Brauhaus Starnberger Hell		Starnberger Brauhaus	Helles		DE		4251253110015
+Stauder Pils		Stauder	Pils		DE		4002453001104
+Stauder Ruhrtyp Hell		Stauder	Helles		DE		4002453001159
+Steam Brew Imperial IPA		Steam Brew	IPA		DE		4054500121433|4054500140861
+Steam Brew Imperial stout		Steam Brew	Stout		DE		4054500140847|4054500140915
+Steam Brew Session IPA		Steam Brew	IPA		DE		4054500140144|4054500140489
+Steam Brew Wheat Pale Ale		Steam Brew	Weizen		DE		4054500140335
+Wheat Pale Ale		Steam Brew - Wheat Pale Ale	Weizen	5.5	DE		4054500123338|4054500140496
+Steam-Brew Ipa radler		Steam-Brew	Radler		DE		4054500140342
+Steiner Alkoholfreies Bio Zwickl		Steiner	Alkoholfrei	0.0	DE		4025435101173
+Steini2 Albert Hell		Steini2	Helles		DE		4022753031571
+Stephans bräu Pils		Stephans bräu	Pils		DE		4063367257391
+Sternburg Export Alkoholfrei		Sternburg	Alkoholfrei	0.0	DE		4053400287515
+Sternburg Export Steinburg		Sternburg Export	Export		DE		41057759
+Sternquell Bierbrause Granatapfel Alkoholfrei		Sternquell	Alkoholfrei	0.0	DE		42287643
+Sternquell Kellerbier naturtrüb		Sternquell	Kellerbier		DE		42164043
+Stier- Export		Stier	Export		DE		4015042031055
+Stone Buenaveza		Stone	Lager		DE		4260451624767
+STONE Go To Ipa		Stone	IPA		DE		4260451620103
+Stralsunder		Strahlsunder	Pils		DE		4014807060521
+Stralsunder Pils		Stralsunder	Pils		DE		4014807260006
+Stralsunder Prost! Bio Pils		Stralsunder	Pils		DE		4014807220864
+Sturmbio Karmeliten		Sturmbio	Lager		DE		4029261001454|4029261002857
+Stuttgarter Hofbräu Kellerbier		Stuttgarter Hofbräu	Kellerbier		DE		4053400287324
+Stuttgarter Hofbräu Naturtrübes Radler		Stuttgarter Hofbräu	Radler		DE		4053400201559
+Stuttgarter Hofbräu Radler		Stuttgarter Hofbräu	Radler		DE		4053400281865
+Störtebecker Bernstein Weizen		Störtebecker	Alkoholfrei	0.0	DE		4014807001067
+Störtebecker Strandräuber BioBiermix		Störtebecker	Radler		DE		4014807206578
+Störtebeker Sorte Bernstein-Weizen Geschmack Fruchtig-Spritziges Alk		Störtebecker	Weizen	5.3	DE		4014807202044
+Störtebeker Baltik-Lager		Störtebeker	Lager		DE		4014807207650|4014807207742
+Störtebeker Frei		Störtebeker	Alkoholfrei	0.0	DE		4014807001036|4014807203461
+Störtebeker Glüh-Bierpunsch		Störtebeker	Radler		DE		4014807102566
+Störtebeker Hanse-Porter		Störtebeker	Porter		DE		4014807207391
+Störtebeker Kellerbier 1402		Störtebeker	Kellerbier		DE		4014807001029
+Störtebeker Roggen-Weizen		Störtebeker	Weizen		DE		4014807001043
+Störtebeker Übersee-Pils		Störtebeker	Pils		DE		4014807211565
+TH. König Zwickel Kellerbier		TH. König	Kellerbier		DE		4100770018819
+The crafty brewing co Irish craft lager		The crafty brewing co	Lager		DE		4056489377719
+Thurn und Tharis Weissbier		Thurn und Tharis	Weizen		DE		4104638601434
+Traugott Simon Pilsener		Traugott Simon	Pils		DE		4250036700016
+Trollbrew Glorious red ale		Trollbrew		7.9	DE		4054500123345
+Trollbrew Imperial stout		Trollbrew	Stout	7.5	DE		4054500123369
+Tucher Nürnberg Lager Hell		Tucher	Helles		DE		4006298013605
+Tucher Urbräu Nürnberger Hell		Tucher	Helles		DE		4006298002104
+Turmbläser Landbier		Turmbläser	Kellerbier		DE		42288251
+Original Turmbräu Premium Pils		Turmbräu	Pils		DE		4337256776004
+Original Turmbräu Premium Pils 0		Turmbräu	Pils		DE		4388844022553
+Turmbräu Export		Turmbräu	Export		DE		4337256057257|4388860218688
+Turmbräu Naturradler		Turmbräu	Radler		DE		4388441007168
+Ulmer Hefeweizen Dunkel		Ulmer	Weizen		DE		4015590000848
+Unertl Weißbier Das Original		Unertl	Weizen		DE		42043362
+Ustersbacher Altbayerisch Dunkel		Ustersbacher	Dunkel		DE		42006237
+Veltins Pilsener alkoholfrei		Veltins	Alkoholfrei	0.0	DE		4005249002378
+Veltins Radler		Veltins	Radler		DE		4005249008882
+Veltins V+ Curuba		Veltins	Radler		DE		4005249001296|4005249005706
+Vielanker Pilsener		Vielanker	Pils		DE		42095880
+Vogelsberger Landbrauereien GmbH Lauterbacher Pils		Vogelsberger Landbrauereien GmbH	Pils		DE		4011803718029
+Vogelsberger Landbrauereien GmbH Radler turbia natural		Vogelsberger Landbrauereien GmbH	Radler		DE		4011803198302
+Vulkan Bio Hell		Vulkan	Helles		DE		4028996911335
+Waldhaus Hell		Waldhaus	Helles		DE		4015345107532
+Waldhaus Ohne Filter alkoholfrei		Waldhaus	Alkoholfrei	0.0	DE		4015345132534
+Waldhaus Spezial Gold		Waldhaus	Lager		DE		4015345650007
+Walentins weisbier Premium Hefeweissbier		Walentins weisbier	Weizen		DE		4054500525811
+Warburger Landbier		Warburger	Kellerbier		DE		4022593110344
+Warsteiner alkoholfrei		Warsteiner	Alkoholfrei	0.0	DE		4000856005958|4000856094990
+Warsteiner alkoholfrei herbes Pilsener		Warsteiner	Alkoholfrei	0.0	DE		4000856008232
+Warsteiner Brewers Gold Landbier		Warsteiner	Kellerbier		DE		4000856008751
+Warsteiner Natur Radler		Warsteiner	Radler		DE		4000856008133
+Warsteiner Pilsener Alkoholfrei		Warsteiner	Alkoholfrei	0.0	DE		4000856005972|4000856006108
+Warsteiner Premium Verum		Warsteiner	Weizen		DE		4000856054529
+Warsteiner Radler alkoholfrei		Warsteiner	Alkoholfrei	0.0	DE		4000856007129
+Warsteiner Radler natürlich		Warsteiner	Radler		DE		4000856005088
+Warsteiner Radler Zitrone Alkoholfrei		Warsteiner	Alkoholfrei	0.0	DE		4000856107133
+Warsteiner Winter		Warsteiner		5.6	DE		4000856008119
+Weihenstephaner Hefe weissbier		Weihenstephaner	Weizen		DE		4105120573949
+Weihenstephaner Hefeweissbier hell		Weihenstephaner	Weizen		DE		4105120003903
+Weihenstephaner Kellerbier 1516		Weihenstephaner	Kellerbier		DE		4105120031807
+Weiherer Pils		Weiherer Pils	Pils		DE		4260007460023
+Welde No1 Slow Pils Alkoholfrei		Welde	Alkoholfrei	0.0	DE		4043800014521
+Wernesgrüner Pils		Wernesgrüner	Pils		DE		4015444000017
+Wettelsheimer hell		Wettelsheimer	Helles		DE		4260087561009
+Wicküler Pilsener		Wicküler	Pils		DE		4079600330202
+Wicküler Brauerei GmbH Wicküler Pilsener		Wicküler Brauerei GmbH	Pils		DE		4079600360209
+Wiesener Kellerbier		Wiesener	Kellerbier		DE		4025471002243
+Wiesener Räuberbock		Wiesener	Bock		DE		4025471002359
+Wild Monkey Roasty Bow Tie’s Stout		Wild Monkey	Stout	5.7	DE		4054500141257
+Wininger Höglwörther Festbier		Wininger	Märzen		DE		4015975013241
+Kölsch		Wirtz Köln	Kölsch		DE		4003227802118
+Wolfscraft Das Helle!		Wolfscraft	Helles		DE		4260473460022
+Wolfscraft Frisch-Pils		Wolfscraft	Pils		DE		4260473460015
+Wolfscraft Super Lager		Wolfscraft	Lager		DE		4260473460039
+Wolfscraft Viel Weizen		Wolfscraft	Weizen		DE		4260473460046
+Wolters Radler		Wolters	Radler		DE		4079400329857
+Wulle Vollbier Hell		Wulle	Helles		DE		4100320151300|4100320151317
+Wunderbraeu Alkoholfrei		Wunderbraeu	Alkoholfrei	0.0	DE		4260473464051
+Wunderbraeu Helles		Wunderbraeu	Helles		DE		4260473464020
+Wunderbraeu Pils		Wunderbraeu	Pils		DE		4260473464013
+Würzburger Hofbräu GmbH Jagdherren Pils Premium		Würzburger Hofbräu GmbH	Pils		DE		4047900000385
+Zirndorfer Kellerbier		Zirndorfer	Kellerbier		DE		4076300015804
+Zischke Kellerbier Original		Zischke	Kellerbier		DE		4002631019143
+Zunft Kölsch		Zunft	Kölsch		DE		4022900130508
+Zwickel Naturtrübes Kellerbier		Zwickel	Kellerbier		DE		4007606000577
+Zwiebel Soester Weihnachtsbock		Zwiebel	Bock		DE		4250666300822
+Zwiefalter 1521 Helles Vollbier		Zwiefalter	Helles		DE		4006540000506
+Zötler Bayerisch Hell		Zötler	Helles		DE		4029855001013
+Zötler Gold alkoholfrei		Zötler	Alkoholfrei	0.0	DE		4029855001471
+ÜberQuell Lieblings Imperial lager		ÜberQuell	Lager		DE		4260549520100
+Affligem blond Multipack			Alkoholfrei	0.0	NL		8712000056650
+Alice In Wonderland NEIPA			IPA		CH		7649995224058
+Alus AMERICAN IPA			IPA		PL		5902528443251
+Alus W CITRA SINGLE HOP IPA			IPA		PL		5905669897686
+Amber chilli			Amber		PL		5906591001523
+Amber chmielowy			Amber		PL		5906591001479
+Amber czarny bez			Amber		PL		5906591001585
+Amber grand porter			Porter		PL		5906591000816
+Amber IPA zero			IPA		PL		5906591002520
+Amber naturalny			Amber		PL		5906591002834
+Amber po godzinach barley desert			Amber		PL		5906591002421
+Amber pszeniczniak			Amber		PL		5906591001332
+Amber stout			Stout		PL		5906591001981
+Anker HELL			Helles		CH		76129537
+Atlas canette				16.0	NL		8718104903357
+Bio Pilsener			Pils		NL		8712003001237
+Blanche bruxelles rosé			Witbier		BE		5411676890058
+Blanche de Cortryck			Witbier		BE		5430000716673
+Blanche IPA			IPA		CH		7640173510048
+Blanche Lutgarde			Witbier		BE		5425033249892
+Blond Per Fles, Doos 24 Flessen			Blonde	6.6	BE		5411831000957
+Blonde 25			Blonde		CH		76129650
+Blonde Bio			Blonde		BE		5450154349046|5450154967257
+Blonde Cardinal special			Blonde		CH		76162213
+Blonde des romands			Blonde		CH		7640182183608
+Blonde du Pays Noir			Blonde		BE		5425039110172
+Blonde forte			Blonde		BE		5410263919998
+Blonde Gulpener			Blonde		NL		8725500950274
+Blonde Lager			Blonde		CH		7640173510017
+Bornem Tripel Fles			Tripel		BE		5411663002198
+Brewderd session IPA			IPA		CH		7640173510116
+Brogne blonde Bio			Blonde		BE		5430000083003
+Brooklyn East IPA			IPA		CH		5707643200204|7612900342406
+Browar STU Mostów American IPA			IPA		PL		5905279213210
+Browar STU Mostów Winter Stout Nitro			Stout		PL		5907614682408
+BW Świeży Lager			Lager		PL		5905669897815
+Candor Blanche			Witbier		CH		7629999033696
+Caulier blonde gluten free			Blonde		BE		5425024150367
+Caulier Tripel Fles			Tripel		BE		5425024150107
+CharlesRoy IPA			IPA		BE		5430001214109
+Cieszyn Double IPA			IPA		PL		5905279156067
+Cieszyn Lager			Lager		PL		5905279156005
+Cieszyn Porter Bałtycki			Porter		PL		5905279156104
+Confit de chicon à la blonde			Blonde		BE		5420058005553
+Cornelius HAZY IPA			IPA		PL		5905689307431
+Cuvée des trolls			Lager		BE		5411551180946|5411551210513|5411551223346
+Eggenberger Märzen			Märzen		AT		90091148
+Eichhof Helles			Helles		CH		7610096010857
+Einsiedler Lager			Lager		CH		7611833000230
+Feldschlössen IPA			IPA		CH		7612900346732
+Floreffe - Blonde			Blonde		BE		5411276200325
+Française blonde			Blonde		BE		5425033040109
+Funky Fluid Lager			Lager		PL		5903999514426
+FWT session IPA			IPA		CH		7640166623298
+Genuine Draft			Lager		CZ		8593868006847
+Ginette Bio Lager			Lager		BE		5410228270515
+Gordon blond oak aged			Blonde		BE		5410218007787
+Gorkha Strong			Lager		DK		5740600978792
+Gueuze Belle-vue			Weizen		BE		5410228141587
+Gurten Lager			Lager		CH		76129339
+Harry Porter Bałtycki			Porter		PL		5903351761703
+Helvetia blonde			Blonde		CH		76232428
+Hommage Bio Frambozen Blend No. 33			Weizen		BE		5425007818154
+Impérial stout			Stout		CH		7640159760221
+India Pale Ale			IPA		CH		7640156951059
+IPA Bièrre			IPA		BE		5453003070108
+IPA Gluten Free			IPA		BE		5425024151586
+IPA Simon			IPA		BE		5450106152007
+Ipa Super 8			IPA		BE		5410971230262
+Karmeliet Tripel 11.2Z			Tripel		BE		5410693100416
+Kasteelbier Rouge 8° Cans			Amber		BE		5411081006112
+Knokke teute blond			Blonde		BE		5411663001115
+Kraft Daily Tasty DARK Lager			Lager		PL		5908283571369
+Kraftowe Kraft Daily Lime Ipa			IPA		PL		5908283571338
+Kraftowe Nepo Forest Ipa			IPA		PL		5905279959521
+Kraftwerk PALE ALE KIWI			Pale Ale		PL		5905279965133
+Kraftwerk Wanted Style Lager			Lager		PL		5905279965041
+La blanche			Witbier		CH		7640134810132
+La Cambre Hopsession ipa			IPA		BE		5425034730405
+La Montoise			Lager		BE		5411879999992
+La Patriote blonde			Blonde		CH		7629999013438
+La Redoutable, de grimpeur, triple blonde			Blonde		BE		5411879185401
+La Trappe Trappist Amber Quadruppel Fles			Amber		NL		8711406135723
+Lager Hell			Helles		CH		7610048001780|7640116350014|76407277
+Lech chmielowe cytrusowe			Alkoholfrei	0.0	PL		5901359114248
+Lech pils			Pils		PL		5900490000311
+Lupulus Pils			Pils		BE		5425025124220
+Marcowy Amber			Amber		PL		5905669897822
+Maryensztadt Owsiany Stout Bezglutenowe			Stout		PL		5903678022549
+Modern IPA			IPA		DK		5704255117463
+Mort Subite Gueuze Lambic Fles			Weizen		BE		5411656051097
+Namysłów pils			Pils		PL		5903870005265|5903870006187
+OH IPA			IPA		CH		7640162573016
+Okocim x4				0.0	PL		5900014014701
+Oude Gueuze			Weizen		BE		5430000304023
+Pais Tropical			IPA		NL		8719324149907
+Perła Export			Export		PL		5905927001695
+Pilsner Remesto			Pils		PL		5905279965003
+PINTA iippaa WEST COAST DOUBE IPA			IPA		PL		5904730438766
+Pinta IPA TO GO			IPA		PL		5904165105295
+Polar monkeys chairman ipa			IPA		DK		5741000151570
+Postel Blonde : D'abbaye			Blonde	7.0	BE		5411098700034
+Quöllfrisch hell Appenzeller lager			Helles		CH		7611889110327
+Remesto Weizen			Weizen		PL		5905279965010
+Saison d'epeautre			Saison		BE		5410557000043
+Saison IV			Saison		BE		5425022780092
+Seebueb Süffel Festbier			Märzen		CH		7629999051195
+Sierrvoise Blanche			Witbier		CH		7610846729688
+Spar Schweizer Lager hell Blonde Chiara			Helles		CH		7610253406462
+Special effects			Alkoholfrei	0.0	DK		5740700983153
+St feuillien grand cru			Lager		BE		5412138617510
+Stiegel HELL			Helles		AT		9003400393032
+Stout Hercule			Stout		BE		5425005660809
+Swiss Mountain - West Coast IPA			IPA		CH		7640183220043
+Tezech Kumpli PAN Ipani			IPA		PL		5905669479196
+Trappist Tripel , Starkbier			Tripel	9.5	BE		5412343001227
+Tripel plukker zacht blond			Tripel		BE		5430000887090
+Trois dames, voisine blonde			Blonde		CH		7640157480046
+Trzech Kumpli Lager Niemiecki			Lager		PL		5904252699034
+Trzech Kumpli Lager Wiedeński			Lager		PL		5904252699683
+Trzech Kumpli OATY Oatmeal Stout			Stout		PL		5905669479646
+Trzech Kumpli PAN Ipani			IPA		PL		5905669479257
+Ueli Reverenz			Weizen		CH		7640119010410
+Vadian Pale Ale			Pale Ale		CH		7613700000053
+Viking IPA			IPA		DK		5704048202833
+Waszczukowe Czeski PILS			Pils		PL		5905669897556
+Waszczukowe Session IPA			IPA		PL		5905669897341
+Western rider, Sudwerk: Schweizer mal anders, Pale Ale			Pale Ale		CH		7640163520026
+White Ipa			IPA		CH		76400018
+Winter IPA			IPA		NL		8717953278371
+Wispe blond			Blonde		NL		8719324101004
+WRCLW porter baltycki			Porter		PL		5907614680886
+Łomża Pils butelka			Pils		PL		5900535017281
+Żywiec Oranż				4.5	PL		5900699106661
+1664 Blanche		1664	Witbier		PL		5901594001440
+1695 Victoria blonde		1695	Blonde		BE		5410228282587
+3 Fonteinen Oude Geuze Cuvée Armand & Gaston		3 Fonteinen	Weizen		BE		5425007813012
+3 Horses Malt		3 Horses	Alkoholfrei	0.0	NL		8725000156992
+5 5,0 Original Weizen		5	Weizen		AT		9011084083002
+8.6 Intense India Pale Lager		8.6	IPA		NL		8714800036214
+8.6 Original Special Blond		8.6	Blonde		NL		8714800034289
+8.6 Original		8.6 Original	Lager		NL		8714800038669
+Aare Weizen		Aare	Weizen		CH		7640126410425
+Ab inBev Franziskaner Weissbier		Ab inBev	Weizen		AT		9017102803881
+Abbaye D'Aulne Blonde		Abbaye D'Aulne	Blonde		BE		5412652000010
+Abbaye d'Aulne Brune		Abbaye d'Aulne	Dubbel		BE		5412652000065
+Abbaye de Forest Blonde		Abbaye de Forest	Blonde		BE		5413023003104
+Achel Bruin		Achel	Stout		BE		5425007658880
+Affligem Blond Fles		Affligem	Blonde		BE		5411098730291
+Affligem Blonde		Affligem	Blonde		BE		5411098100056
+Pack Affligem blonde		Affligem	Blonde		BE		5411098110000
+Albert Heijn Brouwers Premium Pilsener		Albert Heijn	Pils		NL		8718906434455
+Alfa Edel'pils		Alfa	Pils		NL		87288155
+Alken-Maes Cristal pils sans alcool		Alken-Maes	Alkoholfrei	0.0	BE		5410263925098
+Amber Po Godzinach Apple Wheat		Amber	Weizen		PL		5906591001912
+Amber Złote lwy		Amber	Amber		PL		5906591000724
+Amstein Blanche non-filtrée		Amstein	Witbier		BE		54062030
+Amstel Malt		Amstel	Alkoholfrei	0.0	NL		8712000053185
+Amstel Pils Fles		Amstel	Pils		NL		8712000020569
+Amstel Radler		Amstel	Radler	0.0	NL		8712000033088|8712000033095|8712000033934|8712000034160|8712000034177
+Amstel Radler 2.0		Amstel	Radler		NL		8712000059286
+Amstel Radler alkoholfrei		Amstel	Alkoholfrei	0.0	NL		8712000035648
+Amstel Radler citroen		Amstel	Radler	0.0	NL		8712000033064|8712000035747
+Amstel Witbier Radler Citroen 0.0		Amstel	Alkoholfrei	0.0	NL		8712000060213
+Anthony Martin Diabolici blond of hell		Anthony Martin	Helles		BE		5410218005769
+Anthony Martin Dominus Double		Anthony Martin	Stout		BE		5410218410006
+Antwerpse Brouw Compagnie Super Cadix		Antwerpse Brouw Compagnie	Lager		BE		5425031010340
+Appenzeller Ingwerbier		Appenzeller	Radler	0.0	CH		7611889112666
+Appenzeller QPA Artigianale Indian Pale Ale		Appenzeller	Pale Ale		CH		7611889120098
+Appenzeller Quöllfrisch Hell Bottle		Appenzeller	Helles		CH		7611889110310
+Atlas High Strength		Atlas		12.0	NL		8725000639679
+Baptist WIT - Blanche		Baptist	Witbier		BE		5411663002778
+Bartis S.A Saxonne		Bartis S.A	Weizen		CH		7640176240041
+Battin Blanche		Battin	Witbier		BE		5450154513010
+Battin Gambrinus		Battin	Lager		BE		5450154027012|5450154469010
+Gambrinus - Battin / Beier Wei Freier		Battin	Lager		BE		5450154069012
+Bavaria 8.6 Absinthe		Bavaria	Lager		NL		8714800026956
+Bavaria Blanche		Bavaria	Alkoholfrei	0.0	NL		87316674
+Bavaria Ohol		Bavaria	Alkoholfrei	0.0	NL		8714800011426
+Bavaria Pilsener		Bavaria	Pils		NL		87332070
+Bavaria Shandy		Bavaria	Radler		NL		8714800024150|8714800024167
+Bavaria,8.6		Bavaria	Lager		NL		8714800021395|8714800029193|8714800029285
+Bavik Super Pils		Bavik	Pils		BE		5411831000742
+Belgian Original Maltbakery Triporteur From Heaven		Belgian Original Maltbakery	Lager		BE		5425031460015
+Belgoo Bio Blond		Belgoo	Blonde		BE		5425021640373
+Bernard Bohemian lager		Bernard	Lager		CZ		8594003351402
+Bertinchamps blonde		Bertinchamps	Blonde		BE		5425033240011
+Bertinchamps Triple		Bertinchamps	Amber		BE		5425033240028
+Bevog Kramah India Pale Ale		Bevog	IPA		AT		9120053280288
+Bevog Brauhaus Helles Export		Bevog Brauhaus	Export		AT		9120053282138
+Bevog Brewery Buzz Hazy IPA		Bevog Brewery	IPA		AT		9120053282558
+BFM Salamandre		BFM	Weizen		CH		7640117630016
+BFM, La torpille		BFM	Stout		CH		7640117630030
+Bird of Prey IPA lata naranja pajaro		Bird of Prey	IPA		NL		8719325257496
+Birell Světlý nealkoholické		Birell	Alkoholfrei	0.0	CZ		8594404001302|8594404006413
+Blanche		Blanche de Bruxelles	Witbier		BE		5410263922110|5411676800408
+Blanche de Namur		Blanche de Namur	Witbier		BE		5411633330054|5411633750050
+Bocq Gauloise ambrée		Bocq	Amber		BE		5411633332010
+Bofferding Pills de Tradition		Bofferding	Lager		BE		5450154013015
+Boni Blonde Triple		Boni	Blonde		BE		5400141079487
+Bonne Espérance		Bonne espérance	Lager		BE		5411676453758
+Geuze Boon à l’Ancienne		Boon	Weizen		BE		5412783052018
+Bornem Dubbel		Bornem	Dubbel		BE		5411663002174
+Boss’ SA Dent de Lys, la blanche		Boss’ SA	Witbier		CH		7629999039872
+Brand Ipa 0.0		Brand	Alkoholfrei	0.0	NL		87232479
+Brand Weizen 0.0		Brand	Alkoholfrei	0.0	NL		87232424
+Brasserie C Curtius – La liégeoise		Brasserie C	Lager		BE		5425031950011
+Brasserie Caracole Troublette		Brasserie Caracole	Weizen		BE		5425000540236
+Brasserie Caulier Bon Secours		Brasserie Caulier	Lager		BE		5412983130028
+Brasserie Caulier Bon Secours Myrtille Amber Fles		Brasserie Caulier	Amber		BE		5412983870023
+Brasserie de la Lesse La cambrée		Brasserie de la Lesse	Amber		BE		5425033490010
+Brasserie de la Senne Brusseleir Zwet Ipa Bruin Fles		Brasserie de la Senne	IPA		BE		5425029020054
+Brasserie de la Senne Jambe-de-Bois		Brasserie de la Senne	Lager		BE		5425029020030
+Brasserie de la Senne Saison du Meyboom		Brasserie de la Senne	Saison		BE		5425029020252
+Brasserie de la Senne Taras Boulba		Brasserie de la Senne	Lager		BE		5425029020016
+Brasserie de la Senne Wadesda 9		Brasserie de la Senne	Blonde		BE		5425029021181
+Brasserie de la Senne Zinne des Flandres		Brasserie de la Senne	Lager		BE		5425029021105
+Brasserie de Marsinne Leopold 7		Brasserie de Marsinne	Lager		BE		5425032730001
+Brasserie des Fagnes Super des Fagnes		Brasserie des Fagnes	Lager		BE		5425032451715
+Brasserie des Fagnes Super des Fagnes Scotch		Brasserie des Fagnes	Stout		BE		5425032454211
+Brasserie Deseveaux Sarazen		Brasserie Deseveaux	Lager		BE		5425027000027
+Brasserie Docteur Gab's SA Dr. Gab's goldenes, duftendes		Brasserie Docteur Gab's SA	Lager		CH		7640159760023
+Brasserie du Bocq Bouteille De Namur Blanche 4,5°		Brasserie du Bocq	Witbier		BE		5411633250055
+Brasserie du Bocq Saison 1858		Brasserie du Bocq	Saison		BE		5411633330030|5411633750036
+Brasserie du Borinage Urine		Brasserie du Borinage	IPA		BE		5430001715002
+Brasserie du Jorat La Noire		Brasserie du Jorat	Stout		CH		7640134810439
+Brasserie Dubuisson Bush Caractère		Brasserie Dubuisson	Amber		BE		5411551300818
+Brasserie Dubuisson Bush Triple		Brasserie Dubuisson	Lager		BE		5411551310817
+Brasserie Dupont Avec Bons Voeux		Brasserie Dupont	Lager		BE		5410702000010
+Brasserie Dupont Hirond'ale		Brasserie Dupont	Lager		BE		5410702001413|5410702001437
+Brasserie Dupont Saison Dupont		Brasserie Dupont	Saison		BE		5410702000331
+Brasserie d’Achouffe La chouffe		Brasserie d’Achouffe	Lager		BE		5410769100081|5410769800172
+Brasserie Huyghe Delirium Nocturnum		Brasserie Huyghe	Stout		BE		5412186000715
+Brasserie Huyghe La Poiluchette Blonde Cuvée du Château		Brasserie Huyghe	Blonde		BE		5412186001521
+Brasserie Koningshoeven La Trappe Isidor		Brasserie Koningshoeven	Amber		NL		8711406031766
+Brasserie Lefebvre Barbar Bok		Brasserie Lefebvre	Stout		BE		5411676301332
+Brasserie Lefebvre Barbãr au Miel		Brasserie Lefebvre	Lager		BE		5411676100812
+Brasserie Lefebvre Barbãr Blonde		Brasserie Lefebvre	Blonde	8.0	BE		5411676100805
+Brasserie Lefebvre Blanche de Bruxelles		Brasserie Lefebvre	Witbier		BE		5411676800446
+Brasserie les 3 Fourquets Lupulus Organicus		Brasserie les 3 Fourquets	Lager		BE		5425025122073
+Brasserie Lion 5 White		Brasserie Lion	Weizen		BE		5430000213035
+Brasserie Lion 6 IPA		Brasserie Lion	IPA		BE		5430000213073
+Brasserie Millevertus Funette		Brasserie Millevertus	Amber		BE		5425014960037
+Brasserie Saint-Feuillien Grisette, Fruits des Bois		Brasserie Saint-Feuillien	Weizen		BE		5412138702513
+Brasserie Sainte Hélène Simcoe lager		Brasserie Sainte Hélène	Lager		BE		5425010780295
+Brasserie Schloss Eggenberg Samichlaus Classic		Brasserie Schloss Eggenberg	Bock		AT		9009100000669
+Brasserie St-Feuillien Grisette blonde bio		Brasserie St-Feuillien	Blonde		BE		5412138495019
+Brasserie Surréaliste Pale Ale		Brasserie Surréaliste	Pale Ale		BE		5430001732023
+Brasserie Van Eecke		Brasserie Van Eecke	Lager		BE		5412896000029
+Brasserie Van Honsebrouck Filou Blond Fles		Brasserie Van Honsebrouck	Blonde		BE		5411081006211
+Brasserie Vanuxeem Queue Charrue Bruin Fles		Brasserie Vanuxeem	Stout		BE		5411364151447
+Brauerei Kloster Fischingen AG Triple Blanche		Brauerei Kloster Fischingen AG	Witbier	10.0	CH		7640165813119
+Brauerei Locher Hell quöllfrisch appenzeller		Brauerei Locher	Helles		CH		7611889110662
+Brauerei Murau Murauer Dunkel		Brauerei Murau	Dunkel		AT		90145032
+Brauerei Murau Murauer Märzen		Brauerei Murau	Märzen		AT		90145018
+Brauwerk Session IPA		Brauwerk	IPA		AT		9007600304812
+Brooklyn Defender IPA		Brooklyn	IPA		DK		5707643112552
+Brooklyn Scorcher IPA		Brooklyn	IPA		DK		5707643200808
+Brooklyn Brewery		Brooklyn Brewery	Lager		DK		5740700986581
+Brooklyn Brewery Black Chocolate Stout		Brooklyn Brewery	Stout		DK		5707643300409
+Brooklyn Lager Amber Lager		Brooklyn Brewery	Amber		DK		5740700981852
+Brouczech Lager alus		Brouczech	Lager		CZ		8594012829404
+Brouwerij 't IJ		Brouwerij 't IJ	Stout		NL		8717545260050
+Brouwerij 't IJ Natte dubbel		Brouwerij 't IJ	Dubbel		NL		8717545261897
+Brouwerij 't IJ Zatte Tripel		Brouwerij 't IJ	Tripel		NL		8717545261477
+Brouwerij De Graal Crabbelaer Blond		Brouwerij De Graal	Blonde		BE		5425038020014
+Brouwerij De Halve Maan Brugse Zot Dubbel		Brouwerij De Halve Maan	Dubbel		BE		5425017240082
+Brouwerij De Leckere Märzen		Brouwerij De Leckere	Märzen		NL		8716585005133
+Brouwerij Haacht Blanche super 8		Brouwerij Haacht	Witbier		BE		5410971131002
+Brouwerij Kees Hazelnut & Chocolate Fudge Stout		Brouwerij Kees	Stout		NL		8720297862977
+Brouwerij Van Steenberge Classic		Brouwerij Van Steenberge	Stout		BE		5411663002716
+Brouwerij ‘t Verzet Rebel Local		Brouwerij ‘t Verzet	Lager		BE		5425032050116
+Brouwerij 'Tij Ipa		Brouwerij't IJ	IPA		NL		8717545260043
+Browar Nepomucen Like a Forest - Forest Hazy APA		Browar Nepomucen	Pale Ale		PL		5907709756540
+Bruckners Erzbräu Ötscher Pils		Bruckners Erzbräu	Pils		AT		9120060130415
+Bruegel Amber Ale		Bruegel	Amber		BE		5411663002341
+Brugge tripel Bruggs Bouteille De Brugs Triple 8.7		Brugge tripel	Tripel		BE		54112018
+Brugge Tripel Prestige 2016 limited edition		Brugge Tripel	Tripel		BE		54112100
+Brugse Zot Sportzot alcoholvrij		Brugse Zot	Alkoholfrei	0.0	BE		5425017241683
+Artesana Brunehaut Bio Amber Gluten Free		Brunehaut	Amber	6.5	BE		5411065200888
+Brunehaut Blanche bio		Brunehaut	Witbier		BE		5411065200864
+Brunehaut Blonde Bio		Brunehaut	Blonde		BE		5411065200871
+Brunehaut Triple bio		Brunehaut	Dubbel		BE		5411065201304
+Brussels Project Dark sister		Brussels Project	IPA		BE		5411283000024|5430000829373
+Brussels Project Delta IPA		Brussels Project	IPA		BE		5411283000017|5430000829038
+Brussels Project Juice Junkie		Brussels Project	IPA		BE		5411283000215
+Brussels Project Zenith Zest		Brussels Project	Pale Ale		BE		5411283000161
+Bud Zero		Bud	Alkoholfrei	0.0	BE		5410228273462
+Budels Goudblond		Budels	Lager		NL		8712003002852
+Budvar Nealko		Budvar	Alkoholfrei	0.0	CZ		8594403110517|8594403707663
+Budvar Original Czech lager		Budvar	Lager		CZ		8594403707670
+Budvar PardálOVO radler		Budvar	Radler		CZ		8594403704761
+Budvar Tmavý ležák		Budvar	Lager		CZ		8594403150827
+Budweiser Czech Imported Lager		Budweiser	Lager		CZ		8594403417128
+Budweiser Czech lager		Budweiser	Lager		CZ		8594403707687|8594403707731
+Budweiser Budvar Czech Imported Lager		Budweiser Budvar	Lager		CZ		8594403110166
+Burgenfels Premium Pilsner		Burgenfels	Pils		DK		5701598035874|5701598035881
+Březňák Premium Pils		Březňák	Pils		CZ		8591036550376
+Calanda lager		Calanda	Lager		CH		7610055007508
+Calanda Radler		Calanda Getränke Chur	Radler		CH		7610055100636
+Calvinus Artisanale blanche bio		Calvinus	Witbier		CH		7611889110877
+Calvinus - Les Frères Papinot Calvinus artisanale blonde bio		Calvinus - Les Frères Papinot	Blonde		CH		7611889110839
+Cantillon Geuze Lambic Bio		Cantillon	Weizen		BE		5411024000047
+Cardinal Blanche		Cardinal	Witbier		CH		76162725
+Cardinal Blonde		Cardinal	Blonde		CH		7612900339161|76162114|76162411
+Carlsberg Elephant strong pilsner		Carlsberg	Pils	7.2	DK		5740600400163
+Carlsberg Original 1883 Lagerøl		Carlsberg	Lager		DK		5740700987182
+Carlsberg Premium Lager		Carlsberg	Lager		DK		5740600510602
+Carlsberg Sort Guld pilsner		Carlsberg	Pils	5.8	DK		57007410
+Carrefour de Table Brune Bouteille		Carrefour	Dubbel		BE		5400101178137
+Export- ‘Cass Fresh‘		Cass	Export	4.5	AT		9120027415067
+Caulier 28 pale ale		Caulier	Pale Ale		BE		5425024150268
+Caulier Paix Dieu		Caulier	Lager		BE		5412983329026
+Celeste Tripel 8		Celeste	Tripel		BE		5425037520577
+Celia Organic lager		Celia	Lager		CZ		8594007310412
+Celis White		Celis	Weizen		BE		5411663001276
+Ceres Mosaic IPA		Ceres	IPA		DK		5741000165508
+Ceres top pilsner		Ceres	Pils		DK		5741000110638
+Charles Quint Blonde dorée		Charles Quint	Blonde		BE		54085176
+Charles Quint Keizer Karel Ommegang Blond Fles		Charles Quint	Blonde		BE		54138278
+Chérie - blanche à la framboise		Cherie	Witbier		BE		5412652001017
+Chimay 150 Blonde		Chimay	Blonde		BE		5410908100118
+Chimay Dorée		Chimay	Lager		BE		5410908000128
+Chimay Triple		Chimay	Lager		BE		5410908000029
+Chopfab Amber Pack		Chopfab	Amber		CH		7640156950366
+Chouffe Brune		Chouffe	Dubbel		BE		5410769200095
+Chouffe Soleil		Chouffe	Lager		BE		5410769400068
+Houblon CHOUFFE		Chouffe	Lager		BE		5410769300115
+La Chouffe Blonde		Chouffe	Blonde		BE		5410769100098
+Chérie Blanche à la cerise		Chérie	Witbier		BE		5412652001000
+Ciney blonde		Ciney	Blonde		BE		54064041
+Ciney brune		Ciney	Dubbel		BE		54055315|54064058
+Colruyt Carapils		Colruyt	Pils		BE		5400141030129
+COOP Lager		COOP	Lager		CH		7610827333811
+Cora De table brune		Cora	Dubbel		BE		5412186002238
+Cornet Oaked		Cornet	Lager		BE		5410783004594|5410783004624|5410783004679
+Corsendonk D'abbaye		Corsendonk	Lager		BE		5411491004173
+Corsendonk Pater Dubbel		Corsendonk	Dubbel		BE		54069015
+Cubanisto Rum Flavoured		Cubanisto	Lager		BE		5410228213048|5410228224174
+Dark Malt beverage 3 Horses malt beverage		Dark Malt beverage	Alkoholfrei	0.0	NL		8718104900080
+Achel Blond		De Achel Kluis	Blonde		BE		5425007658828
+De Kievit Zundert		De Kievit	Amber		NL		8718754310314
+De Leckere Pilsner		De Leckere	Pils		NL		8716585002866
+De Molen Tsarina Esra		De Molen	Porter		NL		8717624421495
+De Molen Vuur & Vlam		De Molen	IPA		NL		8717624421037
+De Ranke XX Bitter		De Ranke	Lager		BE		5413963300011
+Delhaize Pils		Delhaize	Pils		BE		5400601102984
+Denner Blonde LAGER HELL		Denner	Helles		CH		7610029155372
+Denner Lager Hell		Denner	Helles		CH		7610029170436
+Des amis		Des Amis	Lager		BE		5415270100728|5415270100827
+Des amis Blonde sans alcool		Des amis	Alkoholfrei	0.0	BE		5415270100834
+Deschutes Mango ipa		Deschutes	IPA		CH		7631176126027
+Desperados Tropical Twist		Desperados		0.0	PL		5900699105930
+Diekirch		Diekirch	Alkoholfrei	0.0	BE		5410228241355
+Diekrich blonde premium		Diekrich	Blonde		BE		5450023410334
+Docteur Gab's Blanche Houleuse		Docteur Gab's	Witbier		CH		7640159760016
+Docteur Gab's IPanema		Docteur Gab's	IPA		CH		7640159760344
+Doctor Brew Molly IPA		Doctor Brew	IPA		PL		5903240674152
+Dr. Gab's Cure Estivale - American Pale Ale		Dr. Gab's	Pale Ale		CH		7640159760078
+Dr. Gab's Ipanema		Dr. Gab's	IPA		CH		7640159761037
+Dr. Gab's Swaf Blondes vom Durst		Dr. Gab's	Blonde		CH		7640159760801
+Du Tuche blonde		Du Tuche	Blonde		BE		5413977600213
+Dubuisson Bush triple		Dubuisson	Lager		BE		5411551270722
+Dubuisson Cuvée des Trolls		Dubuisson	Lager		BE		5411551141091
+Dupont Biolégère		Dupont	Lager		BE		5410702000409
+Dupont Blanche du Hainaut Bio 25		Dupont	Witbier		BE		5410702001307
+Dupont Moinette ambrée		Dupont	Amber		BE		5410702001383
+Dupont Monk's Stout		Dupont	Stout		BE		5410702001314
+Duvel 666		Duvel	Lager		BE		5411681408996
+Duvel Tripel Hop		Duvel	Tripel		BE		5411681405186
+Duvel Tripel hop cashmere		Duvel	Tripel		BE		5411681406039
+Duvel Tripel Hop Citra		Duvel	Tripel		BE		5411681401164
+Duvel Moortgat Vedett IPA		Duvel Moortgat	IPA		BE		5411681401775|5411681403571|5411681403588
+Edelweiss Givrée		Edelweiss	Alkoholfrei	0.0	NL		8712000052331
+Edelweiss Hefetrüb Weizenbier		Edelweiss	Weizen		AT		9003100123021
+Eichhof Sans alcool		Eichhof	Alkoholfrei	0.0	CH		7610096021129
+Eichhof Lager		Eichhof Lager	Lager		CH		7610096010529
+Emdbrau Premium lager		Emdbrau	Lager		CH		7611612501675
+Emdbrau Radler		Emdbrau	Radler		CH		7611612501644
+EMDBRÄU Ljus lager Premium Quality		Emdbräu	Lager		CH		7611612501873|7611612501880
+Everyday Carapils		Everyday	Pils		BE		5400141266627|5400141266894
+Falken Lager hell		Falkenbier	Helles		CH		7610048002176
+Farmer Hefeweissbier		Farmer	Weizen		CH		7611330874068
+Farmer Hell		Farmer	Helles		CH		7611330874488
+Faro		Faro	Weizen		BE		5411223010939
+Faro Foudroyante		Faro	Weizen		BE		5411223010915
+Faxe Witbier		Faxe	Witbier		DK		5741000145210
+Feldschlosschen Sans Alcool Blanche		Feldschlösschen	Alkoholfrei	0.0	CH		76403163
+Feldschlösschen Alkoholfrei		Feldschlösschen	Alkoholfrei	0.0	CH		76129216|76129261
+Feldschlösschen Alkoholfrei Weizenfrisch		Feldschlösschen	Alkoholfrei	0.0	CH		76403125
+Feldschlösschen Lager		Feldschlösschen	Lager		CH		76129049
+Feldschlösschen Pale Ale		Feldschlösschen	Pale Ale		CH		76403095
+Feldschlösschen Weizen/blanche		Feldschlösschen	Weizen		CH		76129995
+Feldschlösschen Weizer Blanche		Feldschlösschen	Witbier		CH		76129742
+Firma Michałowski Pniewskie pils pasteryzowane		Firma Michałowski	Pils		PL		5907804871896
+Foster's		Foster's	Lager		BE		5410263912432
+La FrancheFleur		Franchimont	Lager		BE		5425014430028
+Freistädter Lager		Freistädter	Lager		AT		90104107
+Gambrinus Premium 12		Gambrinus	Lager		CZ		8594404012094
+Gauloise Blonde		Gauloise	Blonde		BE		5411633331013
+Gebrouwen door vrouwen Bloesem Blond		Gebrouwen door vrouwen	Blonde		NL		8719326241180
+Gentse Gruut Wit		Gentse Gruut	Witbier		BE		5425038720013
+Gigant Session SOUR IPA		Gigant	IPA		BE		5430002588025
+Ginette Belgican bio		Ginette	Weizen		BE		5410228266761
+Ginette Natural blond		Ginette	Blonde		BE		5411879333314
+Ginette Natural Lager		Ginette	Lager		BE		5410228254928
+Ginette Refreshing Blond		Ginette	Blonde		BE		5410228282754
+Ginette Triple Blonde		Ginette	Blonde		BE		5411879333369
+Goliath Blonde		Goliath	Blonde		BE		5425005660014
+Gordon Scotch Ale		Gordon	Stout		BE		54004009
+Gouden Carolus Tripel		Gouden Carolus	Tripel		BE		5425006240024
+Grimbergen Abdijbier blond		Grimbergen	Blonde		BE		5410263012101
+Grimbergen Astrum		Grimbergen	IPA		BE		5407008430054
+Grimbergen Blanche		Grimbergen	Witbier		DK		57088969|57088983|5901594001471
+Grimbergen Dubbel		Grimbergen	Dubbel		BE		5410263010664
+Grimbergen Tripel		Grimbergen	Tripel		NL		87167153
+Grisette Blanche Bio		Grisette	Witbier		BE		5412138552514
+Grolsch Blond		Grolsch	Blonde		NL		8716700017591|8716700030446
+Grolsch Premium Lager		Grolsch	Lager		NL		87167894
+Grolsch Radler		Grolsch	Radler	0.0	NL		87167092|87167429|87167658|87167672
+Grolsch Weizen		Grolsch	Weizen		NL		8716700017201
+Grolsch Weizen 0,0		Grolsch	Alkoholfrei	0.0	NL		87167412
+Grosse Bertha		Grosse Bertha	Weizen		BE		5411283000048
+Wit Gruut		Gruut	Witbier		BE		5425038650013
+Guinnes special export		Guinness	Export		BE		54004207
+Gösser Biostoff Lager		Gösser	Lager		AT		9028800150634
+Gösser Grösser Märzen		Gösser	Alkoholfrei	0.0	AT		90288050
+Gößer Natur Hell		Gösser	Helles		AT		90288593
+Gösser Natur Radler		Gösser	Radler		AT		9028800607855|9028800638644|9028800651773|90288418
+Gösser NaturRadler Zitrone		Gösser	Radler		AT		90288104
+Gösser Stifts-Zwickl dunkel		Gösser	Dunkel		AT		90288401
+Hapkin		Hapkin	Lager		BE		54064034
+Harboe Pilsner		Harboe	Pils		DK		5701598034495|5701598034815
+Heineken 0.0 sans alcool		Heineken	Alkoholfrei	0.0	NL		8712000050702|8712000050719
+Heineken Lata		Heineken	Lager		NL		87120158
+Heineken Pilsener		Heineken	Pils		NL		8712000031312|8712000901394
+Heineken Pure Malt Lager		Heineken	Lager		NL		8712000321024
+Heineken Sans alcool		Heineken	Alkoholfrei	0.0	AT		8712000050344|8712000052492|9028800660447
+Heineken Silver - pure malt lager		Heineken	Lager		NL		8712000058173
+Heineken Wild Lager Massifs de l'Himalaya H32		Heineken	Lager		NL		8712000052508
+Hertog Ian Weizener		Hertog Ian	Weizen		NL		87310832
+Hertog Jan Alcoholvrij 0.0		Hertog Jan	Alkoholfrei	0.0	NL		8725000660154
+Hertog Jan Dubbel		Hertog Jan	Dubbel		NL		8725000651589
+Hertog Jan Grand Prestige		Hertog Jan	Stout		NL		87292220
+Hertog Jan Tripel		Hertog Jan	Tripel		NL		8725000648589
+Blanche Cranberry/orange Hoegaarden		Hoegaarden	Witbier		BE		5410228232384
+Hoegaarden 6s rossee		Hoegaarden	Weizen		BE		5410228206101
+Hoegaarden Blanche		Hoegaarden	Witbier	4.9	BE		5410228141877|5410228141884|5410228152019|5410228158424|5410228164845|5410228169604|5410228223740|5410228223764|5410228237778
+Hoegaarden Blanche Cans 6-pack		Hoegaarden	Witbier		BE		5410228168423
+Hoegaarden radler lemon		Hoegaarden	Radler		BE		5410228227397
+Hoegaarden rosé		Hoegaarden		0.0	BE		5410228205876
+Hoegaarden Rosée		Hoegaarden	Alkoholfrei	0.0	BE		5410228193340|5410228205845|5410228206385|5410228218678
+Hoegaarden rosée sans alcool		Hoegaarden	Alkoholfrei	0.0	BE		5410228243564
+Hoegaarden Weissbier		Hoegaarden	Weizen		BE		5410228141785
+Hoegaarden White		Hoegaarden	Weizen		BE		5410228148210
+Hoegaarden-shandy -citrus- -new / Radler -agrum-france		Hoegaarden	Radler		BE		5410228217060
+Hoegaarden Agrum		Hoegarden	Weizen		BE		5410228205937
+Hop & Liefde American Pale Ale		Hop & Liefde	Pale Ale		NL		8717624423154
+Hop Ruiter IPA		Hop Ruiter	IPA		NL		8715951000550
+Iki Ginger		Iki	Lager		NL		8717524421083
+Inbev Blonde		Inbev	Blonde		BE		5410228164784
+Jopen Juicy IPA		Jopen	IPA		NL		8714799404650
+Jopen Northsea IPA		Jopen	IPA		NL		8714799401192
+Jupiler 0,0		Jupiler	Alkoholfrei	0.0	BE		5410228262503
+Jupiler Blonde		Jupiler	Blonde		BE		5410228080459|5410228121169|5410228220480
+Jupiler Blue Blonde		Jupiler	Blonde		BE		5410228188704
+Jupiler Fles		Jupiler	Alkoholfrei	0.0	BE		5410228231325
+Jupiler Pure blonde		Jupiler	Blonde		BE		5410228244738|5410228244776
+Jupiler Tauro		Jupiler	Lager		BE		5410228196693
+Kaiser Helles , Fasstyp		Kaiser	Helles		AT		90031151
+Karmi o smaku żurawina		Karmi	Alkoholfrei	0.0	PL		5900014002562
+Kasteel Hoppy		Kasteel	Lager		BE		5411081005368
+Tonneau de Kasteel Rouge		Kasteel	Weizen		BE		5411081003425
+Komes Russian Imperial Stout		Komes	Stout		PL		5901687910840
+Kompania Piwowarska Lech free		Kompania Piwowarska	Alkoholfrei	0.0	PL		5901359122021
+Kozel Lager Premium		Kozel	Lager		CZ		8594404005782
+Kraftbier Vroemmm Cadillac Candy IPA		Kraftbier	IPA		NL		8720618507037
+Mort subite kriek lambic		Kriek Lambic	Weizen		BE		5411656050977|5411656051479
+Kristoffel		Kristoffel	Weizen		BE		5411616001490
+Kronenbourg 1664, blonde lager		Kronenbourg	Blonde	5.0	DK		5740700992537
+KRUSOVICE böhmisches Schwarzbier		Krusovice	Schwarzbier		CZ		8594009922293
+Krušovice Royal pale lager		Krušovice	Lager		CZ		8594009923511
+Książęce czerwony lager		Książęce	Lager		PL		5901359014784
+Kulmbacher Mönchshof Hell		Kulmbacher	Helles		BE		5438104003453
+Kustosz Jasne		Kustosz		6.5	PL		5902055141750
+Kwak Ambrée		Kwak	Amber		BE		5410228285182
+Kékette Extra Large		Kékette	Lager		NL		8791197826017
+La Bécasse Kriek Original		La Bécasse	Weizen		BE		5410228141662
+La chauffe Blonde		La chauffe	Blonde		BE		5410769801537
+La Débauche Mr. Joe Coffee Stout		La Débauche	Stout		CH		760055364188
+La Rulles Pils		La Rulles	Pils		BE		5425005510227
+&quot;La Trappe&quot; Dubbel		La Trappe	Dubbel		NL		8711406000564
+La Trappe Blond		La Trappe	Blonde		NL		8711406032602|8711406355817
+La Trappe Nillis 0,0		La Trappe	Alkoholfrei	0.0	NL		8711406344538
+La Trappe quadruple		La Trappe	Lager		NL		8711406022207
+La Trappe Trappist		La Trappe	Weizen		NL		8711406995631
+La Trappe Trappist tripel		La Trappe	Tripel		NL		8711406137192
+La Trappe Tripel		La Trappe	Tripel		NL		8711406000496
+Ladzbark Warminski Hazy IPA		Ladzbark Warminski	IPA		PL		5907652532888
+Lapin Kulta Export		Lapin Kulta	Export		DK		5741000140093
+Abbeye be Leffe Blonde		Leffe	Blonde		BE		5410228142089
+L'effet ambrée		Leffe	Amber		BE		5410228242024
+Leffe Ambreé		Leffe	Amber		BE		5410228242055|5410228242079|5410228256649
+Leffe Biére blonde		Leffe	Blonde		BE		5410228213963
+Leffe blond		Leffe	Blonde		BE		5410228142218
+Leffe Blond blik		Leffe	Blonde		BE		5410228201205
+Leffe Blonde d'abbaye		Leffe	Blonde		BE		5410228230762
+Leffe Blonde sans alcool		Leffe	Blonde		BE		5410228261063|5410228267447
+Leffe Blonde triple		Leffe	Blonde		BE		5410228247685
+Leffe Bruin		Leffe	Stout		BE		5410228142164|5410228146162
+Leffe d'été		Leffe	Lager		BE		5410228243847|5410228243946|5410228258186|5410228258346
+Leffe DE NOEL		Leffe	Amber		BE		5410228201137|5410228201144|5410228206217
+Leffe de printemps		Leffe	Weizen		BE		5410228202806|5410228256670
+Leffe des Vignes		Leffe	Lager		BE		5410228217312
+Leffe Houblon - HOP Cascade IPA		Leffe	IPA		BE		5410228217596
+Leffe Nectar		Leffe	Lager		BE		5410228206361|5410228210849
+Leffe Rituel 9°		Leffe	Lager		BE		5410228191568|5410228197089
+Leffe Royale		Leffe	Lager		BE		5410228206330|5410228206347|5410228206668|5410228217602|5410228246046
+Leffe Royale Blonde		Leffe	Blonde		BE		5410228243267
+Leffe Royale Cascade Ipa Blond Fles		Leffe	IPA		BE		5410228217640
+Leffe Royale Crystal Hops Blond Fles		Leffe	Blonde		BE		5410228223092
+Leffe Royale Houblon Cascade IPA		Leffe	IPA		BE		5410228217626
+Leffe Royale IPA		Leffe	IPA		BE		5410228243281
+Leffe Royale Whitbread Golding		Leffe	Pale Ale	7.5	BE		5410228217831|5410228217862
+Leffe Ruby - Alc		Leffe		5.0	BE		5410228230441
+Leffe Tripel		Leffe	Tripel		BE		54018204
+Leffe Winter Amber Fles		Leffe	Amber		BE		5410228238058
+Pack de 12 bouteilles de Leffe blonde de		Leffe	Blonde		BE		5410228225348
+Leopold 7 Dry hooped premium craft		Leopold 7	Lager		BE		5425032737208
+Leopold 7 Spring Session		Leopold 7	Weizen		BE		5425032737116
+Levrette Ambrée bio		Levrette	Amber		BE		5411065210955
+Lindemans Cassis		Lindemans	Weizen		BE		5411223030098
+Lindemans Faro		Lindemans	Weizen		BE		5411223005508
+Lindemans Gueuze foudroyante		Lindemans	Weizen		BE		5411223010625
+Lion 8 blonde		Lion	Blonde		BE		5430000213011
+Livinus Blonde		Livinus	Blonde		BE		5412896000142
+Lola I.P.A. sans alcool		Lola	Alkoholfrei	0.0	CH		7640168390518
+Lowlander IPA		Lowlander	Alkoholfrei	0.3	NL		8719992646081
+Lowlander IPA coriander seed & white tea		Lowlander	IPA		NL		8717953278302
+Lupulus		Lupulus	Lager		BE		5425025120017
+Lupulus Hopera		Lupulus	Pale Ale		BE		5425025122011
+M-Budget Alkoholfreies		M-Budget	Alkoholfrei	0.0	CH		7613312422113
+MAES PILS ~ Casier de		Maes	Pils		BE		54017016
+Maes Radler		Maes	Radler		BE		5410263916713
+Maes Radler Citroen Cans 6-pack		Maes	Radler	0.0	BE		5410263916706
+Maes Radler citron		Maes	Radler		BE		5410263915396
+Maredsous Blonde		Maredsous	Blonde		BE		5411681035109
+Maredsous Brune		Maredsous	Dubbel		BE		5411681037004|5411681037059
+Maredsous,Duvel Moortgat		Maredsous	Lager		BE		5411681038001
+Martin’s IPA		Martin's	IPA		BE		5410218002133|5410218002515
+Maximus Brutus		Maximus	Amber		NL		8718801180006
+Maximus Stout 8		Maximus	Stout		NL		8718801180037
+Mecklenburger Premium non-alcoholic		Mecklenburger	Alkoholfrei	0.0	DK		5711018032963
+Migros NON IPA		Migros	IPA		CH		7613312408490
+Migros Non Lager alkoholfrei		Migros	Alkoholfrei	0.0	CH		7613312389744
+Mikkeller Grassroots Wheat is the new hops		Mikkeller	Weizen		DK		5704255102988
+Mikkeller Limbo Series - Flemish Primitive Ale with Raspberries		Mikkeller	Alkoholfrei	0.0	DK		5704255119849
+Mikkeller SAS Celebrating 10 Years, IPA		Mikkeller	IPA	4.7	DK		5740017106108
+Mikkeller Side Eyes pale ale		Mikkeller	Pale Ale	4.6	DK		5704255119344
+Millevertus Ipa pot'ame		Millevertus	IPA		BE		5425014960242
+Mirosław Witbier		Mirosław	Witbier		PL		5901687910666
+Miłosław Blond Ale		Miłosław	Blonde		PL		5901687910628
+Moinette Blonde		Moinette	Blonde		BE		5410702000133
+Monastère Double		Monastère	Dubbel		NL		8718104917774
+Mongozo Buckwheat white		Mongozo	Weizen		NL		8715608222878
+Mongozo Premium pilsener		Mongozo	Pils		NL		8715608222557
+Monsteiner Huusbier Hell		Monsteiner	Helles		CH		7640119020013
+Mont-Saint-Jean Double Dark		Mont-Saint-Jean	Stout		BE		5410218004274
+Mort Subite Blonde Lambic		Mort Subite	Blonde		BE		5411656051820
+Mort Subite Gueuze Lambic		Mort Subite	Weizen		BE		5411656051134|5411656052315
+Mort Subite Lambic Gueuze - assemblage de lambics		Mort Subite	Weizen		BE		5411656052278
+Mort Subite Original Gueuze		Mort Subite	Weizen		BE		5411656010117
+Mort Subite White lambic - Eté 2012		Mort Subite	Weizen		BE		5471656050988
+Mort subite Witte lambic		Mort subite	Weizen		BE		5411656050991|5411656051387|5411656051486
+Mystic À la cerise		Mystic	Weizen		BE		54138209
+Namysłów Pils butelka		Namysłów	Pils		PL		5903870005241
+Nyala		Nyala	Amber		BE		5430000678032
+Oedipus Thai		Oedipus	Lager		NL		8717953167354
+Okocim Limonka z miętą		Okocim	Radler	0.0	PL		5900014003668
+Old Prague Bohemian Premium Lager		Old Prague	Lager		CZ		8594044191289
+Orval Trappist		Orval	Amber		BE		54040014
+Ottakringer Kühles Blondes - Extrablond		Ottakringer	Blonde		AT		9007600304386
+Ottakringer Null Komma Josef		Ottakringer Brauerei	Alkoholfrei	0.0	AT		90076503
+Oud Beersel Oud Geuze Vieille		Oud Beersel	Weizen		BE		5425018070312
+Paljas IPA - belgisch hoppig		Paljas	IPA		BE		5415152000313
+Palm		Palm	Amber		BE		54057012
+Palm Royale		Palm	Lager		BE		5410783001432
+Parbo		Parbo	Lager		NL		8712000995010|8712000995317
+Parbo Radler		Parbo	Radler		NL		8712000036980
+Perła Browary Lubelskie Chmielowa		Perła Browary Lubelskie	Pils		PL		5905927001619
+Piedboeuf Blonde		Piedboeuf	Blonde		BE		5410228141150
+Piedbœuf De table		Piedbœuf	Stout		BE		5410228141167
+Pilsner Urquell Světlé 12		Pilsner Urquell	Pils		CZ		8594404005829|8594404115122
+Pinta Hazy morning - Hazy APA		Pinta	Pale Ale		PL		5904730438612
+Pivovar Kamenice IPA Kamenice		Pivovar Kamenice	IPA		CZ		8594194360160
+Plzeňský Prazdroj Gambrinus patron 12, pilsner		Plzeňský Prazdroj	Pils	5.2	CZ		8594404012124
+Plzeňský Prazdroj Kozel Dark		Plzeňský Prazdroj	Lager		CZ		8594404001418
+Plzeňský prazdroj Pilsner Urquell		Plzeňský prazdroj	Pils		CZ		8594404014623|8594404110110
+Polar Monkeys Blue Collar Amber Lager		Polar Monkeys	Amber		DK		5741000151518
+Primátor Stout		Primátor	Stout		CZ		8594006931755
+Prior Tripel		Prior	Tripel		BE		54085022
+Pure Range Beers Blonde Bries		Pure Range Beers	Blonde		BE		5419980370303
+Queue de Charrue		Queue de Charrue	Lager		BE		5411633330917|5411663003317
+Queue De Charrue Ambrée		Queue de Charrue	Amber		BE		5411633213302
+Queue De Charrue Blonde 6,6d		Queue de Charrue	Blonde		BE		5411633750920
+Queue de Charrue Triple		Queue de Charrue	Lager		BE		5411663003300
+Radler Lemon & Lime		Radler	Radler		BE		5410228217398
+Ragnaröck Blond		Ragnaröck	Blonde		BE		5407003400014
+Ramée Ambrée		Ramée	Amber		BE		5413982001005
+Rodinný pivovar Zichovec 17 - Zhytnytsia Yevropy		Rodinný pivovar Zichovec	Blonde		CZ		8595710906695
+Royal Økologisk pilsner		Royal	Pils		DK		5741000144633
+Royal dutch Premium strong		Royal dutch		9.5	NL		8725000638894
+Royal Unibrew A/S Royal Export		Royal Unibrew A/S	Export		DK		5741000138236
+Rugenbräu spezial dunkel		Rugenbräu	Dunkel		CH		7610131000102
+Rulles Blonde		Rulles	Blonde		BE		5425005510012
+Rulles saison		Rulles	Saison		BE		5425005510036
+Saint Feuillien		Saint feuillien	Lager		BE		5412138103310
+St Benoit Blonde		Saint-Benoît	Blonde		BE		5411633330085
+Sambrée Sombré Original 6°		Sambrée	Amber		BE		5412652000904
+Sans marque Blanche des Neiges		Sans marque	Witbier		BE		5412186000159
+Sans marque De tradition		Sans marque	Lager		BE		5411616000523
+Schelfaut Export		Schelfaut	Export		BE		5411663704429
+Schützengarten		Schützengarten	Lager		CH		76137099|76137563
+Schützengarten Swiss Stout Chocolate		Schützengarten	Stout		CH		76137341
+Seth & Riley's Garage Euphoriq Bezalkoholowy napój piwny o smaku jagód i marakui		Seth & Riley's Garage Euphoriq	Alkoholfrei	0.0	PL		5900014005716
+Shelde Oesterstout		Shelde	Stout		NL		8715951001298
+Silly Blanche		Silly	Witbier		BE		5413023000158
+Silly rouge		Silly	Weizen		BE		5413023000332
+Slagmuylder Witkap-Pater Stimulo		Slagmuylder	Lager		BE		5412901000013
+Sonnenbräu Lager hell		Sonnenbräu	Helles		CH		76417061
+St Feuillien Belgian coast IPA		St Feuillien	IPA		BE		5412138391335
+St Feuillien Brune		St Feuillien	Dubbel		BE		5412138203317
+St Stefanus		St Stefanus	Lager		BE		5411663060020
+St Stefanus Biére d'abbaye - blanche		St Stefanus	Witbier		BE		5411663000477
+St. Bernardus Pater 6		St. Bernardus	Stout		BE		54079007
+St. Bernardus Tripel		St. Bernardus	Tripel		BE		54079038
+St. Bernardus Wit		St. Bernardus	Witbier		BE		54079052
+Starkenberger Tiroler märzen		Starkenberger	Märzen		AT		90205217
+Staropramen Cool Grep		Staropramen	Radler		CZ		8593868002665
+Staropramen Nealko nealkoholické světlé		Staropramen	Alkoholfrei	0.0	CZ		8593868002580
+Staročech Nealko		Staročech	Alkoholfrei	0.0	CZ		8594048890249
+Steenbrugge Belgian Abbey Blond		Steenbrugge	Alkoholfrei	0.0	BE		5411393801665
+Helles Stiegl Goldbräu		Stiegl	Helles		AT		90034107
+Stiegl Hell		Stiegl	Helles		AT		9003400391632
+Stiegl Radler Goldbräu		Stiegl	Radler		AT		90034695
+Stiegl Radler Himbeere		Stiegl	Radler		AT		9003400393063
+Stiegl Radler Naturtrüb Grapefruit		Stiegl	Radler		AT		9003400393087
+Stiegl Weisse		Stiegl	Weizen		AT		9003400304939
+Stift Engelszell Benno Trappistenbier		Stift Engelszell	Amber		AT		9120041150685
+Stift Engelszell Gregorius Trappistenbier		Stift Engelszell	Stout		AT		9120041150678
+Stift Engelszell Nivard Trappistenbier		Stift Engelszell	Lager		AT		9120041150784
+Sturm Bio blonde sans gluten		Sturm	Blonde		BE		5411065301271
+Supermalt Original		Supermalt	Alkoholfrei	0.0	DK		5741000000021
+Svaneke Stout		Svaneke	Stout	5.7	DK		5707323509788
+The Musketeers Troubadour Westkust		The Musketeers	IPA		BE		5425006700405
+Thor Blå Thor Export		Thor	Export		DK		5741000011539
+Timmermans lambicus blanche		Timmermans	Witbier		BE		5411516001453
+To Insane in the Grain		To	IPA		DK		5711474001190
+To Ol Mocchacino Messiah		To Ol	Lager		DK		5711474000117
+Tongerlo		Tongerlo	Lager		BE		5410971022324
+Tongerlo Blonde 6d Btle		Tongerlo	Blonde		BE		5410971022386
+Tongerlo d'abbaye		Tongerlo	Lager		BE		5410971122192
+Tongerlo Lux Blond		Tongerlo	Blonde		BE		54085190
+La Trappe Trappist Blond Fles		Trappist	Blonde		NL		8711406121580
+Special Giftpack Tripel Karmeliet		Tripel Karmeliet	Tripel		BE		5410693100492
+Tsjeeses X-Mas Ale 2015		Tsjeeses	Amber		BE		5425017810209
+Tuborg julebryg		Tuborg		5.6	DK		57008325
+Tuborg Pilsener		Tuborg	Pils		DK		5740700410116
+Tuborg Weihnachts-Pilsener		Tuborg	Pils		DK		5740700410505
+Tyskie Grand Prix		Tyskie	Lager		PL		5901359000237
+Tyskie pszenne		Tyskie	Weizen		PL		5901359084343
+Underwood Brewery Kyiv Lager		Underwood Brewery	Lager		BE		5425035416100
+Urthel Samaranth Donker Fles		Urthel		11.5	NL		8711406186190
+Blonde		Val Dieu blonde	Blonde		BE		5413977000013
+Valaisanne De cave, Zwickelbier		Valaisanne	Kellerbier		CH		76129735
+Valaisanne Pale Ale		Valaisanne	Pale Ale		CH		76403132
+Valaisanne Pale Ale singel hop		Valaisanne	Pale Ale		CH		76129704
+Valaisanne White IPA		Valaisanne	IPA		CH		7612900346596
+Valaisanne Ämrich Weizen mit einem Hauch Aprikose		Valaisanne	Weizen		CH		76129728
+Valduc La petite soeur, Blanche		Valduc	Witbier		BE		5430001998016
+VAN PUR S.A Łomża jasne bezalkoholowe		VAN PUR S.A	Alkoholfrei	0.0	PL		5900535013986
+VanderGhinste Oud Bruin		Vanderghinste	Stout		BE		5411858000077
+Vanderstreek Playground IPA		Vanderstreek	IPA		NL		8720153282772
+Vedett Extra white		Vedett	Weizen		BE		5411681400310
+Vedett IPA		Vedett	IPA	2.7	BE		5411681403670
+Verhaeghe Barbe Rufa		Verhaeghe	Amber		BE		5411364151416
+Volg Ambree		Volg	Amber		CH		7610198074184
+Volg Lager		Volg	Lager		CH		7610198032740
+Warka cytryna		Warka	Radler	0.0	PL		5900699106494
+Warka jasne		Warka	Lager		PL		5902746320020
+Warka Radler		Warka	Radler		PL		5900699106463
+Warka Radler , cytrynowy		Warka	Radler	2.0	PL		5902746641330
+Warka Radler Rabarbar z Truskawką		Warka	Radler	0.0	PL		5900699106616
+Waterloo 7 triple blond		Waterloo	Blonde		BE		5411633043312
+Waterloo saison bio		Waterloo	Saison		BE		5410218008869
+Weidmann Pilsner		Weidmann	Pils		NL		8718104901223
+Westmalle Dubbel Trappist 5412343152332 Starkbier		Westmalle	Dubbel		BE		5412343152332
+Westmalle Trappist Dubbel		Westmalle	Dubbel		BE		5412343001166
+Westmalle Trappist tripel		Westmalle	Tripel		BE		5412343201337
+WhiteFrontier Fwt		WhiteFrontier	Pale Ale		CH		7640166620952
+WhiteFrontier Log out & live		WhiteFrontier	Pale Ale		CH		7640166620334
+WhiteFrontier Petite German Lager		WhiteFrontier	Lager		CH		7640166620327
+WhiteFrontier Pillows		WhiteFrontier	Weizen		CH		7640166620358
+Zelena Koruna Ležák		Zelena Koruna	Lager		CZ		8594044191487
+Zelena Koruna Černé		Zelena Koruna	Stout		CZ		8594044191494
+Zillertaler Märzen		Zillertaler	Märzen		AT		90242007
+Zipfer Märzen		Zipfer	Märzen		AT		90031977
+Żywiec bezalkoholowe		Zywiec	Alkoholfrei	0.0	PL		5900699100751|5900699102755
+Łomża export Larger 4 x		Łomża	Export		PL		5903538900765
+Łomża Radler		Łomża	Radler	0.0	PL		5900535019209
+Łomża Radler bezalkoholowe		Łomża	Radler	0.0	PL		5900535018929
+Łomża Sans alcool		Łomża	Alkoholfrei	0.0	PL		5900535015171
+Żywiec Bezalkoholowe IPA		Żywiec	Alkoholfrei	0.0	PL		5900699103301
+Żywiec Limonż		Żywiec		0.0	PL		5900699106388|5900699107866
+Żywiec Porter		Żywiec	Porter		PL		5901559949343

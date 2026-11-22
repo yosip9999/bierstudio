@@ -1,5 +1,5 @@
 /* Bierstudio Service Worker: App-Shell offline verfügbar, immer zuerst Netz (damit Updates sofort ankommen). */
-const CACHE = 'bierstudio-v7';
+const CACHE = 'bierstudio-v8';
 const SHELL = ['/', '/app.css', '/app.js', '/vendor/qrcode.js', '/fonts/instrument-sans.woff', '/catalog.json', '/manifest.webmanifest', '/icons/icon.svg', '/icons/icon-192.png', '/icons/icon-512.png'];
 
 self.addEventListener('install', e => {

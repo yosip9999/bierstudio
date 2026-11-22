@@ -99,6 +99,10 @@ Die unscharfe Suche im Frontend (`simTokens`) vergleicht Wort für Wort mit Prä
 
 ## Katalog bauen
 
+- `tools/catalog.tsv`: von Hand gepflegt, hat Vorrang (Name, Spitznamen, Brauerei, Stil, Alkohol, Land, Website).
+- `tools/catalog_off.tsv` und `tools/catalog_codes.json`: automatisch aus Open Food Facts (ODbL). Das Skript holt Biere nach Hersteller-Barcode-Präfix (DE, AT, CH, CZ, BE, NL, DK, PL), bereinigt Namen (Packungsangaben, doppelte Wörter, Großschreibung), erkennt den Stil und fasst Barcodes desselben Bieres zusammen. Biere, die schon in `catalog.tsv` stehen, bekommen nur die Barcodes.
+
 ```bash
-python3 tools/build_catalog.py
+python3 tools/import_off.py     # dauert ein paar Minuten
+python3 tools/build_catalog.py  # schreibt app/static/catalog.json
 ```

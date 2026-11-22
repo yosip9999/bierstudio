@@ -32,7 +32,7 @@
 - Schnell (0–10 mit Regler und Feinschritten) oder detailliert (Aussehen, Geruch, Geschmack ×2, Körper, Abgang). Dazu Eindrücke, Notiz und Favorit.
 
 **Bierdaten**
-- **Eingebauter Katalog mit über 330 Bieren** aus Deutschland, Europa und der Welt (Brauerei, Stil, Alkohol, Land, Spitznamen), offline.
+- **Eingebauter Katalog mit über 1.700 Bieren**, offline: rund 340 von Hand gepflegte (mit Spitznamen und Brauerei-Website) und über 1.400 aus [Open Food Facts](https://world.openfoodfacts.org), vor allem aus Deutschland, Österreich, der Schweiz, Tschechien und den Benelux-Ländern. Mit fast 2.000 Barcodes, damit der Scanner auch ohne Internet Biere erkennt.
 - **Weltweite Suche** über [Wikidata](https://www.wikidata.org) und [Open Food Facts](https://world.openfoodfacts.org), per Barcode zusätzlich [UPCitemdb](https://www.upcitemdb.com). Jede Abfrage wird bei Aussetzern wiederholt und auf dem Server zwischengespeichert; fällt ein Dienst aus, kommt das letzte bekannte Ergebnis. Eine Kontakt-E-Mail ist nicht mehr nötig.
 - **Einheitliche Bier-Kacheln**: Marken-Kürzel, Farbe nach Bierstil. Optional mit Brauerei-Logos von Logo.dev (kostenloser Schlüssel), die der Server einmal in Graustufen holt und zwischenspeichert; die Handys sprechen nur mit deinem Server.
 
@@ -135,6 +135,10 @@ Aufbau, Datenformat und API stehen in [docs/ENTWICKLUNG.md](docs/ENTWICKLUNG.md)
 - QR-Codes: [qrcode-generator](https://github.com/kazuhikoarase/qrcode-generator) von Kazuhiko Arase (MIT), mitgeliefert in `app/static/vendor/`
 - Bierdaten: [Wikidata](https://www.wikidata.org) (CC0), [Open Food Facts](https://world.openfoodfacts.org) (ODbL)
 - Logos: Wikimedia Commons bzw. die Websites der Brauereien. Sie sind Marken ihrer Inhaber und werden nur zur Anzeige zwischengespeichert.
+
+## Daten und Lizenzen
+
+Der automatisch erzeugte Teil des Bier-Katalogs (`tools/catalog_off.tsv`, Einträge mit `src: off`) stammt aus [Open Food Facts](https://world.openfoodfacts.org) und steht unter der [Open Database License (ODbL)](https://opendatacommons.org/licenses/odbl/1-0/). Neu erzeugen: `python3 tools/import_off.py && python3 tools/build_catalog.py`. Shop-Datenbanken werden bewusst nicht abgefragt.
 
 ## Schrift
 

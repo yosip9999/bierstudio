@@ -11,7 +11,7 @@
 - Schrift Instrument Sans, lokal eingebunden; Laufweite und Zeilenabstand je nach Größe
 - Neues, flaches App-Icon; Emojis in der Oberfläche durch schlichte Linien-Icons ersetzt
 - Übersicht zeigt groß das zuletzt bewertete Bier statt des laufenden Tastings
-- Katalog von 87 auf über 330 Biere erweitert
+- Katalog von 87 auf über 1.700 Biere erweitert: 338 von Hand gepflegt, über 1.400 aus Open Food Facts (ODbL) mit Import-Skript `tools/import_off.py`; knapp 2.000 Barcodes für den Scanner ohne Internet
 - Online-Suche zuverlässiger: neue Such-API von Open Food Facts (alte nur noch als Ausweichweg), Wiederholung bei Aussetzern, Cache auf der Platte mit Rückgriff auf das letzte Ergebnis, UPCitemdb für Barcodes, keine Kontakt-E-Mail mehr nötig
 - Neue Oberfläche: Landing-Page, Übersicht mit „Was trinkst du gerade?“, Feed, Bestenliste; Tastings sind ein eigener Bereich statt der Startseite
 - Neu: Leute-Liste und Personenseiten mit allen bewerteten Bieren, Statistik und Geschmacksverwandtschaft

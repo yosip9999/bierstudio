@@ -3,6 +3,7 @@
 services:
   bierstudio:
     image: ghcr.io/yosip9999/bierstudio:latest
+    pull_policy: always            # bei jedem Speichern/Update das neueste Image holen
     restart: unless-stopped
     ports:
       - "8000:8000"                # links ggf. anderen freien Port, z. B. "8420:8000"

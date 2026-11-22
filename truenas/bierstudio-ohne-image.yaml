@@ -3,7 +3,7 @@
 # ALTERNATIVE zu bierstudio.yaml – nur nötig, wenn dein Server ghcr.io nicht erreicht.
 # Nutzt das offizielle Python-Image und lädt beim ersten Start die angegebene Bierstudio-Version von GitHub.
 # Sie wird in /data/.app zwischengespeichert, spätere Starts brauchen kein Internet.
-# BIERSTUDIO_VERSION: Release-Tag (z. B. v2.1.0) oder Commit-Hash. Update = Wert ändern, App neu starten.
+# BIERSTUDIO_VERSION: Release-Tag (z. B. v3.0.0) oder Commit-Hash. Update = Wert ändern, App neu starten.
 #
 # Vorher nur: Dataset anlegen (z. B. tank/bierstudio) und unten den Pfad anpassen. Rechte setzt der Container selbst.
 services:
@@ -11,7 +11,7 @@ services:
     image: python:3.13-alpine
     restart: unless-stopped
     environment:
-      BIERSTUDIO_VERSION: "4c864841d71a8e49571bf9f676471d5919e9c54e"   # = Version 2.1.0
+      BIERSTUDIO_VERSION: "2783b0b5dc3f2722a0b068fff7ae74f9469d8f09"   # = Version 3.0.0
       BIERSTUDIO_REPO: "yosip9999/bierstudio"
       PUID: "3100"          # eigener Benutzer, getrennt von anderen Apps
       PGID: "3100"

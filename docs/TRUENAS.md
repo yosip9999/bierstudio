@@ -29,6 +29,7 @@ Ab dann gilt: Jeder Push auf `main` baut automatisch ein neues Image, und *Apps 
 services:
   bierstudio:
     image: ghcr.io/yosip9999/bierstudio:latest
+    pull_policy: always
     restart: unless-stopped
     ports:
       - "8000:8000"

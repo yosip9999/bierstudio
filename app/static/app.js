@@ -289,20 +289,29 @@ function beerSim(q, b, typing) {
   return Math.max(simTokens(qt, toks(b.name), typing), simTokens(qt, toks(`${b.brewery || ''} ${b.name}`), typing) * 0.97);
 }
 // ---------- Hinterlegter Katalog (offline)
-let CAT = null;
+let CAT = null, CAT_CODES = new Map();
 async function catalog() {
   if (!CAT) {
-    try { CAT = (await (await fetch('/catalog.json')).json()).beers.map(c => ({ ...c, source: 'katalog', keys: [c.name, ...c.aliases].map(beerKey) })); }
+    try {
+      CAT = (await (await fetch('/catalog.json')).json()).beers.map(c => ({
+        ...c, source: c.src === 'off' ? 'off' : 'katalog', keys: [c.name, ...c.aliases].map(beerKey),
+        tk: [c.name, ...c.aliases].map(toks), tkb: toks(`${c.brewery} ${c.name}`),
+      }));
+      CAT_CODES = new Map(CAT.flatMap(c => (c.codes || []).map(code => [code, c])));
+    }
     catch { CAT = []; }
   }
   return CAT;
 }
 catalog();
 const catEntryFor = b => (CAT || []).find(c => c.keys.includes(beerKey(b.name)));
-function catSim(q, c, typing) {
-  const qt = toks(q);
-  return Math.max(...[c.name, ...c.aliases].map(n => simTokens(qt, toks(n), typing)), simTokens(qt, toks(`${c.brewery} ${c.name}`), typing) * 0.95);
+function catSim(q, c, typing, qt = toks(q)) {
+  let best = simTokens(qt, c.tkb, typing) * 0.95;
+  for (const t of c.tk) best = Math.max(best, simTokens(qt, t, typing));
+  return c.src === 'off' ? best : best + 0.02; // gepflegte Einträge bei Gleichstand bevorzugen
 }
+/** Katalog-Eintrag zu einem Barcode (offline). */
+const catByCode = code => CAT_CODES.get(String(code || '').trim()) || null;
 /** Biere im Bierbuch zu einer Suche (Barcode, Schlüssel, unscharf). */
 function searchLocal(q, n = 6) {
   const code = /^\d{8,14}$/.test(q.trim()) ? q.trim() : '';
@@ -310,11 +319,11 @@ function searchLocal(q, n = 6) {
     .filter(x => x.s >= 0.6).sort((a, b) => b.s - a.s || beerAgg(b.b.id).people - beerAgg(a.b.id).people).slice(0, n);
 }
 /** Katalog-Treffer, die noch nicht im Bierbuch stehen. */
-function searchCatalog(q, n = 4) {
-  if (/^\d+$/.test(q.trim())) return [];
-  const have = new Set(D.beers.filter(shown).map(b => beerKey(b.name)));
-  return (CAT || []).filter(c => !c.keys.some(k => have.has(k))).map(c => ({ c, s: catSim(q, c, true) }))
-    .filter(x => x.s >= 0.6).sort((a, b) => b.s - a.s).slice(0, n).map(x => x.c);
+function searchCatalog(q, n = 5) {
+  if (/^\d+$/.test(q.trim())) { const c = catByCode(q); return c ? [{ ...c, barcode: q.trim() }] : []; }
+  const have = new Set(D.beers.filter(shown).map(b => beerKey(b.name))), qt = toks(q);
+  return (CAT || []).filter(c => !c.keys.some(k => have.has(k))).map(c => ({ c, s: catSim(q, c, true, qt) }))
+    .filter(x => x.s >= 0.62).sort((a, b) => b.s - a.s).slice(0, n).map(x => x.c);
 }
 /** Eindeutiger Katalog-Treffer für automatisches Ergänzen (z. B. „Zäpfle“ → Rothaus Pils Tannenzäpfle). */
 function catBest(name) {
@@ -1166,7 +1175,7 @@ function addResults() {
     return;
   }
   const local = searchLocal(q);
-  addState.cat = isCode ? [] : searchCatalog(q);
+  addState.cat = searchCatalog(q);
   const exact = local.some(x => x.s >= 1.5);
   box.innerHTML = group('Im Bierbuch', local.map(x => { const ag = beerAgg(x.b.id); return row('addPick', `data-id="${x.b.id}"`, thumb(x.b), esc(x.b.name), meta(x.b), scoreCol(ag.avg, ag.people ? ag.people + '×' : '')); }).join(''))
     + group('Bekannte Biere', addState.cat.map((c, i) => row('addCat', `data-i="${i}"`, candThumb(c), esc(c.name), candMeta(c), '<span class="chev">＋</span>')).join(''))
@@ -1250,7 +1259,7 @@ ACT.scan = async () => {
       if (!scanStream) return;
       try {
         const [c] = await det.detect(v);
-        if (c?.rawValue) { stopScan(); haptic(40); $('#f-q').value = addState.q = c.rawValue; addResults(); const loc = D.beers.find(b => b.barcode === c.rawValue && shown(b)); if (loc) rateAfterAdd(loc.id); else ACT.worldSearch(); return; }
+        if (c?.rawValue) { stopScan(); haptic(40); $('#f-q').value = addState.q = c.rawValue; addResults(); const loc = D.beers.find(b => b.barcode === c.rawValue && shown(b)); if (loc) rateAfterAdd(loc.id); else if (catByCode(c.rawValue)) toast('Im Katalog gefunden'); else ACT.worldSearch(); return; }
       } catch { }
       setTimeout(loop, 250);
     };
