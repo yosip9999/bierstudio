@@ -1,5 +1,14 @@
 # Changelog
 
+## Unveröffentlicht
+- Neues Erscheinungsbild „Kaltes Glas“: kühler, frostiger Hintergrund, weiße Flächen, Stout-Dunkel für Text und Bernstein nur dort, wo Bier ist
+- Neu: Beim Bewerten füllt sich ein Glas bis zur Note, mit Schaumkrone, aufsteigenden Perlen und der Farbe des Bierstils (Helles golden, Stout dunkel, Weizen trüb hell …); in Blindverkostungen bleibt die Farbe neutral
+- „Was trinkst du gerade?“ als Fläche aus Bier mit Schaumkante; der Eintragen-Knopf in der Tableiste ist jetzt bernsteinfarben
+- Überschriften und große Zahlen schmal gesetzt (Instrument Sans, 80 % Laufweite)
+- Neue Farben für Bier-Kacheln, Personen und Noten (Hopfen, Bernstein, Kirsch), Dunkelmodus in tiefem Porter statt Delft Blue
+- Neues App-Icon: volles Glas mit Schaumkrone
+- Bewegung reduziert, wenn das System es wünscht: Perlen und Einschenk-Animation entfallen dann
+
 ## v3.0.0
 - Neu: Fotos zu jeder Bewertung (werden auf dem Handy verkleinert und auf dem Server gespeichert), Ausschank (Fass/Flasche/Dose) und Ort
 - Neu: „Prost!“ – auf Bewertungen der anderen anstoßen

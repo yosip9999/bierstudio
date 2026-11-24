@@ -35,7 +35,7 @@ if (theme) document.documentElement.dataset.theme = theme;
 const fmt = (v, d = 1) => v == null || isNaN(v) ? '–' : (+v).toLocaleString('de-DE', { minimumFractionDigits: d === 1 ? 1 : 0, maximumFractionDigits: d });
 const hue = str => { let h = 7; for (const c of String(str)) h = (h * 31 + c.charCodeAt(0)) % 360; return h; };
 /** Personen und Bier-Kacheln: helle Tönungen der Palette mit dunkler Schrift derselben Farbe (flach, kein Verlauf). */
-const TONES = [['#DCEBE2', '#3F6B57'], ['#F7DDD4', '#A9472F'], ['#FAEBD0', '#7E5512'], ['#DCDDE7', '#3D405B'], ['#D5E3E4', '#35566A']];
+const TONES = [['#E1EAFB', '#2E4A86'], ['#FBE4DE', '#9A3B26'], ['#FCEFCF', '#7A5200'], ['#E1F1DF', '#2F6237'], ['#ECE4F7', '#5B3C86']];
 const toneOf = str => TONES[hue(str) % TONES.length];
 const tone = str => toneOf(str)[0];
 const toneInk = str => toneOf(str)[1];
@@ -155,9 +155,19 @@ const STYLE_FAMILY = [
   [/pils|hell|lager|export|kölsch|kolsch|keller|zwickel|landbier|blonde|urtyp/i, 'pale'],
 ];
 const STYLE_TILE = {
-  pale: ['#F2CC8F', '#2B2D42'], amber: ['#E07A5F', '#2B2D42'], dark: ['#3D405B', '#F4F1DE'],
-  hop: ['#81B29A', '#2B2D42'], wheat: ['#EADFBF', '#2B2D42'], fresh: ['#DCEBE2', '#3F6B57'], none: ['var(--surface-2)', 'var(--muted)'],
+  pale: ['#F8D16A', '#3D2A00'], amber: ['#E99145', '#3A1C00'], dark: ['#3B2A2E', '#F6EBDD'],
+  hop: ['#B4D98F', '#22381A'], wheat: ['#F4E5BC', '#4A3608'], fresh: ['#D9EEE6', '#2C5B4F'], none: ['var(--surface-2)', 'var(--muted)'],
 };
+/** Farbe der Flüssigkeit im Glas, je nach Bierstil. */
+const LIQUID = { pale: '#F4B428', amber: '#D9711C', dark: '#3A2219', hop: '#EBA21E', wheat: '#F2C35A', fresh: '#F6D66E', none: '#F2A71B' };
+/** Füllhöhe: leer bei keiner Note, sonst so, dass die Schaumkrone noch ins Glas passt. */
+const pintFill = v => v == null ? 0 : 8 + clamp(v) * 7.6;
+const PINT_RIM = '<svg class="rim" viewBox="0 0 88 124" preserveAspectRatio="none" aria-hidden="true"><path d="M1.5 1.5 L86.5 1.5 L78.4 122.5 L9.6 122.5 Z"/><path class="base" d="M10.5 120 L77.5 120"/></svg>';
+/** Das Glas: füllt sich bis zur Note, Flüssigkeit in der Farbe des Bierstils. */
+function pint(v, b, cls = '', id = '') {
+  const liq = LIQUID[b && !b.blind ? styleFamily(b) : 'none'];
+  return `<span class="pint ${cls} ${v == null ? 'empty' : ''}" ${id ? `id="${id}"` : ''} style="--fill:${pintFill(v)}%;--liq:${liq}" aria-hidden="true"><span class="beer"><span class="liquid"><i></i><i></i><i></i><i></i></span></span>${PINT_RIM}<span class="shine"></span></span>`;
+}
 const styleFamily = b => (STYLE_FAMILY.find(([re]) => re.test(b?.style || b?.name || '')) || [0, 'none'])[1];
 const NOISE = new Set(['bier', 'beer', 'brauerei', 'the', 'der', 'die', 'das', 'la', 'le', 'de', 'st', 'st.', 'sankt']);
 function monogram(b) {
@@ -536,7 +546,7 @@ const emptyCard = (icon, title, text, btn = '') => `<div class="card empty"><h2>
 function renderLanding() {
   const ps = people(), nb = D.beers.filter(shown).length, nr = knownRatings().length;
   return `<section class="landing">
-    <img class="hero-mark" src="/icons/icon.svg" alt="" width="84" height="84">
+    <div class="hero-glass">${pint(8.6, null, 'lg')}</div>
     <h1>Dein Bierbuch.<br><em>Mit deinen Leuten.</em></h1>
     <p class="lead">Trag ein, was du gerade trinkst, gib eine Note und sieh, was die anderen davon halten.</p>
     <div class="features">
@@ -589,7 +599,7 @@ function renderStart() {
   return {
     title: 'Übersicht', html: `
     <div class="greet"><div class="eyebrow">${esc(date)}</div><h1 class="large-title">${hello}, ${esc(me)}</h1></div>
-    <button class="drink-cta" data-act="add"><span class="glass-ic">${ICON.glass}</span><span class="grow"><b>Was trinkst du gerade?</b><span>Eintragen und bewerten</span></span><span class="chev-r">›</span></button>
+    <button class="drink-cta" data-act="add"><span class="bubbles" aria-hidden="true"><i></i><i></i><i></i><i></i></span><span class="glass-ic">${ICON.glass}</span><span class="grow"><b>Was trinkst du gerade?</b><span>Eintragen und bewerten</span></span><span class="chev-r">›</span></button>
     ${mine.length ? `<div class="chips again" aria-label="Nochmal trinken">${mine.slice(0, 8).map(x => `<button class="chip" data-act="rate" data-id="${x.b.id}">${thumb(x.b)}<span>${esc(x.b.name.length > 22 ? x.b.name.slice(0, 21) + '…' : x.b.name)}</span></button>`).join('')}</div>` : ''}
     ${latest ? latestCard(latest) : ''}
     ${wishlist().length ? `<div class="section-title">Auf deiner Merkliste <a href="${href('person', me)}">Alle</a></div><div class="chips">${wishlist().map(beer).filter(shown).slice(0, 10).map(b => `<a class="chip wish-chip" href="${href('bier', b.id)}">${thumb(b)}<span>${esc(b.name.length > 22 ? b.name.slice(0, 21) + '…' : b.name)}</span></a>`).join('')}</div>` : ''}
@@ -1035,8 +1045,8 @@ function rateForm(p, s, b, opt = {}) {
   const detail = CATS.map(c => `<div class="cat"><span>${c}${W[c] > 1 ? ' <small>×2</small>' : ''}</span><div class="five">${[1, 2, 3, 4, 5].map(n => `<button class="${d.detail[c] === n ? 'on' : ''}" data-act="rf" data-p="${p}" data-k="cat" data-c="${c}" data-v="${n}" aria-label="${c} ${n}">${n}</button>`).join('')}</div></div>`).join('') +
     '<p class="tiny muted">1 = schwach, 5 = hervorragend. Geschmack zählt doppelt.</p>';
   return `<div id="rf-${p}">
-    <div class="rate-head"><button data-act="rfExact" data-p="${p}" aria-label="Note eintippen"><span class="big-score ${v == null ? 'unset' : ''}" id="${p}-score" style="${v == null ? '' : 'color:' + scoreFg(v)}">${v == null ? '–' : fmt(v, 1)}</span><span class="of10">/10</span></button>
-    <div class="verdict" id="${p}-verdict">${verdict(v)}</div></div>
+    <div class="rate-head">${pint(v, beer(b), '', p + '-pint')}<div class="rate-num"><button data-act="rfExact" data-p="${p}" aria-label="Note eintippen"><span class="big-score ${v == null ? 'unset' : ''}" id="${p}-score" style="${v == null ? '' : 'color:' + scoreFg(v)}">${v == null ? '–' : fmt(v, 1)}</span><span class="of10">/10</span></button>
+    <div class="verdict" id="${p}-verdict">${verdict(v)}</div></div></div>
     ${d.mode === 'quick' ? quick : detail}
     <div class="seg" style="margin-top:16px"><button class="${d.mode === 'quick' ? 'on' : ''}" data-act="rf" data-p="${p}" data-k="mode" data-v="quick">Schnell</button><button class="${d.mode === 'detail' ? 'on' : ''}" data-act="rf" data-p="${p}" data-k="mode" data-v="detail">Detailliert</button></div>
     <div class="rf-photo">${d.photo ? `<img src="${photoUrl(d.photo)}" alt="Dein Foto"><button class="icon-btn" data-act="rf" data-p="${p}" data-k="nophoto" aria-label="Foto entfernen">${ICON.close}</button>`
@@ -1058,6 +1068,8 @@ function rfLive(p) {
   const sc = document.getElementById(p + '-score'), r = document.getElementById(p + '-range'), btn = document.getElementById(p + '-save');
   if (sc) { sc.textContent = v == null ? '–' : fmt(v, 1); sc.style.color = v == null ? '' : scoreFg(v); sc.classList.toggle('unset', v == null); }
   document.getElementById(p + '-verdict').textContent = verdict(v);
+  const gl = document.getElementById(p + '-pint');
+  if (gl) { gl.style.setProperty('--fill', pintFill(v) + '%'); gl.classList.toggle('empty', v == null); }
   if (r) { r.classList.toggle('unset', d.value == null); r.style.setProperty('--p', (d.value ?? 0) * 10 + '%'); r.style.setProperty('--c', scoreFg(d.value ?? 5)); }
   if (btn) { btn.disabled = v == null || !!sessionOf(f.s)?.closed || (own(f.s, f.b) && !d.dirty); btn.textContent = saveLabel(f, d); }
 }
