@@ -317,6 +317,10 @@ a.kpi { color: inherit; }
 @keyframes rise { 0% { transform: translateY(0); opacity: 0; } 15% { opacity: .8; } 85% { opacity: .6; } 100% { transform: translateY(calc(-1 * var(--h, 100px))); opacity: 0; } }
 .pint .shine { position: absolute; top: 10%; left: 18%; width: 7px; height: 62%; border-radius: 99px; background: linear-gradient(180deg, rgba(255, 255, 255, .75), rgba(255, 255, 255, 0)); pointer-events: none; }
 .pint.lg { width: 132px; height: 186px; }
+/* 3D-Glas (Three.js) liegt über dem CSS-Glas und ersetzt es, sobald es gezeichnet ist */
+.pint .glass3d { position: absolute; left: -34%; right: -34%; top: -16%; bottom: -10%; width: 168%; height: 126%; opacity: 0; transition: opacity .5s ease; touch-action: pan-y; cursor: grab; }
+.pint.is-3d .glass3d { opacity: 1; }
+.pint.is-3d .beer, .pint.is-3d .rim, .pint.is-3d .shine { opacity: 0; transition: opacity .3s ease; }
 .pint.lg .liquid::before { top: -16px; height: 26px; }
 
 /* ---------------------------------------------------------------- Landing */
@@ -555,3 +559,20 @@ details.more summary::-webkit-details-marker { display: none; }
 .logo-preview { display: flex; align-items: center; gap: 14px; margin: 4px 0 6px; }
 .logo-box { width: 96px; height: 96px; border-radius: 24px; background: #FFFFFF; display: grid; place-items: center; flex: none; box-shadow: inset 0 0 0 1px rgba(34, 27, 46, .1); overflow: hidden; }
 .logo-box img { width: 72%; height: 72%; object-fit: contain; mix-blend-mode: multiply; }
+
+/* ---------------------------------------------------------------- Feinschliff wie in iOS */
+/* Öffnet sich ein Sheet, tritt die Seite dahinter zurück (wie eine Karte im Stapel) */
+@media (max-width: 699px) {
+  #main, .topbar { transition: transform .5s var(--spring), filter .4s ease, border-radius .5s var(--spring); transform-origin: 50% 0; }
+  body.sheet-open #main { transform: translateY(calc(var(--safe-t) + 14px)) scale(.92); filter: brightness(.92); }
+  body.sheet-open .topbar { transform: translateY(calc(var(--safe-t) + 14px)) scale(.92); opacity: 0; }
+}
+/* Haarlinien auf Retina-Displays wirklich haarfein */
+@media (min-resolution: 2dppx) {
+  .item + .item::before { transform: scaleY(.5); }
+  .latest-foot, .savebar { border-top-width: .5px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  #main, .topbar { transition: none !important; }
+  body.sheet-open #main, body.sheet-open .topbar { transform: none; }
+}
