@@ -1,5 +1,19 @@
 # Changelog
 
+## Unveröffentlicht
+- Neues Erscheinungsbild „Kaltes Glas“: kühler, frostiger Hintergrund, weiße Flächen, Stout-Dunkel für Text und Bernstein nur dort, wo Bier ist
+- Neu: Beim Bewerten füllt sich ein Glas bis zur Note, mit Schaumkrone, aufsteigenden Perlen und der Farbe des Bierstils (Helles golden, Stout dunkel, Weizen trüb hell …); in Blindverkostungen bleibt die Farbe neutral
+- „Was trinkst du gerade?“ als Fläche aus Bier mit Schaumkante; der Eintragen-Knopf in der Tableiste ist jetzt bernsteinfarben
+- Überschriften und große Zahlen schmal gesetzt (Instrument Sans, 80 % Laufweite)
+- Neue Farben für Bier-Kacheln, Personen und Noten (Hopfen, Bernstein, Kirsch), Dunkelmodus in tiefem Porter statt Delft Blue
+- Neues App-Icon: volles Glas mit Schaumkrone
+- Bewegung reduziert, wenn das System es wünscht: Perlen und Einschenk-Animation entfallen dann
+- Neu: echtes 3D-Glas (Three.js) beim Bewerten und auf der Startseite: Glas mit Spiegelungen, Flüssigkeit in Stilfarbe, Schaumkrone, Perlen, schwappt bei jeder Änderung, lässt sich mit dem Finger drehen und stößt beim Speichern kurz an. Three.js wird erst geladen, wenn ein Glas zu sehen ist; ohne WebGL bleibt das gezeichnete Glas
+- Neu: Bewegung mit GSAP: Seitenwechsel wie in iOS (tiefer hinein von rechts, zurück von links), Bierliste sortiert und filtert mit gleitenden Einträgen (Flip), Zahlen zählen hoch, das Tasting-Podium steigt nacheinander auf
+- Öffnet sich ein Sheet, tritt die Seite dahinter zurück wie eine Karte im Stapel; Haarlinien auf Retina-Displays
+- Server liefert Textdateien gzip-komprimiert aus (Three.js 690 KB → 171 KB)
+- Bibliotheken liegen lokal unter `app/static/vendor/` (GSAP 3.12 mit Flip, Three.js r170) und sind offline verfügbar
+
 ## v3.0.0
 - Neu: Fotos zu jeder Bewertung (werden auf dem Handy verkleinert und auf dem Server gespeichert), Ausschank (Fass/Flasche/Dose) und Ort
 - Neu: „Prost!“ – auf Bewertungen der anderen anstoßen

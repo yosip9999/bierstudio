@@ -35,7 +35,7 @@ if (theme) document.documentElement.dataset.theme = theme;
 const fmt = (v, d = 1) => v == null || isNaN(v) ? '–' : (+v).toLocaleString('de-DE', { minimumFractionDigits: d === 1 ? 1 : 0, maximumFractionDigits: d });
 const hue = str => { let h = 7; for (const c of String(str)) h = (h * 31 + c.charCodeAt(0)) % 360; return h; };
 /** Personen und Bier-Kacheln: helle Tönungen der Palette mit dunkler Schrift derselben Farbe (flach, kein Verlauf). */
-const TONES = [['#DCEBE2', '#3F6B57'], ['#F7DDD4', '#A9472F'], ['#FAEBD0', '#7E5512'], ['#DCDDE7', '#3D405B'], ['#D5E3E4', '#35566A']];
+const TONES = [['#E1EAFB', '#2E4A86'], ['#FBE4DE', '#9A3B26'], ['#FCEFCF', '#7A5200'], ['#E1F1DF', '#2F6237'], ['#ECE4F7', '#5B3C86']];
 const toneOf = str => TONES[hue(str) % TONES.length];
 const tone = str => toneOf(str)[0];
 const toneInk = str => toneOf(str)[1];
@@ -85,6 +85,66 @@ const ICON = {
   camera: '<svg viewBox="0 0 24 24"><path d="M4 8.5A1.5 1.5 0 0 1 5.5 7h2.2L9 5h6l1.3 2h2.2A1.5 1.5 0 0 1 20 8.5v9a1.5 1.5 0 0 1-1.5 1.5h-13A1.5 1.5 0 0 1 4 17.5z"/><circle cx="12" cy="12.5" r="3.4"/></svg>',
   scan: '<svg viewBox="0 0 24 24"><path d="M4 8V5h3M17 5h3v3M20 16v3h-3M7 19H4v-3M8 9v6M11 9v6M14 9v6M17 9v6"/></svg>',
 };
+
+// ------------------------------------------------------------------ Bewegung (GSAP, Flip) und das 3D-Glas
+/** GSAP nur, wenn geladen und Bewegung erwünscht ist. */
+const GS = () => window.gsap && !matchMedia('(prefers-reduced-motion: reduce)').matches ? window.gsap : null;
+if (window.gsap && window.Flip) gsap.registerPlugin(Flip);
+const wait = ms => new Promise(r => setTimeout(r, ms));
+/** Inhalt austauschen; gleiche Einträge (data-flip-id) gleiten an ihren neuen Platz. */
+function flipSwap(el, html) {
+  const g = GS(), state = g && window.Flip ? Flip.getState(el.querySelectorAll('[data-flip-id]')) : null;
+  el.innerHTML = html;
+  if (state) flipIn(state, el);
+}
+function flipIn(state, root) {
+  Flip.from(state, {
+    targets: root.querySelectorAll('[data-flip-id]'), duration: .55, ease: 'power3.inOut', scale: false, prune: true,
+    onEnter: els => gsap.fromTo(els, { opacity: 0, scale: .96 }, { opacity: 1, scale: 1, duration: .4, ease: 'power2.out', clearProps: 'all' }),
+  });
+}
+/** Zahlen zählen beim Erscheinen von 0 hoch (data-count = Zielwert, data-d = Nachkommastellen). */
+function countUp(root) {
+  const g = GS();
+  if (!g) return;
+  for (const el of root.querySelectorAll('[data-count]')) {
+    const to = +el.dataset.count, d = +(el.dataset.d || 0), o = { v: 0 };
+    if (!Number.isFinite(to)) continue;
+    g.to(o, { v: to, duration: d ? 1.1 : .9, ease: 'expo.out', onUpdate: () => { el.textContent = d ? fmt(o.v, 1) : Math.round(o.v).toLocaleString('de-DE'); } });
+  }
+}
+/** Das Podium steigt auf: erst Platz 3, dann 2, zuletzt 1. */
+function podiumIn(root) {
+  const g = GS(), ps = root.querySelectorAll('.podium .p');
+  if (!g || ps.length < 3) return;
+  g.from([ps[2], ps[0], ps[1]], { y: 46, opacity: 0, duration: .7, ease: 'back.out(1.5)', stagger: .14, clearProps: 'transform,opacity' });
+}
+/** Seitenwechsel wie in iOS: tiefer hinein schiebt von rechts, zurück von links, Tabs blenden über. */
+let lastDepth = 0, lastTab = '';
+function pageIn(el, depth, tab) {
+  const g = GS();
+  if (!g) { el.classList.add('view'); return; }
+  const dir = depth > lastDepth ? 1 : depth < lastDepth ? -1 : 0;
+  const from = dir ? { x: 36 * dir, opacity: 0 } : tab !== lastTab ? { y: 10, opacity: 0, scale: .99 } : { opacity: 0 };
+  g.fromTo(el, from, { x: 0, y: 0, scale: 1, opacity: 1, duration: dir ? .5 : .42, ease: 'expo.out', clearProps: 'transform,opacity' });
+}
+/** CSS-Gläser bekommen, wo möglich, ein echtes 3D-Glas (Three.js wird erst dann geladen). */
+const glasses = new Map();
+let glassMod = null;
+/** Nur Gläser, die wirklich zu sehen sind (nicht in einem geschlossenen Sheet). */
+const liveGlass = el => el.isConnected && !el.closest('dialog:not([open])');
+function upgradeGlasses() {
+  for (const [el, c] of glasses) if (!liveGlass(el)) { c.dispose(); glasses.delete(el); }
+  if (!$$('.pint[data-3d]').some(el => !glasses.has(el) && liveGlass(el)) || !window.WebGLRenderingContext) return;
+  (glassMod ||= import('/glass3d.js').catch(() => null)).then(m => {
+    if (!m) return;
+    for (const el of $$('.pint[data-3d]')) {
+      if (glasses.has(el) || !liveGlass(el)) continue;
+      const c = m.mountGlass(el, { value: el.dataset.v === '' ? null : +el.dataset.v, color: el.style.getPropertyValue('--liq').trim() });
+      if (c) { glasses.set(el, c); requestAnimationFrame(() => el.classList.add('is-3d')); }
+    }
+  });
+}
 
 // ------------------------------------------------------------------ Toast & Rückfragen
 let toastTimer, toastAction = null;
@@ -155,9 +215,19 @@ const STYLE_FAMILY = [
   [/pils|hell|lager|export|kölsch|kolsch|keller|zwickel|landbier|blonde|urtyp/i, 'pale'],
 ];
 const STYLE_TILE = {
-  pale: ['#F2CC8F', '#2B2D42'], amber: ['#E07A5F', '#2B2D42'], dark: ['#3D405B', '#F4F1DE'],
-  hop: ['#81B29A', '#2B2D42'], wheat: ['#EADFBF', '#2B2D42'], fresh: ['#DCEBE2', '#3F6B57'], none: ['var(--surface-2)', 'var(--muted)'],
+  pale: ['#F8D16A', '#3D2A00'], amber: ['#E99145', '#3A1C00'], dark: ['#3B2A2E', '#F6EBDD'],
+  hop: ['#B4D98F', '#22381A'], wheat: ['#F4E5BC', '#4A3608'], fresh: ['#D9EEE6', '#2C5B4F'], none: ['var(--surface-2)', 'var(--muted)'],
 };
+/** Farbe der Flüssigkeit im Glas, je nach Bierstil. */
+const LIQUID = { pale: '#F4B428', amber: '#D9711C', dark: '#3A2219', hop: '#EBA21E', wheat: '#F2C35A', fresh: '#F6D66E', none: '#F2A71B' };
+/** Füllhöhe: leer bei keiner Note, sonst so, dass die Schaumkrone noch ins Glas passt. */
+const pintFill = v => v == null ? 0 : 8 + clamp(v) * 7.6;
+const PINT_RIM = '<svg class="rim" viewBox="0 0 88 124" preserveAspectRatio="none" aria-hidden="true"><path d="M1.5 1.5 L86.5 1.5 L78.4 122.5 L9.6 122.5 Z"/><path class="base" d="M10.5 120 L77.5 120"/></svg>';
+/** Das Glas: füllt sich bis zur Note, Flüssigkeit in der Farbe des Bierstils. */
+function pint(v, b, cls = '', id = '') {
+  const liq = LIQUID[b && !b.blind ? styleFamily(b) : 'none'];
+  return `<span class="pint ${cls} ${v == null ? 'empty' : ''}" ${id ? `id="${id}"` : ''} data-3d data-v="${v ?? ''}" style="--fill:${pintFill(v)}%;--liq:${liq}" aria-hidden="true"><span class="beer"><span class="liquid"><i></i><i></i><i></i><i></i></span></span>${PINT_RIM}<span class="shine"></span></span>`;
+}
 const styleFamily = b => (STYLE_FAMILY.find(([re]) => re.test(b?.style || b?.name || '')) || [0, 'none'])[1];
 const NOISE = new Set(['bier', 'beer', 'brauerei', 'the', 'der', 'die', 'das', 'la', 'le', 'de', 'st', 'st.', 'sankt']);
 function monogram(b) {
@@ -509,8 +579,14 @@ function render() {
   const changed = lastRouteKey !== (landing ? '~' : r.key);
   if (changed && lastRouteKey !== null) scrollPos[lastRouteKey] = scrollY;
   const y = changed ? (scrollPos[r.key] || 0) : scrollY;
-  $('#main').innerHTML = `<div class="${changed ? 'view' : ''}">${html}</div>`;
+  const flipState = !changed && GS() && window.Flip ? Flip.getState('#main [data-flip-id]') : null;
+  $('#main').innerHTML = `<div>${html}</div>`;
   scrollTo(0, y);
+  const view = $('#main').firstElementChild, depth = landing ? 0 : PARENT[r.page] ? 1 : 0;
+  if (changed) { pageIn(view, depth, pg.tab); countUp(view); podiumIn(view); }
+  else if (flipState) flipIn(flipState, $('#main'));
+  lastDepth = depth; lastTab = pg.tab;
+  upgradeGlasses();
   const on = $('main .chips .chip.on');
   if (on && r.page === 'tasting') { const c = on.parentElement; c.scrollLeft = on.offsetLeft - (c.clientWidth - on.offsetWidth) / 2; }
   lastRouteKey = landing ? '~' : r.key;
@@ -536,7 +612,7 @@ const emptyCard = (icon, title, text, btn = '') => `<div class="card empty"><h2>
 function renderLanding() {
   const ps = people(), nb = D.beers.filter(shown).length, nr = knownRatings().length;
   return `<section class="landing">
-    <img class="hero-mark" src="/icons/icon.svg" alt="" width="84" height="84">
+    <div class="hero-glass">${pint(8.6, null, 'lg')}</div>
     <h1>Dein Bierbuch.<br><em>Mit deinen Leuten.</em></h1>
     <p class="lead">Trag ein, was du gerade trinkst, gib eine Note und sieh, was die anderen davon halten.</p>
     <div class="features">
@@ -589,7 +665,7 @@ function renderStart() {
   return {
     title: 'Übersicht', html: `
     <div class="greet"><div class="eyebrow">${esc(date)}</div><h1 class="large-title">${hello}, ${esc(me)}</h1></div>
-    <button class="drink-cta" data-act="add"><span class="glass-ic">${ICON.glass}</span><span class="grow"><b>Was trinkst du gerade?</b><span>Eintragen und bewerten</span></span><span class="chev-r">›</span></button>
+    <button class="drink-cta" data-act="add"><span class="bubbles" aria-hidden="true"><i></i><i></i><i></i><i></i></span><span class="glass-ic">${ICON.glass}</span><span class="grow"><b>Was trinkst du gerade?</b><span>Eintragen und bewerten</span></span><span class="chev-r">›</span></button>
     ${mine.length ? `<div class="chips again" aria-label="Nochmal trinken">${mine.slice(0, 8).map(x => `<button class="chip" data-act="rate" data-id="${x.b.id}">${thumb(x.b)}<span>${esc(x.b.name.length > 22 ? x.b.name.slice(0, 21) + '…' : x.b.name)}</span></button>`).join('')}</div>` : ''}
     ${latest ? latestCard(latest) : ''}
     ${wishlist().length ? `<div class="section-title">Auf deiner Merkliste <a href="${href('person', me)}">Alle</a></div><div class="chips">${wishlist().map(beer).filter(shown).slice(0, 10).map(b => `<a class="chip wish-chip" href="${href('bier', b.id)}">${thumb(b)}<span>${esc(b.name.length > 22 ? b.name.slice(0, 21) + '…' : b.name)}</span></a>`).join('')}</div>` : ''}
@@ -598,7 +674,7 @@ function renderStart() {
       : latest ? '<p class="small muted" style="margin:0 4px">Noch nichts weiter. Das nächste Bier erscheint hier für alle.</p>' : emptyCard('🍺', 'Noch nichts getrunken', 'Trag dein erstes Bier ein. Es erscheint hier für alle.')}
     ${ps.length > 1 ? `<div class="section-title">Leute <a href="#/leute">Alle</a></div><div class="people-row">${ps.map(x => `<a href="${href('person', x.p)}">${avatar(x.p)}<span>${esc(x.p)}</span></a>`).join('')}</div>` : ''}
     ${best.length ? `<div class="section-title">Bestenliste <a href="#/biere">Alle Biere</a></div><div class="list">${best.map((x, i) => `<a class="item" href="${href('bier', x.b.id)}"><span class="num faint" style="width:16px;font-weight:700;text-align:center">${i + 1}</span>${thumb(x.b)}<div class="grow"><h3>${esc(x.b.name)}</h3><div class="sub">${x.people} ${x.people === 1 ? 'Person' : 'Personen'}${meta(x.b) ? ' · ' + meta(x.b) : ''}</div></div>${score(x.avg)}</a>`).join('')}</div>` : ''}
-    <div class="kpis" style="margin-top:28px"><a class="kpi" href="#/biere"><b>${D.beers.filter(shown).length}</b><span>Biere</span></a><div class="kpi"><b>${knownRatings().length}</b><span>Bewertungen</span></div><a class="kpi" href="#/leute"><b>${ps.length}</b><span>Leute</span></a></div>`,
+    <div class="kpis" style="margin-top:28px"><a class="kpi" href="#/biere"><b data-count="${D.beers.filter(shown).length}">${D.beers.filter(shown).length}</b><span>Biere</span></a><div class="kpi"><b data-count="${knownRatings().length}">${knownRatings().length}</b><span>Bewertungen</span></div><a class="kpi" href="#/leute"><b data-count="${ps.length}">${ps.length}</b><span>Leute</span></a></div>`,
   };
 }
 
@@ -625,7 +701,7 @@ function latestCard(r) {
       <div class="small muted">${meta(b) || '&nbsp;'}</div></div></div>
     ${r.note ? `<p class="latest-note">„${esc(r.note)}“</p>` : ''}
     ${r.tags?.length ? `<div class="tags">${r.tags.map(t => `<span class="pill">${esc(t)}</span>`).join('')}</div>` : ''}
-    <div class="latest-foot"><div><span class="latest-score" style="color:${scoreFg(r.value)}">${fmt(r.value, 1)}</span><span class="of10">/10</span><div class="tiny muted">${esc(verdict(r.value))}</div></div>
+    <div class="latest-foot"><div><span class="latest-score" style="color:${scoreFg(r.value)}" data-count="${r.value}" data-d="1">${fmt(r.value, 1)}</span><span class="of10">/10</span><div class="tiny muted">${esc(verdict(r.value))}</div></div>
       <div class="latest-right">${cheersBtn(r)}${ag.people > 1 ? `<div class="latest-avg"><b>${fmt(ag.avg, 1)}</b><span>Ø von ${ag.people}</span></div>` : ''}</div></div>
   </div>`;
 }
@@ -667,13 +743,13 @@ function beerRows() {
   rows.sort(q ? (a, b) => b.s - a.s : by[beerList.sort]);
   setTimeout(() => { const n = $('#beer-n'); if (n) n.textContent = rows.length === 1 ? '1 Bier' : rows.length + ' Biere'; });
   if (!rows.length) return emptyCard('🔍', 'Nichts gefunden', q ? 'Noch nicht im Bierbuch.' : 'Hier ist noch nichts.', q ? `<button class="btn primary" data-act="add" data-name="${esc(q)}">„${esc(q)}“ eintragen</button>` : '');
-  return `<div class="list">${rows.map(x => `<a class="item" href="${href('bier', x.b.id)}">${thumb(x.b)}
+  return `<div class="list">${rows.map(x => `<a class="item" data-flip-id="b-${x.b.id}" href="${href('bier', x.b.id)}">${thumb(x.b)}
     <div class="grow"><h3>${esc(x.b.name)}${x.fav ? ' <span class="heart">♥</span>' : ''}</h3><div class="sub">${meta(x.b) || 'Keine Infos'}</div></div>
     ${scoreCol(x.ag.avg, x.my != null ? 'ich ' + fmt(x.my, 1) : x.ag.people ? x.ag.people + '×' : 'neu')}</a>`).join('')}</div>`;
 }
-ON.beerQ = el => { beerList.q = el.value; $('#beer-list').innerHTML = beerRows(); };
+ON.beerQ = el => { beerList.q = el.value; flipSwap($('#beer-list'), beerRows()); };
 ACT.beerF = el => { beerList.f = el.dataset.v; render(); };
-CH.beerSort = el => { beerList.sort = el.value; $('#beer-list').innerHTML = beerRows(); };
+CH.beerSort = el => { beerList.sort = el.value; flipSwap($('#beer-list'), beerRows()); };
 
 // ---------- Bier-Detail
 function renderBeer(r) {
@@ -686,7 +762,7 @@ function renderBeer(r) {
     title: name, html: `
     <div class="page-head">${thumb(b, null, 'lg')}<div class="grow"><h1 class="large-title">${esc(name)}</h1><div class="small muted">${b.brewery && !b.blind ? `<a href="${href('brauerei', b.brewery)}">${esc(b.brewery)}</a>${meta({ ...b, brewery: '' }, true) ? ' · ' + meta({ ...b, brewery: '' }, true) : ''}` : meta(b, true) || 'Keine weiteren Infos'}</div>
       ${b.barcode ? `<div class="tiny faint" style="margin-top:2px">EAN ${esc(b.barcode)}</div>` : ''}</div></div>
-    <div class="card"><div class="between"><div class="big-avg"><b style="color:${scoreFg(ag.avg)}">${fmt(ag.avg, 1)}</b><span>Ø von ${ag.people} ${ag.people === 1 ? 'Person' : 'Personen'}</span></div></div>
+    <div class="card"><div class="between"><div class="big-avg"><b style="color:${scoreFg(ag.avg)}" ${ag.avg != null ? `data-count="${ag.avg}" data-d="1"` : ''}>${fmt(ag.avg, 1)}</b><span>Ø von ${ag.people} ${ag.people === 1 ? 'Person' : 'Personen'}</span></div></div>
       ${rs.length ? `<div class="strip">${Object.entries(ag.per).map(([u, v]) => `<span class="pt" style="left:${mean(v) * 10}%;background:${toneDot(u)}" title="${esc(u)}"></span>`).join('')}${ag.avg != null ? `<span class="avg" style="left:${ag.avg * 10}%"></span>` : ''}</div><div class="scale"><span>0</span><span>5</span><span>10</span></div>` : ''}
       <div class="btns"><button class="btn primary" data-act="rate" data-id="${b.id}">${mySolo ? `Meine Note ändern (${fmt(mySolo.value, 1)})` : 'Bewerten'}</button>${b.blind ? '' : `<button class="btn ${wished(b.id) ? 'on-wish' : ''}" data-act="wish" data-id="${b.id}" aria-pressed="${wished(b.id)}">${wished(b.id) ? '✓ Gemerkt' : 'Merken'}</button>`}${canAdd ? `<button class="btn" data-act="addExisting" data-id="${b.id}">Zum Tasting</button>` : ''}</div></div>
     ${(() => { const ph = rs.filter(x => x.photo); return ph.length ? `<div class="section-title">Fotos</div><div class="photo-row">${ph.map(x => `<img src="${photoUrl(x.photo)}" alt="Foto von ${esc(x.user)}" loading="lazy">`).join('')}</div>` : ''; })()}
@@ -896,7 +972,7 @@ function renderResults(s) {
   const ranked = rows.filter(x => x.a != null).sort((a, b) => b.a - a.a);
   if (!ranked.length) return emptyCard('📊', 'Noch keine Noten', 'Sobald bewertet wird, entsteht hier die Rangliste.');
   const medal = ['1', '2', '3'];
-  const podium = ranked.length >= 3 ? `<div class="podium">${[1, 0, 2].map(i => `<div class="p p${i + 1}"><div class="medal">${medal[i]}.</div><b style="color:${scoreFg(ranked[i].a)}">${fmt(ranked[i].a, 1)}</b><div class="nm">${esc(label(ranked[i].b, s))}</div></div>`).join('')}</div>` : '';
+  const podium = ranked.length >= 3 ? `<div class="podium">${[1, 0, 2].map(i => `<div class="p p${i + 1}"><div class="medal">${medal[i]}.</div><b style="color:${scoreFg(ranked[i].a)}" data-count="${ranked[i].a}" data-d="1">${fmt(ranked[i].a, 1)}</b><div class="nm">${esc(label(ranked[i].b, s))}</div></div>`).join('')}</div>` : '';
   const list = ranked.map((x, i) => `<a class="item" href="${href('bier', x.id)}"><span class="num faint" style="width:18px;text-align:center;font-weight:700">${i + 1}</span>
     <div class="grow"><h3>${esc(label(x.b, s))}</h3><div class="sub">${x.vis.length} Noten${x.fav ? ` · ♥ ${x.fav}` : ''}</div>
     <div class="strip">${x.vis.map(v => `<span class="pt" style="left:${v.value * 10}%;background:${toneDot(v.user)}" title="${esc(v.user)}: ${fmt(v.value)}"></span>`).join('')}<span class="avg" style="left:${x.a * 10}%"></span></div></div>${score(x.a)}</a>`).join('');
@@ -1035,8 +1111,8 @@ function rateForm(p, s, b, opt = {}) {
   const detail = CATS.map(c => `<div class="cat"><span>${c}${W[c] > 1 ? ' <small>×2</small>' : ''}</span><div class="five">${[1, 2, 3, 4, 5].map(n => `<button class="${d.detail[c] === n ? 'on' : ''}" data-act="rf" data-p="${p}" data-k="cat" data-c="${c}" data-v="${n}" aria-label="${c} ${n}">${n}</button>`).join('')}</div></div>`).join('') +
     '<p class="tiny muted">1 = schwach, 5 = hervorragend. Geschmack zählt doppelt.</p>';
   return `<div id="rf-${p}">
-    <div class="rate-head"><button data-act="rfExact" data-p="${p}" aria-label="Note eintippen"><span class="big-score ${v == null ? 'unset' : ''}" id="${p}-score" style="${v == null ? '' : 'color:' + scoreFg(v)}">${v == null ? '–' : fmt(v, 1)}</span><span class="of10">/10</span></button>
-    <div class="verdict" id="${p}-verdict">${verdict(v)}</div></div>
+    <div class="rate-head">${pint(v, beer(b), '', p + '-pint')}<div class="rate-num"><button data-act="rfExact" data-p="${p}" aria-label="Note eintippen"><span class="big-score ${v == null ? 'unset' : ''}" id="${p}-score" style="${v == null ? '' : 'color:' + scoreFg(v)}">${v == null ? '–' : fmt(v, 1)}</span><span class="of10">/10</span></button>
+    <div class="verdict" id="${p}-verdict">${verdict(v)}</div></div></div>
     ${d.mode === 'quick' ? quick : detail}
     <div class="seg" style="margin-top:16px"><button class="${d.mode === 'quick' ? 'on' : ''}" data-act="rf" data-p="${p}" data-k="mode" data-v="quick">Schnell</button><button class="${d.mode === 'detail' ? 'on' : ''}" data-act="rf" data-p="${p}" data-k="mode" data-v="detail">Detailliert</button></div>
     <div class="rf-photo">${d.photo ? `<img src="${photoUrl(d.photo)}" alt="Dein Foto"><button class="icon-btn" data-act="rf" data-p="${p}" data-k="nophoto" aria-label="Foto entfernen">${ICON.close}</button>`
@@ -1052,12 +1128,14 @@ function rateForm(p, s, b, opt = {}) {
     <div class="${opt.sticky ? 'savebar' : ''}" style="${opt.sticky ? '' : 'margin-top:16px'}"><button class="btn primary block" id="${p}-save" data-act="rfSave" data-p="${p}" ${v == null || closed || (ex && !d.dirty) ? 'disabled' : ''}>${saveLabel(f, d)}</button></div>
   </div>`;
 }
-function rfRerender(p) { const f = forms[p], el = document.getElementById('rf-' + p); if (el) el.outerHTML = rateForm(p, f.s, f.b, f); }
+function rfRerender(p) { const f = forms[p], el = document.getElementById('rf-' + p); if (el) { el.outerHTML = rateForm(p, f.s, f.b, f); upgradeGlasses(); } }
 function rfLive(p) {
   const f = forms[p], d = draftFor(f.s, f.b), v = draftValue(d);
   const sc = document.getElementById(p + '-score'), r = document.getElementById(p + '-range'), btn = document.getElementById(p + '-save');
   if (sc) { sc.textContent = v == null ? '–' : fmt(v, 1); sc.style.color = v == null ? '' : scoreFg(v); sc.classList.toggle('unset', v == null); }
   document.getElementById(p + '-verdict').textContent = verdict(v);
+  const gl = document.getElementById(p + '-pint');
+  if (gl) { gl.style.setProperty('--fill', pintFill(v) + '%'); gl.classList.toggle('empty', v == null); glasses.get(gl)?.set(v); }
   if (r) { r.classList.toggle('unset', d.value == null); r.style.setProperty('--p', (d.value ?? 0) * 10 + '%'); r.style.setProperty('--c', scoreFg(d.value ?? 5)); }
   if (btn) { btn.disabled = v == null || !!sessionOf(f.s)?.closed || (own(f.s, f.b) && !d.dirty); btn.textContent = saveLabel(f, d); }
 }
@@ -1116,6 +1194,8 @@ ACT.rfSave = async el => {
   try {
     const r = await send('rate', body, { queue: true, apply: () => applyRate(body) });
     haptic(25); toast(r.queued ? 'Offline gespeichert, wird synchronisiert' : `${fmt(v, 1)} für ${label(beer(f.b), sessionOf(f.s))} gespeichert`);
+    const gl = glasses.get(document.getElementById(p + '-pint'));
+    if (gl && GS()) { gl.cheer(); await wait(560); }
     if (f.onSaved) f.onSaved(); else render();
   } catch (e) { drafts[k] = d; saveDrafts(); toast(e.message); rfRerender(p); }
 };
@@ -1418,17 +1498,20 @@ function openSheet(html) {
     sheet.showModal();
     history.pushState({ sheet: 1, inApp: true }, '');
     panel.style.setProperty('--dy', '0px');
-    requestAnimationFrame(() => requestAnimationFrame(() => sheet.classList.add('in')));
+    requestAnimationFrame(() => requestAnimationFrame(() => { sheet.classList.add('in'); document.body.classList.add('sheet-open'); }));
   }
   $('#sheet-body').scrollTop = 0;
+  upgradeGlasses();
 }
 function closeSheet(fromPop = false) {
   if (!sheet.open || closing) return;
   stopScan();
   sheet.classList.remove('in', 'dragging');
+  document.body.classList.remove('sheet-open');
   const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
   closing = setTimeout(() => {
     closing = null; sheet.close(); panel.style.setProperty('--dy', '0px'); delete forms.s; addState = null;
+    upgradeGlasses();
     if (!fromPop && history.state?.sheet) { sheetBack = true; history.back(); } else afterSheet();
   }, reduce ? 200 : 340);
 }

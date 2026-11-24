@@ -8,7 +8,7 @@ Umgebungsvariablen:
   OFF_CONTACT   Kontakt (E-Mail/URL) für Open-Food-Facts-Abfragen (optional)
   BACKUP_KEEP   Anzahl automatischer Backups (Standard 60)
 """
-import csv, datetime, io, json, os, re, secrets, shutil, tempfile, threading, time
+import csv, datetime, gzip, io, json, os, re, secrets, shutil, tempfile, threading, time
 import urllib.error, urllib.parse, urllib.request
 import lookup
 from http.server import ThreadingHTTPServer, BaseHTTPRequestHandler
@@ -1079,6 +1079,18 @@ def csv_export(user, sid):
 MIME = {'.html': 'text/html', '.js': 'text/javascript', '.css': 'text/css', '.svg': 'image/svg+xml',
         '.png': 'image/png', '.webmanifest': 'application/manifest+json', '.json': 'application/json',
         '.ico': 'image/x-icon', '.woff': 'font/woff', '.woff2': 'font/woff2'}
+GZIP_TYPES = {'.html', '.js', '.css', '.svg', '.json', '.webmanifest'}
+_gz_cache = {}
+
+
+def gzipped(f, body):
+    """Statische Textdateien einmal komprimieren und im Speicher halten (bis sich die Datei ändert)."""
+    key = (str(f), f.stat().st_mtime_ns)
+    if key not in _gz_cache:
+        if len(_gz_cache) > 64:
+            _gz_cache.clear()
+        _gz_cache[key] = gzip.compress(body, 6)
+    return _gz_cache[key]
 
 
 class Handler(BaseHTTPRequestHandler):
@@ -1120,7 +1132,11 @@ class Handler(BaseHTTPRequestHandler):
             extra['Content-Security-Policy'] = ("default-src 'self'; img-src 'self' data: https://*.openfoodfacts.org "
                                                 "https://*.openfoodfacts.net; style-src 'self' 'unsafe-inline'; "
                                                 "script-src 'self'; connect-src 'self'; media-src 'self' blob:")
-        self.send(200, f.read_bytes(), MIME.get(f.suffix, 'application/octet-stream'), extra)
+        body = f.read_bytes()
+        if f.suffix in GZIP_TYPES and len(body) > 1024 and 'gzip' in self.headers.get('Accept-Encoding', ''):
+            body = gzipped(f, body)
+            extra.update({'Content-Encoding': 'gzip', 'Vary': 'Accept-Encoding'})
+        self.send(200, body, MIME.get(f.suffix, 'application/octet-stream'), extra)
 
     def do_HEAD(self):
         self.do_GET()
