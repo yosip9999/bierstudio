@@ -84,6 +84,7 @@ const ICON = {
   cart: '<svg viewBox="0 0 24 24"><path d="M3.5 5h2l2 10h10l2-7H7"/><circle cx="9.5" cy="19" r="1.3"/><circle cx="16.5" cy="19" r="1.3"/></svg>',
   pin: '<svg viewBox="0 0 24 24"><path d="M12 21s-6-5.6-6-10.5a6 6 0 0 1 12 0C18 15.4 12 21 12 21z"/><circle cx="12" cy="10.5" r="2.2"/></svg>',
   wine: '<svg viewBox="0 0 24 24"><path d="M7.5 3.5h9c.4 3.6-.3 6.4-1.8 7.9A4 4 0 0 1 12 12.5a4 4 0 0 1-2.7-1.1C7.8 9.9 7.1 7.1 7.5 3.5zM12 12.5V20M8.5 20.5h7M7.6 7.5h8.8"/></svg>',
+  plus: '<svg viewBox="0 0 24 24"><path d="M12 5.5v13M5.5 12h13"/></svg>',
   pen: '<svg viewBox="0 0 24 24"><path d="M4 20h4L19 9l-4-4L4 16z"/><path d="m13.5 6.5 4 4"/></svg>',
   camera: '<svg viewBox="0 0 24 24"><path d="M4 8.5A1.5 1.5 0 0 1 5.5 7h2.2L9 5h6l1.3 2h2.2A1.5 1.5 0 0 1 20 8.5v9a1.5 1.5 0 0 1-1.5 1.5h-13A1.5 1.5 0 0 1 4 17.5z"/><circle cx="12" cy="12.5" r="3.4"/></svg>',
   scan: '<svg viewBox="0 0 24 24"><path d="M4 8V5h3M17 5h3v3M20 16v3h-3M7 19H4v-3M8 9v6M11 9v6M14 9v6M17 9v6"/></svg>',
@@ -843,7 +844,7 @@ function renderBrewery(r) {
     <div class="kpis"><div class="kpi"><b>${list.length}</b><span>Biere probiert</span></div><div class="kpi"><b style="color:${scoreFg(a)}">${fmt(a, 1)}</b><span>Ø Note</span></div><div class="kpi"><b>${all.length}</b><span>Bewertungen</span></div></div>
     <div class="section-title">Im Bierbuch</div>
     <div class="list">${list.map(x => `<a class="item" href="${href('bier', x.b.id)}">${thumb(x.b)}<div class="grow"><h3>${esc(x.b.name)}</h3><div class="sub">${[x.b.style, x.b.abv != null && x.b.abv !== '' ? fmt(x.b.abv, 1) + ' %' : '', x.people ? x.people + '× bewertet' : ''].filter(Boolean).map(esc).join(' · ')}</div></div>${score(x.avg)}</a>`).join('')}</div>
-    ${others.length ? `<div class="section-title">Noch nicht probiert</div><div class="list">${others.map(c => `<button class="item" data-act="add" data-name="${esc(c.name)}">${candThumb(c)}<div class="grow"><h3>${esc(c.name)}</h3><div class="sub">${candMeta({ ...c, brewery: '' })}</div></div><span class="chev">＋</span></button>`).join('')}</div>` : ''}`,
+    ${others.length ? `<div class="section-title">Noch nicht probiert</div><div class="list">${others.map(c => `<button class="item" data-act="add" data-name="${esc(c.name)}">${candThumb(c)}<div class="grow"><h3>${esc(c.name)}</h3><div class="sub">${candMeta({ ...c, brewery: '' })}</div></div><span class="add-dot">${ICON.plus}</span></button>`).join('')}</div>` : ''}`,
   };
 }
 
@@ -1192,7 +1193,7 @@ function renderTastingRate(s) {
   const id = selectedBeer(s), b = beer(id), idx = s.beers.indexOf(id);
   const raters = new Set(D.ratings.filter(x => x.session === s.id && x.beer === id).map(x => x.user));
   const ppl = [...new Set([...s.people, ...raters])];
-  return `<div class="chips">${s.beers.map((x, i) => { const l = label(beer(x), s); return `<button class="chip ${x === id ? 'on' : ''}" data-act="pickBeer" data-s="${s.id}" data-id="${x}">${s.current === x ? '● ' : ''}${i + 1}. ${esc(l.length > 18 ? l.slice(0, 17) + '…' : l)}${own(s.id, x) ? ' ✓' : ''}</button>`; }).join('')}${s.closed ? '' : `<button class="chip" data-act="addToSession" data-id="${s.id}">＋ Bier</button>`}</div>
+  return `<div class="chips">${s.beers.map((x, i) => { const l = label(beer(x), s); return `<button class="chip ${x === id ? 'on' : ''}" data-act="pickBeer" data-s="${s.id}" data-id="${x}">${s.current === x ? '● ' : ''}${i + 1}. ${esc(l.length > 18 ? l.slice(0, 17) + '…' : l)}${own(s.id, x) ? ' ✓' : ''}</button>`; }).join('')}${s.closed ? '' : `<button class="chip add-chip" data-act="addToSession" data-id="${s.id}">${ICON.plus}Bier</button>`}</div>
   <div class="card" style="margin-top:12px">
     <div class="row" style="gap:14px">${thumb(b, s, 'lg')}<div class="grow"><div class="row" style="gap:6px">${s.current === id ? '<span class="pill live">Im Glas</span>' : ''}<span class="pill">${idx + 1} von ${s.beers.length}</span></div>
       <h2 class="title2" style="margin:6px 0 2px">${esc(label(b, s))}</h2><div class="small muted">${meta(b) || 'Keine weiteren Infos'}</div></div></div>
@@ -1278,7 +1279,7 @@ function sessionForm(s) {
     <div class="grid2"><div><label class="lbl" for="s-date">Datum</label><input class="field" id="s-date" type="date" value="${esc(s.date)}"></div>
     <div><label class="lbl" for="s-place">Ort</label><input class="field" id="s-place" value="${esc(s.place)}" maxlength="120"></div></div>
     <label class="lbl">Wer ist dabei?</label><div class="chips wrap" id="s-people">${all.map(p => `<button class="chip ${s.people.includes(p) ? 'on' : ''}" data-act="togglePerson" data-v="${esc(p)}">${esc(p)}</button>`).join('')}</div>
-    <div class="row" style="margin-top:10px"><input class="field" id="s-newp" placeholder="Weitere Person" maxlength="40"><button class="btn" data-act="addPersonChip">＋</button></div>
+    <div class="row" style="margin-top:10px"><input class="field" id="s-newp" placeholder="Weitere Person" maxlength="40"><button class="btn icon-only" data-act="addPersonChip" aria-label="Person hinzufügen">${ICON.plus}</button></div>
     ${isNew ? `<label class="switch"><span><b>Blindverkostung</b><br><span class="small muted">Biernamen und fremde Noten bleiben verdeckt, bis ihr auflöst.</span></span><input type="checkbox" id="s-blind"></label>` : ''}
     <div class="savebar"><button class="btn primary block" data-act="saveSession" data-id="${isNew ? '' : s.id}">${isNew ? 'Tasting starten' : 'Speichern'}</button></div>`);
 }
@@ -1363,7 +1364,7 @@ function rateForm(p, s, b, opt = {}) {
       : `<label class="photo-add"><input type="file" accept="image/*" capture="environment" data-change="photo" data-p="${p}" hidden>${ICON.camera}<span id="${p}-photo-lbl">Foto hinzufügen</span></label>`}</div>
     <div class="seg serving">${SERVINGS.map(x => `<button class="${d.serving === x ? 'on' : ''}" data-act="rf" data-p="${p}" data-k="serving" data-v="${x}">${x}</button>`).join('')}</div>
     <details class="more" ${d.tags.length || d.note || d.place ? 'open' : ''}><summary>Eindruck, Notiz und Ort</summary>
-    <div class="chips wrap" style="margin-top:6px">${[...new Set([...TAGS, ...d.tags])].map(t => `<button class="chip ${d.tags.includes(t) ? 'on' : ''}" data-act="rf" data-p="${p}" data-k="tag" data-v="${esc(t)}">${esc(t)}</button>`).join('')}<button class="chip" data-act="rf" data-p="${p}" data-k="newtag" aria-label="Eigener Eindruck">＋</button></div>
+    <div class="chips wrap" style="margin-top:6px">${[...new Set([...TAGS, ...d.tags])].map(t => `<button class="chip ${d.tags.includes(t) ? 'on' : ''}" data-act="rf" data-p="${p}" data-k="tag" data-v="${esc(t)}">${esc(t)}</button>`).join('')}<button class="chip add-chip" data-act="rf" data-p="${p}" data-k="newtag" aria-label="Eigener Eindruck">${ICON.plus}</button></div>
     <textarea class="field" id="${p}-note" data-on="note" data-p="${p}" rows="2" maxlength="1000" placeholder="Was bleibt hängen?" style="margin-top:12px">${esc(d.note)}</textarea>
     <input class="field" id="${p}-place" data-on="place" data-p="${p}" maxlength="80" placeholder="Wo? (Kneipe, Ort …)" value="${esc(d.place)}" style="margin-top:10px" autocomplete="off"></details>
     <div class="between" style="margin-top:12px">
@@ -1503,8 +1504,8 @@ function addResults() {
   addState.cat = searchCatalog(q);
   const exact = local.some(x => x.s >= 1.5);
   box.innerHTML = group('Im Bierbuch', local.map(x => { const ag = beerAgg(x.b.id); return row('addPick', `data-id="${x.b.id}"`, thumb(x.b), esc(x.b.name), meta(x.b), scoreCol(ag.avg, ag.people ? ag.people + '×' : '')); }).join(''))
-    + group('Bekannte Biere', addState.cat.map((c, i) => row('addCat', `data-i="${i}"`, candThumb(c), esc(c.name), candMeta(c), '<span class="chev">＋</span>')).join(''))
-    + (exact || isCode ? '' : group(local.length || addState.cat.length ? 'Nicht dabei?' : 'Neu', row('addNew', 'class="new-row"', '<span class="thumb">＋</span>', `„${esc(q)}“ neu eintragen`, 'Details kannst du gleich oder später ergänzen')))
+    + group('Bekannte Biere', addState.cat.map((c, i) => row('addCat', `data-i="${i}"`, candThumb(c), esc(c.name), candMeta(c), '<span class="add-dot">' + ICON.plus + '</span>')).join(''))
+    + (exact || isCode ? '' : group(local.length || addState.cat.length ? 'Nicht dabei?' : 'Neu', row('addNew', 'class="new-row"', '<span class="thumb">' + ICON.plus + '</span>', `„${esc(q)}“ neu eintragen`, 'Details kannst du gleich oder später ergänzen')))
     + (q.length >= 3 ? `<button class="btn ghost block" data-act="worldSearch" style="margin-top:10px">${isCode ? 'Barcode' : '„' + esc(q) + '“'} weltweit suchen</button>` : '');
 }
 /** Kontext prüfen und dann bewerten. */
@@ -1562,7 +1563,7 @@ ACT.worldSearch = async () => {
   try {
     const r = code ? await http('/api/off/barcode?code=' + q).then(x => ({ results: x.products.map(offToCand), notes: x.notes || [] })) : await http('/api/lookup?q=' + encodeURIComponent(q));
     addState.web = r.results;
-    box.innerHTML = (r.results.length ? `<div class="result-group"><div class="eyebrow">Weltweit gefunden</div><div class="list">` + r.results.map((c, i) => `<button class="item" data-act="addWeb" data-i="${i}">${candThumb(c)}<div class="grow"><h3>${esc(c.name)}</h3><div class="sub">${candMeta(c) || '&nbsp;'}</div><div class="tiny faint">${SRC[c.source] || ''}</div></div><span class="chev">＋</span></button>`).join('') + '</div></div>'
+    box.innerHTML = (r.results.length ? `<div class="result-group"><div class="eyebrow">Weltweit gefunden</div><div class="list">` + r.results.map((c, i) => `<button class="item" data-act="addWeb" data-i="${i}">${candThumb(c)}<div class="grow"><h3>${esc(c.name)}</h3><div class="sub">${candMeta(c) || '&nbsp;'}</div><div class="tiny faint">${SRC[c.source] || ''}</div></div><span class="add-dot">${ICON.plus}</span></button>`).join('') + '</div></div>'
       : '<p class="small muted" style="text-align:center">Nichts gefunden. Trag das Bier einfach selbst ein.</p>') + r.notes.map(n => `<p class="tiny muted">${esc(n)}</p>`).join('');
   } catch (e) { box.innerHTML = `<p class="small" style="color:var(--danger)">${esc(e.server ? e.message : 'Keine Verbindung zum Server')}</p>`; }
 };
