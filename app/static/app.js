@@ -1,5 +1,5 @@
 'use strict';
-/* Bierstudio 3 – Frontend ohne Build-Schritt.
+/* Fläschle (ehemals Bierstudio) – Frontend ohne Build-Schritt.
    Klicks laufen über data-act → ACT.name(el), Eingaben über data-on / data-change (CSP-tauglich, keine Inline-Handler).
    Navigation über den Hash (#/biere, #/bier/<id>, #/person/<name>, #/tasting/<id> …), damit Zurück überall funktioniert. */
 
@@ -81,6 +81,9 @@ const ICON = {
   cheers: '<svg viewBox="0 0 24 24"><path d="M5 4h5l-.6 7.2A2 2 0 0 1 7.4 13h-.3a2 2 0 0 1-2-1.8zM14 4h5l-.6 7.2a2 2 0 0 1-2 1.8h-.3a2 2 0 0 1-2-1.8zM7.3 13v6M16.7 13v6M5 19.5h4.6M14.4 19.5H19"/></svg>',
   link: '<svg viewBox="0 0 24 24"><path d="M10 14a4 4 0 0 0 5.7 0l3-3a4 4 0 0 0-5.7-5.7l-1 1M14 10a4 4 0 0 0-5.7 0l-3 3a4 4 0 0 0 5.7 5.7l1-1"/></svg>',
   spark: '<svg viewBox="0 0 24 24"><path d="M12 3v4M12 17v4M3 12h4M17 12h4M6 6l2.5 2.5M15.5 15.5 18 18M18 6l-2.5 2.5M8.5 15.5 6 18"/></svg>',
+  cart: '<svg viewBox="0 0 24 24"><path d="M3.5 5h2l2 10h10l2-7H7"/><circle cx="9.5" cy="19" r="1.3"/><circle cx="16.5" cy="19" r="1.3"/></svg>',
+  pin: '<svg viewBox="0 0 24 24"><path d="M12 21s-6-5.6-6-10.5a6 6 0 0 1 12 0C18 15.4 12 21 12 21z"/><circle cx="12" cy="10.5" r="2.2"/></svg>',
+  wine: '<svg viewBox="0 0 24 24"><path d="M7.5 3.5h9c.4 3.6-.3 6.4-1.8 7.9A4 4 0 0 1 12 12.5a4 4 0 0 1-2.7-1.1C7.8 9.9 7.1 7.1 7.5 3.5zM12 12.5V20M8.5 20.5h7M7.6 7.5h8.8"/></svg>',
   pen: '<svg viewBox="0 0 24 24"><path d="M4 20h4L19 9l-4-4L4 16z"/><path d="m13.5 6.5 4 4"/></svg>',
   camera: '<svg viewBox="0 0 24 24"><path d="M4 8.5A1.5 1.5 0 0 1 5.5 7h2.2L9 5h6l1.3 2h2.2A1.5 1.5 0 0 1 20 8.5v9a1.5 1.5 0 0 1-1.5 1.5h-13A1.5 1.5 0 0 1 4 17.5z"/><circle cx="12" cy="12.5" r="3.4"/></svg>',
   scan: '<svg viewBox="0 0 24 24"><path d="M4 8V5h3M17 5h3v3M20 16v3h-3M7 19H4v-3M8 9v6M11 9v6M14 9v6M17 9v6"/></svg>',
@@ -186,7 +189,7 @@ const visible = r => !r.hidden;
 const ctxEq = (a, b) => (a || null) === (b || null);
 const shown = b => b && !b.blind;
 const own = (s, b) => D.ratings.find(r => r.beer === b && r.user === me && ctxEq(r.session, s));
-const people = () => [...new Set([...D.people, ...D.ratings.map(r => r.user)])];
+const people = () => [...new Set([...D.people, ...D.ratings.map(r => r.user), ...(D.wine_ratings || []).map(r => r.user)])];
 /** Sichtbare Bewertungen zu Bieren, deren Namen man kennt. */
 const knownRatings = () => D.ratings.filter(r => visible(r) && shown(beer(r.beer)));
 function label(b, s) {
@@ -535,7 +538,7 @@ function go(to) {
   if (location.hash === to) render(); else location.hash = to;
 }
 ACT.go = el => go(el.dataset.to);
-const PARENT = { brauerei: ['#/biere', 'Biere'], bier: ['#/biere', 'Biere'], person: ['#/leute', 'Leute'], tasting: ['#/tastings', 'Tastings'], ich: ['#/', 'Übersicht'] };
+const PARENT = { brauerei: ['#/biere', 'Biere'], bier: ['#/biere', 'Biere'], person: ['#/leute', 'Leute'], tasting: ['#/tastings', 'Tastings'], tastings: ['#/', 'Übersicht'], wein: ['#/weine', 'Weine'], ich: ['#/', 'Übersicht'] };
 ACT.back = () => { if (history.state?.inApp) history.back(); else go(PARENT[route().page]?.[0] || '#/'); };
 addEventListener('hashchange', () => { history.replaceState({ ...(history.state || {}), inApp: true }, ''); render(); });
 
@@ -553,8 +556,10 @@ const PAGES = {
   bier: { tab: 'biere', fn: renderBeer },
   leute: { tab: 'leute', title: 'Leute', fn: renderPeople },
   person: { tab: 'leute', fn: renderPerson },
-  tastings: { tab: 'tastings', title: 'Tastings', fn: renderTastings },
-  tasting: { tab: 'tastings', fn: renderTasting },
+  tastings: { tab: 'start', title: 'Tastings', fn: renderTastings },
+  tasting: { tab: 'start', fn: renderTasting },
+  weine: { tab: 'weine', title: 'Weine', fn: renderWines },
+  wein: { tab: 'weine', fn: renderWine },
   brauerei: { tab: 'biere', fn: renderBrewery },
   ich: { tab: '', title: 'Profil & Einstellungen', fn: renderSettings },
 };
@@ -563,6 +568,7 @@ function render() {
   const r = route(), landing = !me;
   const pg = PAGES[r.page] || PAGES.start;
   document.body.classList.toggle('no-tabs', landing);
+  document.body.classList.toggle('theme-wine', !landing && pg.tab === 'weine');
   $('#tabbar').classList.toggle('hide', landing);
   $('#me').hidden = landing;
   for (const a of $$('#tabbar a')) a.classList.toggle('on', a.dataset.tab === pg.tab);
@@ -590,7 +596,7 @@ function render() {
   const on = $('main .chips .chip.on');
   if (on && r.page === 'tasting') { const c = on.parentElement; c.scrollLeft = on.offsetLeft - (c.clientWidth - on.offsetWidth) / 2; }
   lastRouteKey = landing ? '~' : r.key;
-  document.title = title && r.page !== 'start' ? `${title} · Bierstudio` : 'Bierstudio';
+  document.title = title && r.page !== 'start' ? `${title} · Fläschle` : 'Fläschle';
 }
 /** Die Glas-Linse in der Tabbar wandert federnd zum aktiven Tab. */
 function moveLens() {
@@ -612,12 +618,13 @@ const emptyCard = (icon, title, text, btn = '') => `<div class="card empty"><h2>
 function renderLanding() {
   const ps = people(), nb = D.beers.filter(shown).length, nr = knownRatings().length;
   return `<section class="landing">
-    <div class="hero-glass">${pint(8.6, null, 'lg')}</div>
-    <h1>Dein Bierbuch.<br><em>Mit deinen Leuten.</em></h1>
-    <p class="lead">Trag ein, was du gerade trinkst, gib eine Note und sieh, was die anderen davon halten.</p>
+    <div class="hero-glass">${pint(8.6, null, 'lg')}${wglass(8.2, 'rot', 'lg')}</div>
+    <h1>Fläschle.<br><em>Bier und Wein, die du dir merken willst.</em></h1>
+    <p class="lead">Trag ein, was du gerade trinkst, gib eine Note und sieh, was die anderen davon halten. Gute Weine merkst du dir mit Etikett und Preis.</p>
     <div class="features">
       <div class="feature"><span class="ic">${ICON.bolt}</span><div><b>In Sekunden eingetragen</b><span>Name tippen, Note ziehen, fertig. Bekannte Biere erkennt die App, auch bei Spitznamen und Tippfehlern.</span></div></div>
       <div class="feature"><span class="ic">${ICON.people}</span><div><b>Sieh, was die anderen trinken</b><span>Jede Person hat ihre Seite mit allen Bieren und Noten.</span></div></div>
+      <div class="feature"><span class="ic">${ICON.wine}</span><div><b>Gute Weine merken</b><span>Etikett fotografieren, Preis und Note dazu. Im Laden weißt du wieder, welche Flasche es war.</span></div></div>
       <div class="feature"><span class="ic">${ICON.cheers}</span><div><b>Tastings, wenn ihr zusammensitzt</b><span>Alle bewerten gleichzeitig dasselbe Bier, auf Wunsch auch blind.</span></div></div>
     </div>
     ${nb ? `<p class="small muted" style="margin:-14px 0 22px">${nb} Biere · ${nr} Bewertungen · ${ps.length} ${ps.length === 1 ? 'Person' : 'Personen'} sind schon dabei.</p>` : ''}
@@ -655,7 +662,11 @@ function renderStart() {
   const hello = hour < 11 ? 'Guten Morgen' : hour < 17 ? 'Hallo' : 'Prost';
   const mine = personBeers(me).sort((a, b) => (b.ts || '').localeCompare(a.ts || ''));
   const all = knownRatings().filter(r => r.ts).sort((a, b) => b.ts.localeCompare(a.ts));
-  const latest = all[0], feed = all.slice(1, 12);
+  const latest = all[0];
+  const feed = [...all.slice(1, 12).map(r => ({ r, k: 'b' })), ...(D.wine_ratings || []).filter(r => r.ts && wine(r.wine)).map(r => ({ r, k: 'w' }))]
+    .sort((a, b) => b.r.ts.localeCompare(a.r.ts)).slice(0, 12);
+  const live = liveTasting();
+  const recentWines = wines().slice().sort((a, b) => wineLast(b).localeCompare(wineLast(a))).slice(0, 8);
   const top = D.beers.filter(shown).map(b => ({ b, ...beerAgg(b.id) })).filter(x => x.avg != null);
   const minP = top.some(x => x.people >= 2) ? 2 : 1;
   const best = top.filter(x => x.people >= minP).sort((a, b) => b.avg - a.avg || b.people - a.people).slice(0, 5);
@@ -665,16 +676,22 @@ function renderStart() {
   return {
     title: 'Übersicht', html: `
     <div class="greet"><div class="eyebrow">${esc(date)}</div><h1 class="large-title">${hello}, ${esc(me)}</h1></div>
-    <button class="drink-cta" data-act="add"><span class="bubbles" aria-hidden="true"><i></i><i></i><i></i><i></i></span><span class="glass-ic">${ICON.glass}</span><span class="grow"><b>Was trinkst du gerade?</b><span>Eintragen und bewerten</span></span><span class="chev-r">›</span></button>
+    ${live ? `<a class="hint-card live-card" href="${href('tasting', live.id)}"><span class="pill live">LIVE</span><span class="grow"><b>${esc(live.name)}</b><span>Tasting läuft, mach mit</span></span><span class="chev">›</span></a>` : ''}
+    <div class="cta-pair">
+      <button class="drink-cta" data-act="add"><span class="bubbles" aria-hidden="true"><i></i><i></i><i></i><i></i></span><span class="glass-ic">${ICON.glass}</span><span><b>Bier</b><span>eintragen</span></span></button>
+      <button class="drink-cta wine-cta" data-act="addWine"><span class="glass-ic">${ICON.wine}</span><span><b>Wein</b><span>merken</span></span></button>
+    </div>
     ${mine.length ? `<div class="chips again" aria-label="Nochmal trinken">${mine.slice(0, 8).map(x => `<button class="chip" data-act="rate" data-id="${x.b.id}">${thumb(x.b)}<span>${esc(x.b.name.length > 22 ? x.b.name.slice(0, 21) + '…' : x.b.name)}</span></button>`).join('')}</div>` : ''}
     ${latest ? latestCard(latest) : ''}
     ${wishlist().length ? `<div class="section-title">Auf deiner Merkliste <a href="${href('person', me)}">Alle</a></div><div class="chips">${wishlist().map(beer).filter(shown).slice(0, 10).map(b => `<a class="chip wish-chip" href="${href('bier', b.id)}">${thumb(b)}<span>${esc(b.name.length > 22 ? b.name.slice(0, 21) + '…' : b.name)}</span></a>`).join('')}</div>` : ''}
+    ${recentWines.length ? `<div class="section-title">Zuletzt gemerkt <a href="#/weine">Alle Weine</a></div><div class="chips wine-strip">${recentWines.map(w => `<a class="wcard" href="${href('wein', w.id)}"><span class="wphoto">${wineLabel(w)}${w.price != null ? `<span class="price">${euro(w.price)}</span>` : ''}</span><h3 class="ellipsis">${esc(w.name)}</h3></a>`).join('')}</div>` : ''}
     <div class="section-title">Davor getrunken</div>
-    ${feed.length ? `<div class="list feed">${feed.map(feedItem).join('')}</div>`
+    ${feed.length ? `<div class="list feed">${feed.map(x => x.k === 'w' ? wineFeedItem(x.r) : feedItem(x.r)).join('')}</div>`
       : latest ? '<p class="small muted" style="margin:0 4px">Noch nichts weiter. Das nächste Bier erscheint hier für alle.</p>' : emptyCard('🍺', 'Noch nichts getrunken', 'Trag dein erstes Bier ein. Es erscheint hier für alle.')}
+    <a class="hint-card" href="#/tastings" style="margin-top:28px"><span class="hint-ic">${ICON.cheers}</span><span class="grow"><b>Tastings</b><span>${D.sessions.length ? `${D.sessions.length} ${D.sessions.length === 1 ? 'Abend' : 'Abende'} · gemeinsam dasselbe Bier bewerten` : 'Gemeinsam dasselbe Bier bewerten, auf Wunsch blind'}</span></span><span class="chev">›</span></a>
     ${ps.length > 1 ? `<div class="section-title">Leute <a href="#/leute">Alle</a></div><div class="people-row">${ps.map(x => `<a href="${href('person', x.p)}">${avatar(x.p)}<span>${esc(x.p)}</span></a>`).join('')}</div>` : ''}
     ${best.length ? `<div class="section-title">Bestenliste <a href="#/biere">Alle Biere</a></div><div class="list">${best.map((x, i) => `<a class="item" href="${href('bier', x.b.id)}"><span class="num faint" style="width:16px;font-weight:700;text-align:center">${i + 1}</span>${thumb(x.b)}<div class="grow"><h3>${esc(x.b.name)}</h3><div class="sub">${x.people} ${x.people === 1 ? 'Person' : 'Personen'}${meta(x.b) ? ' · ' + meta(x.b) : ''}</div></div>${score(x.avg)}</a>`).join('')}</div>` : ''}
-    <div class="kpis" style="margin-top:28px"><a class="kpi" href="#/biere"><b data-count="${D.beers.filter(shown).length}">${D.beers.filter(shown).length}</b><span>Biere</span></a><div class="kpi"><b data-count="${knownRatings().length}">${knownRatings().length}</b><span>Bewertungen</span></div><a class="kpi" href="#/leute"><b data-count="${ps.length}">${ps.length}</b><span>Leute</span></a></div>`,
+    <div class="kpis" style="margin-top:28px"><a class="kpi" href="#/biere"><b data-count="${D.beers.filter(shown).length}">${D.beers.filter(shown).length}</b><span>Biere</span></a><a class="kpi" href="#/weine"><b data-count="${wines().length}">${wines().length}</b><span>Weine</span></a><a class="kpi" href="#/leute"><b data-count="${ps.length}">${ps.length}</b><span>Leute</span></a></div>`,
   };
 }
 
@@ -859,6 +876,226 @@ function beerFields(b = {}) {
 }
 const readBeerFields = () => ({ name: $('#f-name').value.trim(), brewery: $('#f-brewery').value.trim(), style: $('#f-style').value.trim(), abv: $('#f-abv').value.trim(), barcode: $('#f-barcode').value.replace(/\D/g, ''), site: cleanDomain($('#f-site')?.value) });
 
+// ---------- Weine: gute Flaschen merken, mit Etikett-Foto und Preis
+const KINDS = { rot: ['Rot', '#7A1F3D'], weiss: ['Weiß', '#E3C866'], rose: ['Rosé', '#F2A7A0'], sekt: ['Sekt', '#EBD98C'], suess: ['Süß', '#C98A2B'] };
+const KIND_LONG = { rot: 'Rotwein', weiss: 'Weißwein', rose: 'Roséwein', sekt: 'Sekt & Schaumwein', suess: 'Süßwein' };
+const WINE_TAGS = ['fruchtig', 'trocken', 'frisch', 'mineralisch', 'würzig', 'samtig', 'kräftig', 'leicht', 'beerig', 'kirschig', 'blumig', 'holzig', 'süß', 'säurebetont'];
+const wines = () => D.wines || [];
+const wine = id => wines().find(w => w.id === id);
+const wineRatings = id => (D.wine_ratings || []).filter(r => r.wine === id);
+const myWineRating = id => (D.wine_ratings || []).find(r => r.wine === id && r.user === me);
+const wineAgg = id => { const rs = wineRatings(id); return { avg: mean(rs.map(r => r.value)), n: rs.length }; };
+const wineLast = w => wineRatings(w.id).map(r => r.ts || '').sort().at(-1) || w.created_at || '';
+const wineAgain = (w, u = me) => (D.wine_ratings || []).some(r => r.wine === w.id && r.user === u && r.again);
+const euro = v => v == null || v === '' ? '' : (+v).toLocaleString('de-DE', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) + ' €';
+const wineMeta = w => [w.winery, w.year].filter(Boolean).map(esc).join(' · ');
+const kindDot = k => KINDS[k] ? `<span class="dot" style="background:${KINDS[k][1]}"></span>` : '';
+/** Etikett: das Foto, sonst eine ruhige Fläche in der Weinfarbe mit dem Namen. */
+function wineLabel(w, cls = '') {
+  if (w.photo) return `<img class="wlabel ${cls}" src="${photoUrl(w.photo)}" alt="Etikett von ${esc(w.name)}" loading="lazy">`;
+  const c = KINDS[w.kind]?.[1] || '#B9AFC7';
+  return `<span class="wlabel none ${cls}" style="--wc:${c}"><b>${esc(w.name)}</b>${w.winery ? `<small>${esc(w.winery)}</small>` : ''}</span>`;
+}
+/** Weinglas mit Stiel, gefüllt bis zur Note, in der Farbe des Weins. */
+const wglass = (v, kind, cls = '', id = '') => `<span class="wglass ${cls}" ${id ? `id="${id}"` : ''} style="--fill:${v == null ? 0 : 12 + clamp(v) * 7.4}%;--liq:${KINDS[kind]?.[1] || KINDS.rot[1]}" aria-hidden="true"><span class="bowl"><span class="wine"></span></span><span class="stem"></span><span class="foot"></span><span class="shine"></span></span>`;
+function wineCard(w) {
+  const ag = wineAgg(w.id), my = myWineRating(w.id), v = my ? my.value : ag.avg;
+  return `<a class="wcard" data-flip-id="w-${w.id}" href="${href('wein', w.id)}"><span class="wphoto">${wineLabel(w)}
+    ${v != null ? `<span class="score s-${band(v)}">${fmt(v, 1)}</span>` : ''}${w.price != null ? `<span class="price">${euro(w.price)}</span>` : ''}
+    ${wineAgain(w) ? `<span class="again" title="Nochmal kaufen">${ICON.cart}</span>` : ''}</span>
+    <h3>${esc(w.name)}</h3><div class="sub">${kindDot(w.kind)}${wineMeta(w) || KINDS[w.kind]?.[0] || '&nbsp;'}</div></a>`;
+}
+const wineList = { q: '', f: 'all', sort: 'recent' };
+function wineRows() {
+  const q = fold(wineList.q.trim());
+  let rows = wines().map(w => ({ w, ag: wineAgg(w.id), my: myWineRating(w.id), last: wineLast(w) }));
+  if (q) rows = rows.filter(x => fold([x.w.name, x.w.winery, x.w.grape, x.w.region, x.w.where, x.w.year].filter(Boolean).join(' ')).includes(q));
+  if (KINDS[wineList.f]) rows = rows.filter(x => x.w.kind === wineList.f);
+  if (wineList.f === 'again') rows = rows.filter(x => wineAgain(x.w));
+  if (wineList.f === 'mine') rows = rows.filter(x => x.my);
+  const by = {
+    recent: (a, b) => b.last.localeCompare(a.last), avg: (a, b) => (b.my?.value ?? b.ag.avg ?? -1) - (a.my?.value ?? a.ag.avg ?? -1),
+    cheap: (a, b) => (a.w.price ?? 1e9) - (b.w.price ?? 1e9), pricey: (a, b) => (b.w.price ?? -1) - (a.w.price ?? -1), az: (a, b) => a.w.name.localeCompare(b.w.name, 'de'),
+  };
+  rows.sort(by[wineList.sort]);
+  setTimeout(() => { const n = $('#wine-n'); if (n) n.textContent = rows.length === 1 ? '1 Wein' : rows.length + ' Weine'; });
+  if (!rows.length) return wines().length ? emptyCard('', 'Nichts gefunden', 'Kein Wein passt zu Suche oder Filter.')
+    : emptyCard('', 'Noch keine Weine', 'Fotografier das Etikett einer guten Flasche und trag den Preis ein. So findest du sie wieder.', '<button class="btn wine" data-act="addWine">Ersten Wein merken</button>');
+  return `<div class="wgrid">${rows.map(x => wineCard(x.w)).join('')}</div>`;
+}
+function renderWines() {
+  const n = wines().length, again = wines().filter(w => wineAgain(w)).length;
+  const f = [['all', 'Alle'], ...Object.entries(KINDS).filter(([k]) => k !== 'suess' || wines().some(w => w.kind === 'suess')).map(([k, [t, c]]) => [k, `<span class="dot" style="background:${c}"></span>${t}`]), ['again', 'Nochmal kaufen'], ['mine', 'Von mir']];
+  return {
+    title: 'Weine', html: `${largeTitle('Weine', n ? `${n} gemerkt${again ? ` · ${again}× nochmal kaufen` : ''}` : 'Gute Flaschen merken, mit Etikett und Preis.')}
+    ${n ? `<div class="search" style="margin-top:14px">${ICON.search}<input class="field" type="search" id="wine-q" data-on="wineQ" placeholder="Wein, Weingut, Rebsorte" value="${esc(wineList.q)}" enterkeyhint="search" autocomplete="off"></div>
+    <div class="chips" style="margin:12px 0 10px">${f.map(([k, t]) => `<button class="chip ${wineList.f === k ? 'on' : ''}" data-act="wineF" data-v="${k}">${t}</button>`).join('')}</div>
+    <div class="between" style="margin:0 2px 12px"><span class="small muted" id="wine-n"></span>
+      <select class="field" style="width:auto;min-height:34px;padding:4px 32px 4px 12px;font-size:.88rem;border-radius:10px" data-change="wineSort" aria-label="Sortierung">${[['recent', 'Zuletzt'], ['avg', 'Beste Note'], ['cheap', 'Günstigste'], ['pricey', 'Teuerste'], ['az', 'A–Z']].map(([k, t]) => `<option value="${k}" ${wineList.sort === k ? 'selected' : ''}>${t}</option>`).join('')}</select></div>` : ''}
+    <div id="wine-list" style="${n ? '' : 'margin-top:18px'}">${wineRows()}</div>`,
+  };
+}
+ON.wineQ = el => { wineList.q = el.value; flipSwap($('#wine-list'), wineRows()); };
+ACT.wineF = el => { wineList.f = el.dataset.v; render(); };
+CH.wineSort = el => { wineList.sort = el.value; flipSwap($('#wine-list'), wineRows()); };
+
+function renderWine(r) {
+  const w = wine(r.id);
+  if (!w) return emptyCard('', 'Wein nicht gefunden', 'Vielleicht wurde er gelöscht.', '<a class="btn primary" href="#/weine">Zu den Weinen</a>');
+  const ag = wineAgg(w.id), my = myWineRating(w.id), others = wineRatings(w.id).filter(x => x.user !== me).sort((a, b) => b.value - a.value);
+  const v = my ? my.value : ag.avg;
+  const facts = [['Rebsorte', w.grape], ['Region', w.region], ['Alkohol', w.abv != null && w.abv !== '' ? fmt(w.abv, 1) + ' %' : ''], ['Passt zu', w.pairing]].filter(x => x[1]);
+  return {
+    title: w.name, html: `
+    <div class="whero">${wineLabel(w, 'big')}</div>
+    ${w.photo_back ? `<div class="photo-row" style="margin:10px 0 0"><img src="${photoUrl(w.photo)}" alt="Etikett vorne"><img src="${photoUrl(w.photo_back)}" alt="Etikett hinten"></div>` : ''}
+    <div class="whead"><div class="small muted">${kindDot(w.kind)}${[KIND_LONG[w.kind], w.region].filter(Boolean).map(esc).join(' · ') || 'Wein'}</div>
+      <h1 class="large-title">${esc(w.name)}</h1>${wineMeta(w) ? `<div class="lead small">${wineMeta(w)}</div>` : ''}</div>
+    <div class="pricecard"><div class="grow">${w.price != null ? `<div class="big num">${esc(euro(w.price).replace(' €', ''))}<span>€</span></div>` : '<div class="title2 muted">Kein Preis</div>'}
+      ${w.where ? `<div class="small muted" style="margin-top:6px">${ICON.pin} ${esc(w.where)}</div>` : ''}</div>
+      ${my ? `<button class="btn sm ${my.again ? 'wine' : ''}" data-act="wineAgain" data-id="${w.id}" aria-pressed="${!!my.again}">${ICON.cart} ${my.again ? 'Auf der Liste' : 'Nochmal kaufen'}</button>` : ''}</div>
+    <div class="card wrate">${wglass(v, w.kind)}<div class="grow">
+      ${v != null ? `<div class="row" style="gap:4px;align-items:baseline"><span class="latest-score" style="color:${scoreFg(v)}" data-count="${v}" data-d="1">${fmt(v, 1)}</span><span class="of10">/10</span></div>
+      <div class="small muted" style="margin-top:6px">${my ? 'Deine Note' : 'Ø Note'}${ag.n > 1 || (!my && ag.n) ? ` · Ø ${fmt(ag.avg, 1)} von ${ag.n}` : ''}</div>` : '<div class="title2 muted">Noch keine Note</div>'}
+      ${my?.tags?.length ? `<div class="tags" style="margin-top:10px">${my.tags.map(t => `<span class="pill">${esc(t)}</span>`).join('')}</div>` : ''}
+      <button class="btn sm wine" style="margin-top:12px" data-act="addWine" data-id="${w.id}">${my ? 'Note ändern' : 'Bewerten'}</button></div></div>
+    ${my?.note ? `<p class="latest-note" style="margin:16px 4px 0">„${esc(my.note)}“</p>` : ''}
+    ${facts.length ? `<div class="wfacts">${facts.map(([k, x]) => `<div><small>${k}</small><b>${esc(x)}</b></div>`).join('')}</div>` : ''}
+    ${others.length ? `<div class="section-title">Die anderen</div><div class="list">${others.map(x => `<a class="item" href="${href('person', x.user)}">${avatar(x.user)}<div class="grow"><h3>${esc(x.user)}${x.again ? ` <span class="pill accent">nochmal kaufen</span>` : ''}</h3><div class="sub">${x.note ? '„' + esc(x.note) + '“' : esc(ago(x.ts) || '')}</div></div>${score(x.value)}</a>`).join('')}</div>` : ''}
+    <div class="btns" style="margin-top:24px"><button class="btn" data-act="editWine" data-id="${w.id}">Bearbeiten</button><button class="btn danger" data-act="deleteWine" data-id="${w.id}">Löschen</button></div>
+    ${my ? `<button class="btn ghost danger sm" style="margin-top:6px" data-act="deleteWineRating" data-id="${w.id}">Meine Note löschen</button>` : ''}
+    <p class="tiny faint" style="margin:14px 4px 0">Gemerkt von ${esc(w.created_by || '?')}${w.created_at ? ', ' + esc(ago(w.created_at)) : ''}.</p>`,
+  };
+}
+ACT.wineAgain = async el => {
+  const my = myWineRating(el.dataset.id);
+  if (!my) return;
+  const again = !my.again;
+  try { await send('wine/again', { wine: el.dataset.id, user: me, again }, { queue: true, apply: () => { my.again = again; } }); haptic(12); toast(again ? 'Auf die Einkaufsliste gesetzt' : 'Von der Einkaufsliste genommen'); }
+  catch (e) { toast(e.message); }
+};
+ACT.deleteWine = async el => {
+  const w = wine(el.dataset.id), n = wineRatings(w.id).length;
+  if (!(await ask({ title: 'Wein löschen?', text: `Er verschwindet zusammen mit ${n} ${n === 1 ? 'Bewertung' : 'Bewertungen'}. 30 Tage lang kannst du ihn aus dem Papierkorb zurückholen.`, ok: 'Löschen', danger: true }))) return;
+  try { const r = await send('wine/delete', { id: w.id, user: me }); go('#/weine'); undoToast('Wein gelöscht', r.tid); } catch (e) { toast(e.message); }
+};
+ACT.deleteWineRating = async el => {
+  if (!(await ask({ title: 'Note löschen?', text: 'Deine Bewertung für diesen Wein wird entfernt.', ok: 'Löschen', danger: true }))) return;
+  try { const r = await send('wine/rating/delete', { wine: el.dataset.id, user: me }); undoToast('Note gelöscht', r.tid); } catch (e) { toast(e.message); }
+};
+
+/** Sheet „Wein merken“: Etikett, Angaben, Preis und die eigene Note in einem Schritt. */
+let wf = null;
+function wineDraft(id) {
+  const w = wine(id) || {}, my = id ? myWineRating(id) : null;
+  return {
+    id: w.id || null, name: w.name || '', winery: w.winery || '', year: w.year || '', kind: w.kind || LS.get('bs-wkind', 'rot'), grape: w.grape || '', region: w.region || '',
+    abv: w.abv != null && w.abv !== '' ? fmt(w.abv, 1) : '', price: w.price != null ? euro(w.price).replace(' €', '') : '', where: w.where || '', pairing: w.pairing || '',
+    photo: w.photo || '', photo_back: w.photo_back || '', value: my ? my.value : null, note: my?.note || '', tags: my?.tags ? [...my.tags] : [], again: !!my?.again,
+    infoOnly: false,
+  };
+}
+ACT.addWine = el => {
+  if (!me) return go('#/');
+  wf = wineDraft(el?.dataset?.id || null);
+  openSheet(head(wf.id ? wf.name : 'Wein merken') + `<div id="wf">${wineForm()}</div>`);
+};
+ACT.editWine = el => { wf = { ...wineDraft(el.dataset.id), infoOnly: true }; openSheet(head('Angaben bearbeiten') + `<div id="wf">${wineForm()}</div>`); };
+function wineForm() {
+  const d = wf, photo = (k, label) => d[k]
+    ? `<div class="capture has"><img src="${photoUrl(d[k])}" alt="${label}"><button class="icon-btn" data-act="wfNoPhoto" data-k="${k}" aria-label="${label} entfernen">${ICON.close}</button></div>`
+    : `<label class="capture empty">${k === 'photo' ? `<span class="frame"></span>${ICON.camera}<b>Etikett fotografieren</b><span>Vorderseite, möglichst gerade</span>` : `${ICON.camera}<b>Rückseite dazu</b>`}<input type="file" accept="image/*" capture="environment" data-change="wfPhoto" data-k="${k}" hidden></label>`;
+  return `${photo('photo', 'Etikett')}
+    <div class="row" style="margin-top:10px;gap:8px">${d.photo ? `<label class="btn sm grow" style="min-height:40px">${ICON.camera} Neu aufnehmen<input type="file" accept="image/*" capture="environment" data-change="wfPhoto" data-k="photo" hidden></label>` : ''}
+      ${d.photo && !d.photo_back ? `<label class="btn sm grow" style="min-height:40px">Rückseite dazu<input type="file" accept="image/*" capture="environment" data-change="wfPhoto" data-k="photo_back" hidden></label>` : ''}</div>
+    ${d.photo_back ? `<div style="margin-top:10px">${photo('photo_back', 'Rückseite')}</div>` : ''}
+    <label class="lbl" for="wf-name">Wein</label><input class="field" id="wf-name" data-on="wf" data-k="name" value="${esc(d.name)}" maxlength="120" placeholder="z. B. Lemberger trocken" autocomplete="off">
+    <div class="grid2" style="margin-top:10px"><input class="field" data-on="wf" data-k="winery" value="${esc(d.winery)}" maxlength="120" placeholder="Weingut" autocomplete="off"><input class="field" data-on="wf" data-k="year" value="${esc(d.year)}" inputmode="numeric" maxlength="4" placeholder="Jahrgang"></div>
+    <div class="seg wkind" style="margin-top:10px">${Object.entries(KINDS).map(([k, [t]]) => `<button class="${d.kind === k ? 'on' : ''}" data-act="wfKind" data-v="${k}">${t}</button>`).join('')}</div>
+    <label class="lbl">Preis pro Flasche</label>
+    <div class="grid2"><div class="money"><input class="field" data-on="wf" data-k="price" value="${esc(d.price)}" inputmode="decimal" maxlength="9" placeholder="0,00"><span>€</span></div><input class="field" data-on="wf" data-k="where" value="${esc(d.where)}" maxlength="80" placeholder="Wo gekauft?" autocomplete="off"></div>
+    <details class="more" ${d.grape || d.region || d.abv || d.pairing ? 'open' : ''}><summary>Rebsorte, Region, Alkohol</summary>
+      <div class="grid2" style="margin-top:6px"><input class="field" data-on="wf" data-k="grape" value="${esc(d.grape)}" maxlength="80" placeholder="Rebsorte"><input class="field" data-on="wf" data-k="region" value="${esc(d.region)}" maxlength="80" placeholder="Region"></div>
+      <div class="grid2" style="margin-top:10px"><input class="field" data-on="wf" data-k="abv" value="${esc(d.abv)}" inputmode="decimal" maxlength="5" placeholder="Alkohol %"><input class="field" data-on="wf" data-k="pairing" value="${esc(d.pairing)}" maxlength="80" placeholder="Passt zu …"></div></details>
+    ${d.infoOnly ? '' : `<div class="section-title" style="margin-top:22px">Deine Note</div>
+    <div class="wf-rate">${wglass(d.value, d.kind, '', 'wf-glass')}<div class="grow">
+      <button class="row" style="gap:4px;align-items:baseline" data-act="wfExact" aria-label="Note eintippen"><span class="big-score ${d.value == null ? 'unset' : ''}" id="wf-score" style="font-size:3.8rem;${d.value == null ? '' : 'color:' + scoreFg(d.value)}">${d.value == null ? '–' : fmt(d.value, 1)}</span><span class="of10">/10</span></button>
+      <div class="verdict" id="wf-verdict" style="margin-top:4px">${verdict(d.value)}</div></div></div>
+    <input type="range" class="slider ${d.value == null ? 'unset' : ''}" id="wf-range" min="0" max="10" step="0.1" value="${d.value ?? 5}" data-on="wfRange" style="--p:${(d.value ?? 0) * 10}%;--c:${scoreFg(d.value ?? 5)}" aria-label="Note von 0 bis 10">
+    <div class="chips wrap" style="margin-top:12px">${[...new Set([...WINE_TAGS, ...d.tags])].map(t => `<button class="chip ${d.tags.includes(t) ? 'on' : ''}" data-act="wfTag" data-v="${esc(t)}">${esc(t)}</button>`).join('')}</div>
+    <textarea class="field" data-on="wf" data-k="note" rows="2" maxlength="1000" placeholder="Wozu getrunken, was bleibt hängen?" style="margin-top:12px">${esc(d.note)}</textarea>
+    <label class="switch"><span><b>Nochmal kaufen</b><br><span class="small muted">Landet unter „Nochmal kaufen“</span></span><input type="checkbox" data-change="wfAgain" ${d.again ? 'checked' : ''}></label>`}
+    <div class="savebar"><button class="btn wine block" id="wf-save" data-act="wfSave">${d.infoOnly ? 'Speichern' : d.id ? 'Speichern' : 'Wein merken'}</button></div>`;
+}
+const wfRerender = () => { const el = $('#wf'); if (el) el.innerHTML = wineForm(); };
+ON.wf = el => { wf[el.dataset.k] = el.value; };
+ACT.wfKind = el => { wf.kind = el.dataset.v; LS.set('bs-wkind', wf.kind); wfRerender(); };
+ACT.wfTag = el => { const t = el.dataset.v; wf.tags = wf.tags.includes(t) ? wf.tags.filter(x => x !== t) : [...wf.tags, t]; el.classList.toggle('on'); };
+CH.wfAgain = el => { wf.again = el.checked; haptic(8); };
+ACT.wfNoPhoto = el => { wf[el.dataset.k] = ''; if (el.dataset.k === 'photo' && wf.photo_back) { wf.photo = wf.photo_back; wf.photo_back = ''; } wfRerender(); };
+function wfLive() {
+  const v = wf.value, sc = $('#wf-score'), r = $('#wf-range'), g = $('#wf-glass');
+  if (sc) { sc.textContent = v == null ? '–' : fmt(v, 1); sc.style.color = v == null ? '' : scoreFg(v); sc.classList.toggle('unset', v == null); }
+  if ($('#wf-verdict')) $('#wf-verdict').textContent = verdict(v);
+  if (r) { r.classList.toggle('unset', v == null); r.style.setProperty('--p', (v ?? 0) * 10 + '%'); r.style.setProperty('--c', scoreFg(v ?? 5)); }
+  if (g) g.style.setProperty('--fill', (v == null ? 0 : 12 + clamp(v) * 7.4) + '%');
+}
+ON.wfRange = el => { const t = Math.round(+el.value); if (t !== Math.round(wf.value ?? -1)) haptic(4); wf.value = +el.value; wfLive(); };
+ACT.wfExact = async () => {
+  const x = await ask({ title: 'Note eintippen', ok: 'Übernehmen', input: { value: wf.value == null ? '' : fmt(wf.value, 1), placeholder: '0 bis 10', mode: 'decimal', max: 5 } });
+  if (x == null) return;
+  const n = Number(String(x).replace(',', '.'));
+  if (!Number.isFinite(n) || n < 0 || n > 10) return toast('Bitte eine Zahl zwischen 0 und 10');
+  wf.value = round(n, 2); wfLive(); const r = $('#wf-range'); if (r) r.value = wf.value;
+};
+/** Foto auf dem Gerät verkleinern (max. 1600 px, Etiketten brauchen etwas mehr Schärfe) und hochladen. */
+async function uploadPhoto(file, max = 1600) {
+  const bmp = await createImageBitmap(file, { imageOrientation: 'from-image' });
+  const sc = Math.min(1, max / Math.max(bmp.width, bmp.height)), c = document.createElement('canvas');
+  c.width = Math.round(bmp.width * sc); c.height = Math.round(bmp.height * sc);
+  c.getContext('2d').drawImage(bmp, 0, 0, c.width, c.height);
+  return (await http('/api/photo', { data: c.toDataURL('image/jpeg', 0.84) })).id;
+}
+CH.wfPhoto = async el => {
+  const k = el.dataset.k, file = el.files[0], box = el.closest('label');
+  if (!file) return;
+  if (box) box.classList.add('busy');
+  try { wf[k] = await uploadPhoto(file); haptic(15); wfRerender(); }
+  catch (e) { toast(e.server ? e.message : 'Foto konnte nicht hochgeladen werden. Ohne Verbindung geht es ohne Foto.'); if (box) box.classList.remove('busy'); }
+};
+function applyWine(body) {
+  D.wines ||= []; D.wine_ratings ||= [];
+  let w = wine(body.id);
+  if (!w) { w = { id: body.id, created_by: me, created_at: new Date().toISOString() }; D.wines.push(w); }
+  for (const k of ['name', 'winery', 'kind', 'grape', 'region', 'where', 'pairing', 'photo', 'photo_back']) if (k in body) w[k] = body[k];
+  w.year = +body.year || null; w.price = body.price === '' ? null : +String(body.price).replace(',', '.'); w.abv = body.abv === '' ? null : +String(body.abv).replace(',', '.');
+  if (body.rating) { D.wine_ratings = D.wine_ratings.filter(r => !(r.wine === w.id && r.user === me)); D.wine_ratings.push({ wine: w.id, user: me, ...body.rating }); }
+}
+ACT.wfSave = async el => {
+  const d = wf;
+  if (!d.name.trim()) { toast('Wie heißt der Wein?'); $('#wf-name')?.focus(); return; }
+  if (d.price && !/^\d{1,6}([.,]\d{1,2})?$/.test(d.price.trim().replace('€', '').trim())) return toast('Preis bitte als Zahl, z. B. 9,50');
+  const body = { id: d.id || hex16(), user: me, name: d.name.trim(), winery: d.winery.trim(), year: String(d.year).trim(), kind: d.kind, grape: d.grape.trim(), region: d.region.trim(),
+    abv: String(d.abv).trim(), price: String(d.price).replace('€', '').trim(), where: d.where.trim(), pairing: d.pairing.trim(), photo: d.photo, photo_back: d.photo_back };
+  if (!d.infoOnly && d.value != null) body.rating = { value: round(d.value, 2), note: d.note.trim(), tags: d.tags, again: d.again, ts: new Date().toISOString() };
+  el.disabled = true; el.textContent = 'Speichert …';
+  try {
+    const r = await send('wine', body, { queue: true, apply: () => applyWine(body) });
+    haptic(25); toast(r.queued ? 'Offline gespeichert, wird synchronisiert' : d.id ? 'Gespeichert' : `${body.name} gemerkt`);
+    const isNew = !d.id; wf = null; closeSheet();
+    if (isNew) pendingNav = href('wein', body.id);
+  } catch (e) { toast(e.message); el.disabled = false; el.textContent = 'Nochmal versuchen'; }
+};
+/** Eintrag im Verlauf für eine Weinnote. */
+function wineFeedItem(r) {
+  const w = wine(r.wine);
+  if (!w) return '';
+  return `<div class="item feed-item" data-act="go" data-to="${href('wein', w.id)}" role="link" tabindex="0">${avatar(r.user)}<div class="grow">
+    <div class="small"><b>${esc(r.user)}</b> <span class="when">· ${esc(ago(r.ts) || '')}</span></div>
+    <h3>${esc(w.name)} <span class="pill wine-pill">Wein</span></h3>
+    <div class="sub">${[w.winery, euro(w.price)].filter(Boolean).map(esc).join(' · ') || '&nbsp;'}</div></div>${score(r.value)}</div>`;
+}
+
 // ---------- Leute
 function renderPeople() {
   const ps = people().map(p => {
@@ -901,9 +1138,16 @@ function renderPerson(r) {
     <div class="section-title">Notenverteilung</div><div class="card"><div class="hist">${hist.map((n, i) => `<div><i style="height:${100 * n / hmax}%;background:${scoreBg(i + 0.5)}" title="${n}× ${i}"></i><small>${i}</small></div>`).join('')}</div></div>
     ${st.length ? `<div class="section-title">Nach Stil</div><div class="card">${st.map(x => `<div class="bar-row"><span class="ellipsis">${esc(x.k)} <span class="muted small">${x.n}×</span></span><div class="meter"><i style="width:${x.a * 10}%;background:${scoreBg(x.a)}"></i></div><b class="num small">${fmt(x.a, 1)}</b></div>`).join('')}</div>` : ''}
     ${Object.keys(tags).length ? `<div class="section-title">Eindrücke</div><div class="chips wrap">${Object.entries(tags).sort((x, y) => y[1] - x[1]).map(([t, n]) => `<span class="chip">${esc(t)} <span class="n">${n}</span></span>`).join('')}</div>` : ''}
+    ${personWines(p)}
     ${tastings ? `<p class="small muted" style="margin-top:20px">Bei ${tastings} ${tastings === 1 ? 'Tasting' : 'Tastings'} dabei.</p>` : ''}`
-      : emptyCard('🍺', 'Noch keine Biere', p === me ? 'Trag dein erstes Bier ein.' : `${esc(p)} hat noch nichts bewertet.`, p === me ? '<button class="btn primary" data-act="add">Bier eintragen</button>' : '')}`,
+      : emptyCard('🍺', 'Noch keine Biere', p === me ? 'Trag dein erstes Bier ein.' : `${esc(p)} hat noch nichts bewertet.`, p === me ? '<button class="btn primary" data-act="add">Bier eintragen</button>' : '')}
+    ${bs.length ? '' : personWines(p)}`,
   };
+}
+function personWines(p) {
+  const rs = (D.wine_ratings || []).filter(r => r.user === p && wine(r.wine)).sort((a, b) => (b.ts || '').localeCompare(a.ts || ''));
+  if (!rs.length) return '';
+  return `<div class="section-title">Weine <a href="#/weine">Alle</a></div><div class="list">${rs.map(r => { const w = wine(r.wine); return `<a class="item" href="${href('wein', w.id)}"><span class="thumb wthumb">${wineLabel(w)}</span><div class="grow"><h3>${esc(w.name)}${r.again ? ' <span class="pill accent">nochmal kaufen</span>' : ''}</h3><div class="sub">${[w.winery, euro(w.price)].filter(Boolean).map(esc).join(' · ') || '&nbsp;'}</div></div>${score(r.value)}</a>`; }).join('')}</div>`;
 }
 ACT.personSort = el => { personSort = el.dataset.v; render(); };
 ACT.renameMe = async () => {
@@ -1077,7 +1321,7 @@ ACT.invite = el => {
     <details class="more" ${local ? 'open' : ''}><summary>Adresse anpassen</summary>${local ? '<p class="small" style="color:var(--danger)">Du nutzt „localhost“. Andere Geräte erreichen das nicht. Trag die Adresse deines Servers ein, z. B. https://bier.example.de</p>' : ''}
     <div class="row"><input class="field" id="base-url" value="${esc(LS.get('bs-base', ''))}" placeholder="${esc(location.origin)}" inputmode="url"><button class="btn" data-act="saveBase" data-id="${sid || ''}">OK</button></div></details>`);
   ACT.copyLink = async () => { try { await navigator.clipboard.writeText(url); toast('Link kopiert'); } catch { toast('Kopieren nicht möglich'); } };
-  ACT.shareLink = () => navigator.share({ title: 'Bierstudio', text: 'Trink mit!', url }).catch(() => { });
+  ACT.shareLink = () => navigator.share({ title: 'Fläschle', text: 'Trink mit!', url }).catch(() => { });
 };
 ACT.saveBase = el => { LS.set('bs-base', $('#base-url').value.trim()); ACT.invite(el); };
 
@@ -1222,6 +1466,7 @@ ACT.rate = el => rateSheet(el.dataset.id, null);
 let addState = null;
 ACT.add = el => {
   if (!me) return go('#/');
+  if (el?.closest?.('#tabbar') && ['weine', 'wein'].includes(route().page)) return ACT.addWine();
   const live = liveTasting();
   addState = { q: el?.dataset?.name || '', session: live && live.people.includes(me) && route().page === 'tasting' ? live.id : null, cat: [], web: [], forSession: null };
   addSheet();
@@ -1454,7 +1699,7 @@ function renderSettings() {
       <a class="item plain" href="/api/backup" download><div class="grow"><h3>Backup herunterladen</h3><div class="sub">Alle Daten als JSON</div></div><span class="chev">↓</span></a>
       <a class="item plain" href="/api/csv?session=all&user=${encodeURIComponent(me)}" download><div class="grow"><h3>Alles als CSV</h3><div class="sub">Für Excel und Co.</div></div><span class="chev">↓</span></a>
       <label class="item plain" style="cursor:pointer"><div class="grow"><h3>Backup einspielen</h3><div class="sub">Ersetzt alle Daten, vorher wird gesichert</div></div><span class="chev">›</span><input type="file" accept=".json,application/json" data-change="restore" hidden></label></div>
-    <p class="tiny faint" style="text-align:center;margin:28px 0 0">Bierstudio ${VERSION} · Daten: Wikidata (CC0), Open Food Facts (ODbL)${D.logos ? ' · <a href="https://logo.dev" target="_blank" rel="noopener">Logos provided by Logo.dev</a>' : ''}</p>`,
+    <p class="tiny faint" style="text-align:center;margin:28px 0 0">Fläschle ${VERSION} · Daten: Wikidata (CC0), Open Food Facts (ODbL)${D.logos ? ' · <a href="https://logo.dev" target="_blank" rel="noopener">Logos provided by Logo.dev</a>' : ''}</p>`,
   };
 }
 ACT.logoToken = async el => {
@@ -1575,10 +1820,10 @@ addEventListener('pagehide', saveDrafts);
 setInterval(() => { if (!document.hidden) refresh(); }, 4000);
 
 // Alte Einladungslinks (?s=<id>) und Schnellaktion (?add=1)
-const params = new URLSearchParams(location.search), joinId = params.get('s'), quickAdd = params.has('add');
+const params = new URLSearchParams(location.search), joinId = params.get('s'), quickAdd = params.has('add'), quickWine = params.has('wine');
 if (joinId) history.replaceState(null, '', '/#/tasting/' + joinId);
 else if (location.search) history.replaceState(null, '', '/' + location.hash);
 if ('serviceWorker' in navigator && isSecureContext) navigator.serviceWorker.register('/sw.js').catch(() => { });
 setOnline(online);
 if (D) render();
-refresh(true).then(() => { if (D && me && quickAdd) ACT.add(); });
+refresh(true).then(() => { if (D && me && quickAdd) ACT.add(); else if (D && me && quickWine) ACT.addWine(); });
