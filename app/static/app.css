@@ -176,11 +176,16 @@ main { max-width: 720px; margin: 0 auto; padding: 0 18px; outline: none; }
 .tabbar a:active svg { transform: scale(.86); }
 .tabbar a.on { color: var(--text); }
 .tabbar a.on svg { stroke-width: 2.1; }
-/* Eintragen: ein kleines Glas Bier mit Schaumkrone */
-.tab-add { position: relative; z-index: 1; justify-self: center; width: 54px; height: 54px; border-radius: 50%; color: var(--flame-ink); display: grid; place-items: center; overflow: hidden; transition: transform .25s var(--spring);
-  background: radial-gradient(120% 70% at 30% 18%, rgba(255, 255, 255, .55), transparent 45%), linear-gradient(170deg, #FBCB4E, #F2A71B 55%, #E2890E); box-shadow: var(--shadow-amber), inset 0 -3px 6px rgba(160, 80, 0, .25); }
-.tab-add svg { width: 24px; height: 24px; stroke-width: 2.5; }
-.tab-add:active { transform: scale(.9); }
+/* Eintragen: eine flache Kachel mit feinem Plus, in der Farbe des Getränks.
+   Keine Glanzkugel mehr: abgerundetes Quadrat (Squircle), ruhiger farbiger Schatten,
+   beim Tippen dreht sich das Plus eine Vierteldrehung. */
+.tab-add { position: relative; z-index: 1; justify-self: center; width: 50px; height: 50px; border-radius: 17px; display: grid; place-items: center;
+  background: var(--flame); color: var(--flame-ink); box-shadow: 0 8px 18px -8px rgba(214, 128, 10, .7), inset 0 0 0 .5px rgba(0, 0, 0, .06), inset 0 1px 0 rgba(255, 255, 255, .35);
+  transition: transform .35s var(--spring), background-color .3s ease, box-shadow .3s ease; }
+.tab-add svg { width: 22px; height: 22px; stroke-width: 2.2; transition: transform .45s var(--spring); }
+.tab-add:active { transform: scale(.88); }
+.tab-add:active svg { transform: rotate(90deg); }
+@media (hover: hover) { .tab-add:hover svg { transform: rotate(90deg); } }
 
 /* ---------------------------------------------------------------- Flächen: Hierarchie über Radius und Schatten */
 .card { background: var(--surface); border-radius: var(--r-lg); padding: 20px; box-shadow: var(--shadow); }
@@ -458,7 +463,8 @@ th { font-size: .76rem; color: var(--muted); font-weight: 600; }
 .result-group { margin-top: 10px; }
 .result-group .eyebrow { margin: 16px 4px 8px; font-weight: 600; color: var(--text); }
 .result-group .list { background: var(--surface); }
-.new-row .thumb { background: var(--accent-soft); color: var(--accent-text); }
+.new-row .thumb { background: var(--accent-soft); color: var(--accent-text); border-radius: 14px; }
+.new-row .thumb svg { width: 20px; height: 20px; stroke-width: 2; }
 
 /* ---------------------------------------------------------------- Sheet */
 dialog { border: 0; padding: 0; color: var(--text); background: transparent; max-width: none; max-height: none; }
@@ -585,7 +591,7 @@ details.more summary::-webkit-details-marker { display: none; }
 :root[data-theme="dark"] { --wine-text: #F08AA6; --wine-soft: rgba(142, 35, 68, .28); }
 body.theme-wine { --accent-text: var(--wine-text); --accent-soft: var(--wine-soft); }
 body.theme-wine::before { background: radial-gradient(70% 36% at 92% -4%, rgba(142, 35, 68, .18), transparent 70%), var(--bg-grad, var(--bg)); }
-body.theme-wine .tab-add { background: radial-gradient(120% 70% at 30% 18%, rgba(255, 255, 255, .4), transparent 45%), linear-gradient(170deg, #B23A5E, #8E2344 55%, #6C1630); color: #fff; box-shadow: 0 22px 40px -18px rgba(142, 35, 68, .6), inset 0 -3px 6px rgba(60, 0, 20, .3); }
+body.theme-wine .tab-add { background: var(--wine); color: #fff; box-shadow: 0 8px 18px -8px rgba(142, 35, 68, .75), inset 0 0 0 .5px rgba(0, 0, 0, .1), inset 0 1px 0 rgba(255, 255, 255, .2); }
 body.theme-wine .field:focus { border-color: var(--wine); box-shadow: 0 0 0 4px rgba(142, 35, 68, .16); }
 body.theme-wine .switch input:checked { background: var(--wine); }
 .btn.wine { background: var(--wine); color: #fff; }
@@ -692,3 +698,14 @@ label.btn { cursor: pointer; }
 .wf-rate .wglass .shine { height: 34px; left: 17px; }
 @media (prefers-reduced-motion: reduce) { .wglass .wine { transition: none; animation: none !important; } }
 body.theme-wine .chip.on, body.theme-wine .seg.wkind button.on { background: var(--wine); color: #fff; }
+
+/* Kleine Plus-Knöpfe: überall dasselbe feine Plus statt des Schriftzeichens */
+.add-dot { flex: none; width: 30px; height: 30px; border-radius: 10px; display: grid; place-items: center; background: var(--surface-2); color: var(--text); transition: background-color .15s, color .15s, transform .25s var(--spring); }
+.add-dot svg { width: 16px; height: 16px; stroke-width: 2.1; }
+.item:active .add-dot { background: var(--flame); color: var(--flame-ink); transform: scale(.92); }
+body.theme-wine .item:active .add-dot { background: var(--wine); color: #fff; }
+.chip.add-chip { gap: 5px; color: var(--accent-text); background: transparent; border: 1px dashed var(--surface-3); box-shadow: none; }
+.chip.add-chip svg { width: 15px; height: 15px; stroke-width: 2.2; }
+.chip.add-chip:only-child, .chip.add-chip[aria-label] { padding: 0 12px; }
+.btn.icon-only { width: 52px; min-width: 52px; padding: 0; flex: none; }
+.btn.icon-only svg { width: 20px; height: 20px; stroke-width: 2.1; }

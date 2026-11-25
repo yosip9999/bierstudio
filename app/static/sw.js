@@ -1,5 +1,5 @@
 /* Bierstudio Service Worker: App-Shell offline verfügbar, immer zuerst Netz (damit Updates sofort ankommen). */
-const CACHE = 'flaeschle-v12';
+const CACHE = 'flaeschle-v13';
 const SHELL = ['/', '/app.css', '/app.js', '/vendor/qrcode.js', '/vendor/gsap.min.js', '/vendor/Flip.min.js', '/vendor/three.module.min.js', '/glass3d.js', '/fonts/instrument-sans.woff', '/catalog.json', '/manifest.webmanifest', '/icons/icon.svg', '/favicon.ico', '/apple-touch-icon.png', '/icons/icon-192.png', '/icons/icon-512.png'];
 
 self.addEventListener('install', e => {
