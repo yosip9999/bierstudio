@@ -1,6 +1,8 @@
-# 🍺 Bierstudio
+# 🍾 Fläschle
 
-**Dein Bierbuch, mit deinen Leuten.** Trag ein, was du gerade trinkst, gib eine Note und sieh, was die anderen davon halten. Eine selbst gehostete Web-App für Docker oder TrueNAS SCALE, die sich auf dem Handy als App installieren lässt.
+*(ehemals Bierstudio)*
+
+**Bier und Wein, die du dir merken willst.** Trag ein, was du gerade trinkst, gib eine Note und sieh, was die anderen davon halten. Gute Weine merkst du dir mit Foto vom Etikett und Preis. Eine selbst gehostete Web-App für Docker oder TrueNAS SCALE, die sich auf dem Handy als App installieren lässt.
 
 <p align="center">
   <img src="docs/screenshots/uebersicht.jpg" width="230" alt="Übersicht: Was trinkst du gerade und das zuletzt bewertete Bier">
@@ -8,8 +10,18 @@
   <img src="docs/screenshots/biere.jpg" width="230" alt="Alle Biere mit Suche, Filtern und Durchschnittsnoten">
   <img src="docs/screenshots/person.jpg" width="230" alt="Personenseite mit allen bewerteten Bieren und Geschmacksverwandtschaft">
 </p>
+<p align="center">
+  <img src="docs/screenshots/weine.jpg" width="230" alt="Weine: Raster aus Etikett-Fotos mit Note und Preis">
+  <img src="docs/screenshots/wein.jpg" width="230" alt="Wein-Detail mit Etikett, Preis, Einkaufsort und Note">
+  <img src="docs/screenshots/wein-merken.jpg" width="230" alt="Wein merken: Etikett fotografieren, Preis und Note eintragen">
+</p>
 
 ## Funktionen
+
+**Weine merken**
+- Eigener Tab **Weine**: Etikett fotografieren (vorne und hinten), Name, Weingut, Jahrgang, Rot/Weiß/Rosé/Sekt, **Preis pro Flasche** und wo gekauft, dazu Note, Eindrücke und Notiz.
+- Raster aus Etikett-Fotos mit Note und Preis, Suche, Filter (Farbe, „Nochmal kaufen“, von mir) und Sortierung nach Note oder Preis.
+- **„Nochmal kaufen“** pro Person: deine Einkaufsliste für gute Flaschen. Alle sehen, was die anderen von einem Wein halten.
 
 **Schnell eintragen**
 - Ein Tipp auf **＋** oder „Was trinkst du gerade?“, Name tippen, Note ziehen, fertig.

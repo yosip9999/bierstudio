@@ -1,5 +1,17 @@
 # Changelog
 
+## Unveröffentlicht: Fläschle
+- Neuer Name **Fläschle** (vorher Bierstudio) in App, Startbildschirm-Name und Icon (ein kleines Fläschle); Docker-Image und Repository heißen weiter `bierstudio`
+- Neu: Tab **Weine** zum Merken guter Flaschen: Etikett-Foto (vorne, optional hinten), Weingut, Jahrgang, Farbe, Rebsorte, Region, Alkohol, „Passt zu“, **Preis pro Flasche** und Einkaufsort; Note mit Weinglas, Eindrücke, Notiz
+- Weine als Raster aus Etikett-Fotos mit Note und Preis; Suche, Filter nach Farbe, „Nochmal kaufen“ und „Von mir“; sortierbar nach Datum, Note, Preis und Name
+- „Nochmal kaufen“ pro Person, auch direkt auf der Wein-Seite umschaltbar
+- Wein-Bereich in Bordeaux: ＋-Knopf, Links und Schalter werden rot, das Weinglas füllt sich in der Farbe des Weins
+- Übersicht: „Bier eintragen“ und „Wein merken“ nebeneinander, zuletzt gemerkte Weine, Weinnoten im Verlauf; Personenseiten zeigen auch Weine
+- Tastings sind von der Tab-Leiste auf die Übersicht gezogen (Karte „Tastings“, laufende Tastings oben als LIVE)
+- Löschen von Weinen und Weinnoten mit Papierkorb und Rückgängig; Umbenennen nimmt Weinnoten mit
+- Neue Schnellaktion „Wein merken“ für das Homescreen-Icon
+- Datenformat: neue Listen `wines` und `wine_ratings`; bestehende Daten laufen ohne Migration weiter
+
 ## Unveröffentlicht
 - Neues Erscheinungsbild „Kaltes Glas“: kühler, frostiger Hintergrund, weiße Flächen, Stout-Dunkel für Text und Bernstein nur dort, wo Bier ist
 - Neu: Beim Bewerten füllt sich ein Glas bis zur Note, mit Schaumkrone, aufsteigenden Perlen und der Farbe des Bierstils (Helles golden, Stout dunkel, Weizen trüb hell …); in Blindverkostungen bleibt die Farbe neutral

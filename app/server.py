@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Bierstudio – gemeinsam oder allein Bier bewerten.
+"""Fläschle (ehemals Bierstudio) – Bier und Wein gemeinsam oder allein bewerten.
 
 Nur Python-Standardbibliothek. Daten liegen als JSON in DATA_DIR.
 Umgebungsvariablen:
@@ -162,7 +162,7 @@ def save(force_backup=False):
 # ---------------------------------------------------------------- migration
 def empty_db():
     return {'version': 3, 'rev': 1, 'people': [], 'beers': [], 'sessions': [], 'ratings': [],
-            'active': None, 'settings': {}, 'trash': [], 'wishlist': {}}
+            'active': None, 'settings': {}, 'trash': [], 'wishlist': {}, 'wines': [], 'wine_ratings': []}
 
 
 def from_v1(o):
@@ -269,6 +269,10 @@ def validate_v3(d):
     d.setdefault('trash', [])
     d.setdefault('wishlist', {})
     d.setdefault('rev', 1)
+    d.setdefault('wines', [])
+    d.setdefault('wine_ratings', [])
+    wine_ids = {w['id'] for w in d['wines']}
+    d['wine_ratings'] = [r for r in d['wine_ratings'] if r.get('wine') in wine_ids and 0 <= float(r.get('value', -1)) <= 10]
 
 
 def load_db():
@@ -322,6 +326,7 @@ def redacted(user):
             ratings.append(r)
     return {'version': 3, 'rev': DB['rev'], 'people': DB['people'], 'beers': beers,
             'sessions': DB['sessions'], 'ratings': ratings, 'active': DB.get('active'), 'wishlist': DB.get('wishlist', {}),
+            'wines': DB.get('wines', []), 'wine_ratings': DB.get('wine_ratings', []),
             'trash': [{'tid': t['tid'], 'kind': t['kind'], 'at': t['at'], 'by': t['by'], 'label': t['label'],
                        'n': len(t.get('ratings', []))} for t in reversed(DB.get('trash', []))],
             'off': True, 'off_contact': bool(off_contact()), 'logos': bool(logo_token()),
@@ -709,6 +714,12 @@ def act_person_rename(q):
     wl = DB.setdefault('wishlist', {})
     if old in wl:
         wl[new] = wl.pop(old)
+    for r in DB.setdefault('wine_ratings', []):
+        if r['user'] == old:
+            r['user'] = new
+    for w in DB.setdefault('wines', []):
+        if w.get('created_by') == old:
+            w['created_by'] = new
     return {'name': new}
 
 
@@ -925,11 +936,131 @@ def _add_ratings(rs):
                 DB['people'].append(r['user'])
 
 
+# ---------------------------------------------------------------- Weine
+WINE_KINDS = ('rot', 'weiss', 'rose', 'sekt', 'suess')
+
+
+def wine_of(wid):
+    return next((w for w in DB.setdefault('wines', []) if w['id'] == wid), None)
+
+
+def parse_price(v):
+    if v in (None, ''):
+        return None
+    try:
+        x = round(float(str(v).replace('€', '').replace(',', '.').strip()), 2)
+    except ValueError:
+        raise ValueError('Preis bitte als Zahl, z. B. 9,50')
+    if not 0 <= x <= 100000:
+        raise ValueError('Preis bitte als Zahl, z. B. 9,50')
+    return x
+
+
+def photo_id(v):
+    v = str(v or '')
+    return v if ID_RE.match(v) and (PHOTO_DIR / f'{v}.jpg').exists() else ''
+
+
+def act_wine(q):
+    """Wein anlegen oder bearbeiten, auf Wunsch gleich mit der eigenen Note (ein Aufruf, damit es offline klappt)."""
+    user = clean(q.get('user'), 40)
+    if user not in DB['people']:
+        raise ValueError('Bitte zuerst eine Person wählen')
+    w = wine_of(q.get('id'))
+    if w is None:
+        name = clean(q.get('name'))
+        if not name:
+            raise ValueError('Name fehlt')
+        cid = q.get('id')
+        w = {'id': cid if cid and ID_RE.match(cid) else uid(), 'name': name, 'created_by': user, 'created_at': now()}
+        DB.setdefault('wines', []).append(w)
+    for k, n in (('name', 120), ('winery', 120), ('grape', 80), ('region', 80), ('where', 80), ('pairing', 80)):
+        if k in q:
+            v = clean(q[k], n)
+            if k == 'name' and not v:
+                continue
+            w[k] = v
+    if 'kind' in q:
+        w['kind'] = q['kind'] if q['kind'] in WINE_KINDS else ''
+    if 'year' in q:
+        y = str(q['year'] or '').strip()
+        w['year'] = int(y) if y.isdigit() and 1900 <= int(y) <= 2100 else None
+    if 'abv' in q:
+        w['abv'] = parse_abv(q['abv'])
+    if 'price' in q:
+        w['price'] = parse_price(q['price'])
+    for k in ('photo', 'photo_back'):
+        if k in q:
+            w[k] = photo_id(q[k])
+    rt = q.get('rating')
+    if isinstance(rt, dict):
+        value = float(str(rt.get('value')).replace(',', '.'))
+        if not 0 <= value <= 10:
+            raise ValueError('Note muss zwischen 0 und 10 liegen')
+        DB['wine_ratings'] = [r for r in DB.setdefault('wine_ratings', []) if not (r['wine'] == w['id'] and r['user'] == user)]
+        DB['wine_ratings'].append({'wine': w['id'], 'user': user, 'value': round(value, 2),
+                                   'note': str(rt.get('note') or '')[:1000],
+                                   'tags': [clean(t, 24) for t in (rt.get('tags') or [])[:12] if clean(t, 24)],
+                                   'again': bool(rt.get('again')), 'ts': rt.get('ts') or now()})
+    return {'id': w['id']}
+
+
+def act_wine_again(q):
+    """„Nochmal kaufen“ an- oder ausschalten, ohne die Note anzufassen."""
+    user = clean(q.get('user'), 40)
+    r = next((r for r in DB.get('wine_ratings', []) if r['wine'] == q.get('wine') and r['user'] == user), None)
+    if not r:
+        raise ValueError('Erst bewerten, dann merken')
+    r['again'] = bool(q.get('again'))
+    return {}
+
+
+def act_wine_rating_delete(q):
+    user = clean(q.get('user'), 40)
+    r = next((r for r in DB.get('wine_ratings', []) if r['wine'] == q.get('wine') and r['user'] == user), None)
+    if not r:
+        raise ValueError('Bewertung nicht gefunden')
+    w = wine_of(r['wine'])
+    tid = trash_put('wine_rating', user, f"Note für {w['name'] if w else 'Wein'}", {'wine_rating': r})
+    DB['wine_ratings'].remove(r)
+    return {'tid': tid}
+
+
+def act_wine_delete(q):
+    w = wine_of(q.get('id'))
+    if not w:
+        raise ValueError('Wein nicht gefunden')
+    rs = [r for r in DB.get('wine_ratings', []) if r['wine'] == w['id']]
+    tid = trash_put('wine', q.get('user'), w['name'], {'wine': w, 'wine_ratings': rs})
+    DB['wines'].remove(w)
+    DB['wine_ratings'] = [r for r in DB['wine_ratings'] if r['wine'] != w['id']]
+    return {'tid': tid}
+
+
+def _restore_wine(t):
+    if t['kind'] == 'wine':
+        w = t['wine']
+        if wine_of(w['id']):
+            raise ValueError('Der Wein ist schon wieder da')
+        DB.setdefault('wines', []).append(w)
+        rs = t.get('wine_ratings', [])
+    else:
+        rs = [t['wine_rating']]
+        if not wine_of(rs[0]['wine']):
+            raise ValueError('Der Wein dazu ist gelöscht – zuerst das wiederherstellen')
+    have = {(r['wine'], r['user']) for r in DB.setdefault('wine_ratings', [])}
+    if t['kind'] == 'wine_rating' and (rs[0]['wine'], rs[0]['user']) in have:
+        raise ValueError('Dafür gibt es inzwischen eine neue Bewertung')
+    DB['wine_ratings'].extend(r for r in rs if (r['wine'], r['user']) not in have)
+
+
 def act_trash_restore(q):
     t = next((t for t in DB.get('trash', []) if t['tid'] == q.get('tid')), None)
     if not t:
         raise ValueError('Nicht mehr im Papierkorb')
-    if t['kind'] == 'rating':
+    if t['kind'] in ('wine', 'wine_rating'):
+        _restore_wine(t)
+    elif t['kind'] == 'rating':
         r = t['rating']
         if not beer_of(r['beer']) or (r['session'] and not session_of(r['session'])):
             raise ValueError('Das Bier bzw. der Abend dazu ist gelöscht – zuerst das wiederherstellen')
@@ -1047,7 +1178,8 @@ def act_logos_retry(q):
     return {'cleared': lookup.forget_misses(LOGO_DIR) if LOGO_DIR.exists() else 0}
 
 
-ACTIONS = {'person': act_person, 'person/rename': act_person_rename, 'photo': act_photo, 'cheers': act_cheers, 'wish': act_wish, 'rate': act_rate, 'rating/delete': act_rating_delete, 'beer': act_beer,
+ACTIONS = {'wine': act_wine, 'wine/again': act_wine_again, 'wine/delete': act_wine_delete,
+           'wine/rating/delete': act_wine_rating_delete, 'person': act_person, 'person/rename': act_person_rename, 'photo': act_photo, 'cheers': act_cheers, 'wish': act_wish, 'rate': act_rate, 'rating/delete': act_rating_delete, 'beer': act_beer,
            'beer/delete': act_beer_delete, 'beer/merge': act_beer_merge, 'session': act_session, 'session/beers': act_session_beers,
            'session/delete': act_session_delete, 'active': act_active, 'settings': act_settings,
            'restore': act_restore, 'trash/restore': act_trash_restore, 'backup/restore': act_backup_restore,
@@ -1094,7 +1226,7 @@ def gzipped(f, body):
 
 
 class Handler(BaseHTTPRequestHandler):
-    server_version = 'Bierstudio/' + VERSION
+    server_version = 'Flaeschle/' + VERSION
     sys_version = ''
 
     def log_message(self, fmt, *args):
@@ -1251,7 +1383,7 @@ def main():
     port = int(os.environ.get('PORT', '8000'))
     srv = ThreadingHTTPServer(('0.0.0.0', port), Handler)
     srv.daemon_threads = True
-    print(f'Bierstudio {VERSION} läuft auf Port {port} · Daten: {DB_FILE}', flush=True)
+    print(f'Fläschle {VERSION} läuft auf Port {port} · Daten: {DB_FILE}', flush=True)
     try:
         srv.serve_forever()
     except KeyboardInterrupt:

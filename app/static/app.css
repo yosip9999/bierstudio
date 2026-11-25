@@ -576,3 +576,119 @@ details.more summary::-webkit-details-marker { display: none; }
   #main, .topbar { transition: none !important; }
   body.sheet-open #main, body.sheet-open .topbar { transform: none; }
 }
+
+/* ---------------------------------------------------------------- Wein
+   Wein bekommt seine eigene Flüssigkeit: Bordeaux statt Bernstein. Im Wein-Bereich
+   werden ＋-Knopf, Links und aktive Zustände rot; das Etikett-Foto ist der Held. */
+:root { --wine: #8E2344; --wine-text: #8E2344; --wine-soft: #F7E3E8; }
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) { --wine-text: #F08AA6; --wine-soft: rgba(142, 35, 68, .28); } }
+:root[data-theme="dark"] { --wine-text: #F08AA6; --wine-soft: rgba(142, 35, 68, .28); }
+body.theme-wine { --accent-text: var(--wine-text); --accent-soft: var(--wine-soft); }
+body.theme-wine::before { background: radial-gradient(70% 36% at 92% -4%, rgba(142, 35, 68, .18), transparent 70%), var(--bg-grad, var(--bg)); }
+body.theme-wine .tab-add { background: radial-gradient(120% 70% at 30% 18%, rgba(255, 255, 255, .4), transparent 45%), linear-gradient(170deg, #B23A5E, #8E2344 55%, #6C1630); color: #fff; box-shadow: 0 22px 40px -18px rgba(142, 35, 68, .6), inset 0 -3px 6px rgba(60, 0, 20, .3); }
+body.theme-wine .field:focus { border-color: var(--wine); box-shadow: 0 0 0 4px rgba(142, 35, 68, .16); }
+body.theme-wine .switch input:checked { background: var(--wine); }
+.btn.wine { background: var(--wine); color: #fff; }
+.btn svg { width: 18px; height: 18px; flex: none; }
+.dot { display: inline-block; width: 8px; height: 8px; border-radius: 50%; margin-right: 6px; vertical-align: 1px; box-shadow: inset 0 0 0 1px rgba(0, 0, 0, .14); flex: none; }
+.pill.wine-pill { background: var(--wine-soft); color: var(--wine-text); vertical-align: 2px; }
+
+/* Übersicht: Bier und Wein nebeneinander */
+.cta-pair { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+.cta-pair .drink-cta { flex-direction: column; align-items: flex-start; justify-content: space-between; min-height: 150px; padding: 30px 18px 18px; }
+.cta-pair .drink-cta .glass-ic { width: 46px; height: 46px; }
+.cta-pair .drink-cta b { font-size: 1.4rem; }
+.cta-pair .drink-cta span span { display: block; font-size: .88rem; opacity: .78; }
+.drink-cta.wine-cta { color: #fff; background: radial-gradient(90% 120% at 100% 100%, rgba(40, 0, 15, .45), transparent 60%), linear-gradient(165deg, #B23A5E 0%, #8E2344 50%, #5E1229 100%); box-shadow: 0 22px 40px -18px rgba(142, 35, 68, .6); }
+.drink-cta.wine-cta::before { display: none; }
+.drink-cta.wine-cta .glass-ic { color: var(--wine); }
+.live-card { margin: 0 0 12px; }
+.live-card .pill { flex: none; }
+
+/* Etikett-Raster */
+.wgrid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px 14px; }
+@media (min-width: 620px) { .wgrid { grid-template-columns: repeat(3, 1fr); } }
+.wcard { display: block; color: inherit; min-width: 0; }
+.wphoto { position: relative; display: block; aspect-ratio: 3 / 4; border-radius: 22px; overflow: hidden; background: var(--surface-2); box-shadow: 0 1px 2px rgba(34, 27, 46, .06), 0 18px 30px -20px rgba(34, 27, 46, .45); transition: transform .2s var(--spring); }
+.wcard:active .wphoto { transform: scale(.97); }
+.wphoto::after { content: ""; position: absolute; inset: 0; pointer-events: none; background: radial-gradient(120% 80% at 20% 0%, rgba(255, 255, 255, .18), transparent 50%), linear-gradient(180deg, transparent 55%, rgba(0, 0, 0, .3)); }
+.wphoto .score { position: absolute; right: 10px; top: 10px; z-index: 1; box-shadow: 0 4px 10px -4px rgba(0, 0, 0, .35); }
+.wphoto .price { position: absolute; left: 10px; bottom: 10px; z-index: 1; padding: 5px 10px; border-radius: 99px; font-weight: 680; font-stretch: 85%; font-size: .95rem; color: #221B2E; background: rgba(255, 255, 255, .86); -webkit-backdrop-filter: blur(12px); backdrop-filter: blur(12px); font-variant-numeric: tabular-nums; }
+.wphoto .again { position: absolute; right: 10px; bottom: 10px; z-index: 1; width: 30px; height: 30px; border-radius: 50%; display: grid; place-items: center; background: var(--wine); color: #fff; }
+.wphoto .again svg { width: 16px; height: 16px; stroke-width: 2; }
+.wcard h3 { margin: 10px 4px 0; font-size: .98rem; font-weight: 600; line-height: 1.2; overflow: hidden; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; }
+.wcard .sub { margin: 3px 4px 0; font-size: .82rem; color: var(--muted); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.wine-strip { gap: 12px; padding-bottom: 6px; }
+.wine-strip .wcard { width: 128px; flex: none; }
+.wine-strip .wcard h3 { font-size: .9rem; display: block; }
+/* Etikett: Foto oder Platzhalter in Weinfarbe */
+.wlabel { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+.wlabel.none { display: flex; flex-direction: column; justify-content: flex-end; gap: 4px; padding: 16px 14px 46px; color: #fff; background: radial-gradient(120% 70% at 20% 10%, rgba(255, 255, 255, .25), transparent 55%), linear-gradient(170deg, color-mix(in srgb, var(--wc) 78%, #fff), var(--wc) 60%, color-mix(in srgb, var(--wc) 70%, #000)); }
+.wlabel.none b { font-weight: 680; font-stretch: 80%; font-size: 1.25rem; line-height: 1.05; text-shadow: 0 1px 8px rgba(0, 0, 0, .25); overflow: hidden; display: -webkit-box; -webkit-line-clamp: 4; -webkit-box-orient: vertical; }
+.wlabel.none small { opacity: .85; font-size: .8rem; }
+.thumb.wthumb { position: relative; width: 44px; height: 58px; border-radius: 10px; }
+.thumb.wthumb .wlabel.none { padding: 0; }
+.thumb.wthumb .wlabel.none b, .thumb.wthumb .wlabel.none small { display: none; }
+
+/* Wein-Detail */
+.whero { position: relative; margin: 0 -18px; height: min(62vh, 460px); overflow: hidden; background: var(--surface-2); }
+.whero .wlabel.big { inset: 0; }
+.whero .wlabel.none.big { padding: 30px 26px 90px; }
+.whero .wlabel.none.big b { font-size: 2.4rem; }
+.whero::after { content: ""; position: absolute; inset: 0; pointer-events: none; background: linear-gradient(180deg, rgba(0, 0, 0, .18), transparent 22%, transparent 50%, var(--bg) 96%); }
+main > div:has(> .whero) { margin-top: calc(-54px - var(--safe-t)); }
+.whead { position: relative; margin-top: -46px; }
+.whead .large-title { margin: 4px 0 2px; }
+.pricecard { display: flex; align-items: center; gap: 14px; margin-top: 18px; padding: 16px 18px; border-radius: 26px; background: var(--surface); box-shadow: var(--shadow-lift); }
+.pricecard .big { font-size: 2.6rem; line-height: .9; font-weight: 700; font-stretch: 76%; letter-spacing: -.02em; }
+.pricecard .big span { font-size: 1.3rem; margin-left: 2px; }
+.pricecard svg { width: 15px; height: 15px; vertical-align: -2px; }
+.pricecard .btn { flex: none; }
+.card.wrate { display: flex; align-items: center; gap: 18px; margin-top: 12px; }
+.wfacts { display: grid; grid-template-columns: 1fr 1fr; margin-top: 12px; background: var(--surface); border-radius: 22px; box-shadow: var(--shadow); overflow: hidden; }
+.wfacts div { padding: 13px 16px; min-width: 0; }
+.wfacts div:nth-child(odd) { border-right: 1px solid var(--line); }
+.wfacts div:nth-child(n+3) { border-top: 1px solid var(--line); }
+.wfacts small { display: block; font-size: .78rem; color: var(--muted); }
+.wfacts b { font-weight: 600; display: block; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+
+/* Weinglas mit Stiel */
+.wglass { --fill: 60%; --liq: #7A1F3D; position: relative; display: block; width: 84px; height: 130px; flex: none; }
+.wglass .bowl { position: absolute; left: 8px; right: 8px; top: 0; height: 74px; border-radius: 6px 6px 40px 40px / 6px 6px 46px 46px; background: var(--glass); box-shadow: inset 0 0 0 2px var(--glass-edge); overflow: hidden; }
+.wglass .wine { position: absolute; left: 0; right: 0; bottom: 0; height: var(--fill); transition: height .7s var(--pour), background-color .3s ease;
+  background: linear-gradient(90deg, rgba(0, 0, 0, .18), rgba(255, 255, 255, .14) 30%, rgba(255, 255, 255, 0) 55%, rgba(0, 0, 0, .16)), var(--liq); box-shadow: inset 0 2px 0 rgba(255, 255, 255, .35); }
+.wglass .stem { position: absolute; left: 50%; top: 72px; width: 4px; margin-left: -2px; height: 48px; background: var(--glass-edge); border-radius: 2px; }
+.wglass .foot { position: absolute; left: 18px; right: 18px; bottom: 6px; height: 6px; border-radius: 50%; background: var(--glass-edge); }
+.wglass .shine { position: absolute; left: 20px; top: 10px; width: 6px; height: 42px; border-radius: 9px; background: linear-gradient(180deg, rgba(255, 255, 255, .8), rgba(255, 255, 255, 0)); }
+.wglass.lg { width: 110px; height: 172px; }
+.wglass.lg .bowl { left: 10px; right: 10px; height: 98px; }
+.wglass.lg .stem { top: 96px; height: 64px; }
+.wglass.lg .foot { left: 24px; right: 24px; }
+.hero-glass .wglass { filter: drop-shadow(0 22px 26px rgba(142, 35, 68, .25)); }
+.hero-glass .wglass .wine { animation: pour 1.6s var(--pour) .6s both; }
+
+/* Wein merken: Etikett-Aufnahme, Preis, Note */
+.capture { position: relative; display: grid; place-items: center; align-content: center; gap: 4px; aspect-ratio: 4 / 3; border-radius: 24px; overflow: hidden; cursor: pointer; text-align: center; }
+.capture.empty { background: radial-gradient(80% 70% at 50% 35%, #4A3340, #1E1519); color: #fff; }
+.capture.empty svg { width: 34px; height: 34px; stroke-width: 1.6; margin-bottom: 6px; }
+.capture.empty b { font-size: 1.1rem; font-weight: 640; }
+.capture.empty span:not(.frame) { font-size: .86rem; opacity: .7; }
+.capture .frame { position: absolute; inset: 9% 26%; border-radius: 16px; border: 1.5px dashed rgba(255, 255, 255, .35); pointer-events: none; }
+.capture.busy { opacity: .6; pointer-events: none; }
+.capture.busy::after { content: "Lädt hoch …"; position: absolute; inset: 0; display: grid; place-items: center; background: rgba(0, 0, 0, .45); color: #fff; font-weight: 600; }
+.capture.has { background: #1E1519; cursor: default; }
+.capture.has img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: contain; }
+.capture.has .icon-btn { position: absolute; top: 10px; right: 10px; background: var(--chrome); -webkit-backdrop-filter: blur(16px); backdrop-filter: blur(16px); }
+label.btn { cursor: pointer; }
+.money { position: relative; }
+.money .field { font-size: 1.5rem; font-weight: 680; font-stretch: 80%; padding-right: 44px; font-variant-numeric: tabular-nums; }
+.money span { position: absolute; right: 16px; top: 50%; transform: translateY(-50%); font-size: 1.2rem; font-weight: 600; color: var(--muted); pointer-events: none; }
+.seg.wkind button { min-width: 0; font-size: .86rem; }
+.wf-rate { display: flex; align-items: center; gap: 18px; }
+.wf-rate .wglass { width: 70px; height: 108px; }
+.wf-rate .wglass .bowl { height: 62px; left: 7px; right: 7px; }
+.wf-rate .wglass .stem { top: 60px; height: 40px; }
+.wf-rate .wglass .foot { left: 15px; right: 15px; }
+.wf-rate .wglass .shine { height: 34px; left: 17px; }
+@media (prefers-reduced-motion: reduce) { .wglass .wine { transition: none; animation: none !important; } }
+body.theme-wine .chip.on, body.theme-wine .seg.wkind button.on { background: var(--wine); color: #fff; }
