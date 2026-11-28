@@ -5,7 +5,7 @@ Nur Standardbibliothek. Alle Funktionen werfen bei Netzwerkfehlern Exceptions; d
 import json, os, re, threading, time, urllib.error, urllib.parse, urllib.request
 from html.parser import HTMLParser
 
-VERSION = '3.0.0'
+VERSION = '3.0.1'
 PROJECT_URL = 'https://github.com/yosip9999/bierstudio'
 WD_API = 'https://www.wikidata.org/w/api.php?'
 CACHE = {}

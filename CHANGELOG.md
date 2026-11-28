@@ -1,5 +1,12 @@
 # Changelog
 
+## 3.0.1: Open Food Facts und Sheets
+- Open Food Facts wieder erreichbar: OFF hat seine Such-API geändert (Feld `categories_tags` gibt es dort nicht mehr), dadurch scheiterte jede Online-Suche mit „nicht erreichbar (400)“. Die Suche nutzt jetzt das neue Feld, fällt auf eine freie Suche zurück und ergänzt die Treffer über die Produkt-API um Alkohol, Stil und Brauerei; Nicht-Biere (z. B. Spezi) werden aussortiert
+- Zu viele Anfragen („429“): Der Server lässt den Dienst dann eine Minute in Ruhe (bzw. so lange, wie OFF es verlangt), statt weiter anzuklopfen, und sagt „bremst gerade“ statt „nicht erreichbar“
+- Gleiche Biere aus Wikidata und OFF bzw. in mehreren Packungen erscheinen in der Online-Suche nur noch einmal, mit zusammengeführten Angaben; Markennamen wie `xx:paulaner` werden lesbar
+- Sheets (z. B. „Bier bearbeiten“) bleiben nicht mehr auf halber Höhe hängen: nach dem Tippen schiebt die App das von iOS verrutschte Fenster zurück, ein abgebrochener Zug am Griff (App-Wechsel, Systemgeste) federt zurück, und ein Sheet, das während des Schließens neu geöffnet wird, bleibt sauber oben
+- `tools/import_off.py` an die neue OFF-Such-API angepasst
+
 ## Unveröffentlicht: Fläschle
 - Neuer Name **Fläschle** (vorher Bierstudio) in App, Startbildschirm-Name und Icon (ein kleines Fläschle); Docker-Image und Repository heißen weiter `bierstudio`
 - Neu: Tab **Weine** zum Merken guter Flaschen: Etikett-Foto (vorne, optional hinten), Weingut, Jahrgang, Farbe, Rebsorte, Region, Alkohol, „Passt zu“, **Preis pro Flasche** und Einkaufsort; Note mit Weinglas, Eindrücke, Notiz

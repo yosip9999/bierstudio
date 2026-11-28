@@ -14,7 +14,7 @@ import lookup
 from http.server import ThreadingHTTPServer, BaseHTTPRequestHandler
 from pathlib import Path
 
-VERSION = '3.0.0'
+VERSION = '3.0.1'
 BASE = Path(__file__).resolve().parent
 STATIC = BASE / 'static'
 DATA_DIR = Path(os.environ.get('DATA_DIR', BASE.parent / 'data')).resolve()
@@ -341,6 +341,7 @@ def redacted(user):
 # kommt notfalls das letzte bekannte Ergebnis zurück, auch nach einem Neustart.
 NET_CACHE, NET_LOCK = {}, threading.Lock()
 _net_state = {'dirty': False, 'saved': 0.0}
+NET_COOL = {}  # Host -> Zeitpunkt, bis zu dem wir ihn nach „429 zu viele Anfragen“ in Ruhe lassen
 STYLES = [('alkoholfrei', 'Alkoholfrei'), ('alcohol-free', 'Alkoholfrei'), ('non-alcoholic', 'Alkoholfrei'),
           ('radler', 'Radler'), ('shandy', 'Radler'), ('weizen', 'Weizen'), ('wheat', 'Weizen'), ('weiss', 'Weizen'),
           ('ipa', 'IPA'), ('pale-ale', 'Pale Ale'), ('stout', 'Stout'), ('porter', 'Porter'),
@@ -423,6 +424,11 @@ def net_json(url, ttl=7 * 86400, timeout=8, tries=2, headers=None):
     hit = NET_CACHE.get(url)
     if hit and time.time() - hit[0] < ttl:
         return hit[1], True
+    host = urllib.parse.urlsplit(url).hostname or ''
+    if NET_COOL.get(host, 0) > time.time():  # Dienst hat uns gebremst: nicht weiter anklopfen
+        if hit:
+            return hit[1], True
+        raise ValueError('bremst gerade (zu viele Anfragen), gleich nochmal versuchen')
     last, data = None, None
     for i in range(tries):
         try:
@@ -435,6 +441,10 @@ def net_json(url, ttl=7 * 86400, timeout=8, tries=2, headers=None):
             if e.code == 404:  # „nicht gefunden“ ist eine gültige Antwort
                 data = {}
                 break
+            wait = (e.headers.get('Retry-After') or '').strip() if e.headers else ''
+            if e.code == 429 or (e.code == 503 and wait.isdigit()):
+                NET_COOL[host] = time.time() + min(300, int(wait) if wait.isdigit() else 60)
+                break
             if 400 <= e.code < 500 and e.code != 408:
                 break  # Anfragefehler oder Limit: Wiederholen hilft nicht
         except Exception as e:
@@ -444,6 +454,8 @@ def net_json(url, ttl=7 * 86400, timeout=8, tries=2, headers=None):
     if data is None:
         if hit:
             return hit[1], True
+        if getattr(last, 'code', None) == 429:
+            raise ValueError('bremst gerade (zu viele Anfragen), gleich nochmal versuchen')
         raise ValueError(f'nicht erreichbar ({getattr(last, "code", None) or last.__class__.__name__})')
     with NET_LOCK:
         NET_CACHE[url] = (time.time(), data)
@@ -452,53 +464,109 @@ def net_json(url, ttl=7 * 86400, timeout=8, tries=2, headers=None):
     return data, False
 
 
+def off_brand(brands):
+    """Marke aus OFF: Text („Rother Bräu, …“), Liste oder Tag („xx:rother-brau“) → lesbarer Name."""
+    b = brands[0] if isinstance(brands, list) and brands else '' if isinstance(brands, list) else str(brands or '').split(',')[0]
+    b = str(b).strip()
+    b = re.sub(r'^[a-z]{2}:', '', b)  # Sprach-Präfix der Such-API („xx:Paulaner“)
+    if re.fullmatch(r'[a-z0-9]+(-[a-z0-9]+)+', b):  # reine Tag-Form „rother-brau“
+        b = ' '.join(w.capitalize() for w in b.split('-'))
+    elif b.islower():  # „stortebeker“ → „Stortebeker“
+        b = ' '.join(w[:1].upper() + w[1:] for w in b.split())
+    return b
+
+
 def off_product(p):
-    brands = p.get('brands') or ''
-    brand = brands[0] if isinstance(brands, list) and brands else str(brands).split(',')[0]
     cats = ' '.join(p.get('categories_tags') or []) + ' ' + norm(p.get('product_name'))
     style = next((s for k, s in STYLES if k in cats), '')
     n = p.get('nutriments') or {}
     abv = parse_abv(n.get('alcohol_100g', n.get('alcohol_value', n.get('alcohol', p.get('alcohol_value')))))
     code = str(p.get('code', ''))
     return {'code': code, 'name': clean(p.get('product_name_de') or p.get('product_name')) or 'Ohne Namen',
-            'brand': clean(brand), 'quantity': clean(p.get('quantity'), 40),
+            'brand': clean(off_brand(p.get('brands'))), 'quantity': clean(p.get('quantity'), 40),
             'style': style, 'abv': abv, 'image': p.get('image_front_small_url') or '',
             'source_url': f'https://world.openfoodfacts.org/product/{code}'}
 
 
 FIELDS = 'code,product_name,product_name_de,brands,quantity,categories_tags,nutriments,image_front_small_url'
+OFF_SEARCH = 'https://search.openfoodfacts.org/search?'
+NOT_BEER_CAT = re.compile(r'sodas|soft-drinks|lemonade|juice|waters|wines|ciders|spirits|liqueurs|mixed-drinks|syrups|snacks', re.I)
+
+
+def off_details_url(code):
+    return f'https://world.openfoodfacts.org/api/v2/product/{code}.json?fields={FIELDS}'
+
+
+def off_details(code):
+    """Vollständige Produktdaten (Alkohol, Kategorien, Marke) – die Such-API liefert diese Felder nicht mehr."""
+    try:
+        data, _ = net_json(off_details_url(code), ttl=30 * 86400, timeout=6, tries=1)
+        return data.get('product') or {}
+    except ValueError:
+        return {}
+
+
+def off_is_beer(h, from_beer_query):
+    cats = ' '.join(h.get('categories_tags') or [])
+    if cats:
+        return ('en:beers' in cats or bool(BEER_HINT.search(cats))) and not (NOT_BEER_CAT.search(cats) and 'en:beers' not in cats)
+    # Keine Kategorien bekannt: Treffer der Bier-Suche zählen, sonst muss der Name nach Bier klingen
+    return from_beer_query or bool(BEER_HINT.search(f"{h.get('product_name', '')} {h.get('product_name_de', '')}"))
 
 
 def off_search(q):
-    """Biere bei Open Food Facts. Zuerst die schnelle Such-API, dann die klassische Suche als Ausweichweg."""
+    """Biere bei Open Food Facts.
+
+    1. Such-API mit Bier-Kategorie, 2. Such-API ohne Filter (findet auch schlecht kategorisierte Biere),
+    3. Treffer parallel über die Produkt-API ergänzen (Alkohol, Stil, Marke) und Nicht-Biere aussortieren.
+    Eine Anfrage, die OFF ablehnt (z. B. weil sich die Abfragesprache geändert hat), bricht die Suche nicht ab.
+    """
     terms = re.sub(r'[\\"\':()\[\]{}^~*?!+\-&|/]+', ' ', q).strip()
     if not terms:
         return []
-    errors, answered = [], False
-    for query, beer_only in ((f'{terms} categories_tags:"en:beers"', False), (terms, True)):
+    hits, seen, errors, answered = [], set(), [], False
+    for query, beer_q in ((f'{terms} categories:"en:beers"', True), (terms, False)):
         try:
-            data, _ = net_json('https://search.openfoodfacts.org/search?' + urllib.parse.urlencode(
+            data, _ = net_json(OFF_SEARCH + urllib.parse.urlencode(
                 {'q': query, 'page_size': 15, 'langs': 'de,en', 'fields': FIELDS}), timeout=7)
             answered = True
-            hits = [h for h in data.get('hits') or [] if h.get('code')]
-            if beer_only:
-                hits = [h for h in hits if BEER_HINT.search(' '.join(h.get('categories_tags') or []) + ' ' + str(h.get('product_name', '')))]
-            if hits:
-                return [off_product(h) for h in hits]
+            for h in data.get('hits') or []:
+                c = str(h.get('code') or '')
+                if re.fullmatch(r'\d{6,14}', c) and c not in seen:
+                    seen.add(c)
+                    hits.append((h, beer_q))
         except ValueError as e:
             errors.append(str(e))
+        if len(hits) >= 8:
             break
-    if answered:
-        return []  # Such-API hat geantwortet, nur eben ohne Treffer
-    try:
-        data, _ = net_json('https://world.openfoodfacts.org/cgi/search.pl?' + urllib.parse.urlencode({
-            'search_terms': terms, 'search_simple': 1, 'action': 'process', 'json': 1, 'page_size': 15,
-            'tagtype_0': 'categories', 'tag_contains_0': 'contains', 'tag_0': 'beers', 'fields': FIELDS}), timeout=10)
-        return [off_product(p) for p in data.get('products', []) if p.get('code')]
-    except ValueError as e:
-        if errors:
-            raise ValueError('Open Food Facts ' + errors[0])
-        raise ValueError('Open Food Facts ' + str(e))
+    if not answered:
+        try:  # klassische Suche als letzter Ausweg
+            data, _ = net_json('https://world.openfoodfacts.org/cgi/search.pl?' + urllib.parse.urlencode({
+                'search_terms': terms, 'search_simple': 1, 'action': 'process', 'json': 1, 'page_size': 15,
+                'tagtype_0': 'categories', 'tag_contains_0': 'contains', 'tag_0': 'beers', 'fields': FIELDS}), timeout=10)
+            return [off_product(p) for p in data.get('products', []) if p.get('code')]
+        except ValueError as e:
+            raise ValueError('Open Food Facts ' + (errors[0] if errors else str(e)))
+    hits = hits[:12]
+    details = {}
+
+    def fetch(code):
+        details[code] = off_details(code)
+    # Sparsam bleiben (OFF erlaubt ~100 Produktabrufe pro Minute): nur die ersten Treffer, Rest kommt aus dem Cache
+    want = [str(h['code']) for h, _ in hits[:5]]
+    want += [str(h['code']) for h, _ in hits[5:] if NET_CACHE.get(off_details_url(str(h['code'])))]
+    threads = [threading.Thread(target=fetch, args=(c,), daemon=True) for c in want]
+    for t in threads:
+        t.start()
+    deadline = time.time() + 6
+    for t in threads:
+        t.join(max(0.05, deadline - time.time()))
+    out = []
+    for h, beer_q in hits:
+        full = {**h, **{k: v for k, v in (details.get(str(h['code'])) or {}).items() if v}}
+        if off_is_beer(full, beer_q):
+            out.append(off_product(full))
+    return out
 
 
 def off_unified(p):
@@ -532,12 +600,19 @@ def world_lookup(q):
     if any(t.is_alive() for t in threads):
         notes.append('Eine Quelle antwortet langsam, die Ergebnisse sind evtl. unvollständig.')
     # Doppelte zwischen den Quellen zusammenfassen (gleicher Barcode bzw. gleicher Name)
-    out, seen = [], set()
+    out, seen = [], {}
     for r in results.get('wd', []) + results.get('off', []):
-        k = r.get('barcode') or beer_key(r['name'])
-        if k and k not in seen:
-            seen.add(k)
+        keys = [k for k in (r.get('barcode'), beer_key(r['name'])) if k]
+        prev = next((seen[k] for k in keys if k in seen), None)
+        if prev is None:
             out.append(r)
+            prev = r
+        else:  # gleiches Bier aus zweiter Quelle bzw. zweiter Packung: fehlende Angaben ergänzen
+            for f in ('brewery', 'style', 'abv', 'image', 'country', 'site', 'quantity'):
+                if prev.get(f) in (None, '') and r.get(f) not in (None, ''):
+                    prev[f] = r[f]
+        for k in keys:
+            seen.setdefault(k, prev)
     return {'results': out, 'notes': notes}
 
 
@@ -547,7 +622,7 @@ def barcode_lookup(code):
         raise ValueError('Barcode mit 8–14 Ziffern eingeben')
     notes = []
     try:
-        data, _ = net_json(f'https://world.openfoodfacts.org/api/v2/product/{code}.json?fields={FIELDS}', ttl=30 * 86400)
+        data, _ = net_json(off_details_url(code), ttl=30 * 86400)
         if data.get('product'):
             return {'products': [off_product({**data['product'], 'code': code})], 'notes': notes}
     except ValueError as e:

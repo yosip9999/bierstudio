@@ -14,7 +14,7 @@ ROOT = Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(ROOT / 'app'))
 import os, tempfile  # noqa: E402
 os.environ.setdefault('DATA_DIR', tempfile.mkdtemp())
-from server import beer_key  # noqa: E402  gleiche Zuordnung wie Server und App
+from server import beer_key, off_brand  # noqa: E402  gleiche Zuordnung wie Server und App
 
 UA = 'Bierstudio-Katalogimport/1.0 (+https://github.com/yosip9999/bierstudio)'
 API = 'https://search.openfoodfacts.org/search?'
@@ -85,7 +85,7 @@ def main():
     raw = []
     for country, prefixes in PREFIXES.items():
         for pre in prefixes:
-            q = f'categories_tags:"en:beers" code:{pre}*'
+            q = f'categories:"en:beers" code:{pre}*'  # Feld heißt seit Ende 2026 „categories“
             first = fetch(q, 1)
             total = first.get('count') or 0
             pages = min(100, (total + 99) // 100)
@@ -107,8 +107,7 @@ def main():
     entries, extra_codes = {}, {}
     for country, h in raw:
         code = str(h.get('code') or '')
-        brands = h.get('brands') or []
-        brand = tidy(brands[0] if isinstance(brands, list) and brands else '' if isinstance(brands, list) else str(brands).split(',')[0])
+        brand = tidy(off_brand(h.get('brands')))
         raw_name = str(h.get('product_name_de') or h.get('product_name') or '')
         name = tidy(raw_name)
         if not code or not name or len(name) < 3 or NOT_BEER.search(name) or (not brand and len(name.split()) < 2):

@@ -1832,11 +1832,13 @@ CH.restore = async el => {
 
 // ------------------------------------------------------------------ Bottom-Sheet (zum Schließen nach unten ziehen)
 const sheet = $('#sheet'), panel = $('#sheet-panel');
-let closing = null, sheetBack = false;
+let closing = null, sheetBack = false, sheetY = 0;
 function openSheet(html) {
   $('#sheet-body').innerHTML = html;
-  if (closing) { clearTimeout(closing); closing = null; sheet.classList.add('in'); }
+  resetDrag();
+  if (closing) { clearTimeout(closing); closing = null; sheet.classList.add('in'); document.body.classList.add('sheet-open'); }
   if (!sheet.open) {
+    sheetY = scrollY;
     sheet.showModal();
     history.pushState({ sheet: 1, inApp: true }, '');
     panel.style.setProperty('--dy', '0px');
@@ -1848,11 +1850,13 @@ function openSheet(html) {
 function closeSheet(fromPop = false) {
   if (!sheet.open || closing) return;
   stopScan();
+  resetDrag(false);
+  if (sheet.contains(document.activeElement)) document.activeElement.blur();  // Tastatur zu, bevor das Sheet wegfährt
   sheet.classList.remove('in', 'dragging');
   document.body.classList.remove('sheet-open');
   const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
   closing = setTimeout(() => {
-    closing = null; sheet.close(); panel.style.setProperty('--dy', '0px'); delete forms.s; addState = null;
+    closing = null; settleViewport(true); sheet.close(); panel.style.setProperty('--dy', '0px'); delete forms.s; addState = null;
     upgradeGlasses();
     if (!fromPop && history.state?.sheet) { sheetBack = true; history.back(); } else afterSheet();
   }, reduce ? 200 : 340);
@@ -1872,7 +1876,8 @@ const rubber = (x, d) => (x * d * 0.55) / (d + 0.55 * Math.abs(x));
 panel.addEventListener('pointerdown', e => {
   if (!e.target.closest('.grab, .sheet-head') || e.target.closest('button, input, a')) return;
   drag = { y0: e.clientY, pts: [[e.timeStamp, e.clientY]], h: panel.offsetHeight, id: e.pointerId };
-  panel.setPointerCapture(e.pointerId); sheet.classList.add('dragging');
+  try { panel.setPointerCapture(e.pointerId); } catch { /* Zeiger schon weg: Zug läuft trotzdem über die normalen Events */ }
+  sheet.classList.add('dragging');
 });
 panel.addEventListener('pointermove', e => {
   if (!drag || e.pointerId !== drag.id) return;
@@ -1890,6 +1895,26 @@ const endDrag = e => {
 };
 panel.addEventListener('pointerup', endDrag);
 panel.addEventListener('pointercancel', endDrag);
+// Zug abgebrochen (App gewechselt, Systemgeste, Zeiger verloren): Sheet nicht auf halber Höhe stehen lassen
+function resetDrag(snap = true) {
+  if (!drag && !sheet.classList.contains('dragging')) return;
+  drag = null; sheet.classList.remove('dragging');
+  if (snap) panel.style.setProperty('--dy', '0px');
+}
+panel.addEventListener('lostpointercapture', e => { if (drag && e.pointerId === drag.id) resetDrag(); });
+addEventListener('blur', () => resetDrag());
+document.addEventListener('visibilitychange', () => { resetDrag(); if (!document.hidden) settleViewport(); });
+// iOS als Homescreen-App: Die Tastatur schiebt das Fenster hoch und vergisst manchmal, es zurückzuschieben.
+// Dann hängt das Sheet mitten im Bild. Sobald kein Feld mehr fokussiert ist, Fenster an seinen Platz zurück.
+const vv = window.visualViewport;
+const typing = () => document.activeElement?.matches?.('input:not([type=checkbox]):not([type=radio]):not([type=range]), textarea, select, [contenteditable]');
+function settleViewport(force = false) {
+  if (!force && (typing() || !sheet.open)) return;
+  const y = sheet.open ? sheetY : scrollY;
+  if (Math.abs(scrollY - y) > 1 || (vv && vv.offsetTop > 1)) scrollTo(scrollX, y);
+}
+document.addEventListener('focusout', () => setTimeout(settleViewport, 150));
+vv?.addEventListener('resize', () => { if (vv.height >= innerHeight * 0.85) setTimeout(settleViewport, 80); });
 
 // ------------------------------------------------------------------ Events & Start
 document.addEventListener('click', e => {
