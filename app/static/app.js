@@ -85,6 +85,9 @@ const ICON = {
   pin: '<svg viewBox="0 0 24 24"><path d="M12 21s-6-5.6-6-10.5a6 6 0 0 1 12 0C18 15.4 12 21 12 21z"/><circle cx="12" cy="10.5" r="2.2"/></svg>',
   wine: '<svg viewBox="0 0 24 24"><path d="M7.5 3.5h9c.4 3.6-.3 6.4-1.8 7.9A4 4 0 0 1 12 12.5a4 4 0 0 1-2.7-1.1C7.8 9.9 7.1 7.1 7.5 3.5zM12 12.5V20M8.5 20.5h7M7.6 7.5h8.8"/></svg>',
   plus: '<svg viewBox="0 0 24 24"><path d="M12 5.5v13M5.5 12h13"/></svg>',
+  check: '<svg viewBox="0 0 24 24"><path d="m5 12.5 4.2 4.2L19 7"/></svg>',
+  crown: '<svg viewBox="0 0 24 24"><path d="M4 8l4 4 4-7 4 7 4-4-1.6 10H5.6z"/></svg>',
+  pour: '<svg viewBox="0 0 24 24"><path d="M7 9h8v9.5A1.5 1.5 0 0 1 13.5 20h-5A1.5 1.5 0 0 1 7 18.5z"/><path d="M15 11.5h1.4a2 2 0 0 1 0 4H15M9.5 3.5c0 1.4 1.5 1.4 1.5 2.8M12.5 3c0 1.4 1.5 1.4 1.5 2.8"/></svg>',
   pen: '<svg viewBox="0 0 24 24"><path d="M4 20h4L19 9l-4-4L4 16z"/><path d="m13.5 6.5 4 4"/></svg>',
   camera: '<svg viewBox="0 0 24 24"><path d="M4 8.5A1.5 1.5 0 0 1 5.5 7h2.2L9 5h6l1.3 2h2.2A1.5 1.5 0 0 1 20 8.5v9a1.5 1.5 0 0 1-1.5 1.5h-13A1.5 1.5 0 0 1 4 17.5z"/><circle cx="12" cy="12.5" r="3.4"/></svg>',
   scan: '<svg viewBox="0 0 24 24"><path d="M4 8V5h3M17 5h3v3M20 16v3h-3M7 19H4v-3M8 9v6M11 9v6M14 9v6M17 9v6"/></svg>',
@@ -274,7 +277,7 @@ function cheersBtn(r) {
   if (r.user === me) return n ? `<span class="cheers own" title="${esc(r.cheers.join(', '))}">${ICON.cheers}<span>${n}</span></span>` : '';
   return `<button class="cheers ${on ? 'on' : ''}" data-act="cheers" data-u="${esc(r.user)}" data-b="${r.beer}" data-s="${r.session || ''}" aria-pressed="${on}" aria-label="Prost an ${esc(r.user)}">${ICON.cheers}<span>${n ? n : 'Prost'}</span></button>`;
 }
-const ratingMeta = r => [ago(r.ts), r.session ? sessionOf(r.session)?.name || 'Tasting' : '', r.serving, r.place].filter(Boolean).map(esc).join(' · ');
+const ratingMeta = r => [ago(r.ts), r.session ? sessionOf(r.session)?.name || 'Abend' : '', r.serving, r.place].filter(Boolean).map(esc).join(' · ');
 
 /** Durchschnitt pro Bier: erst pro Person mitteln, damit Vieltrinker nicht mehrfach zählen. */
 function beerAgg(id) {
@@ -508,11 +511,11 @@ function onData() {
   const r = route();
   for (const s of D.sessions) {
     const prev = lastCurrent[s.id];
-    if (prev !== undefined && prev !== s.current && s.current && r.page === 'tasting' && r.id === s.id) {
+    if (prev !== undefined && prev !== s.current && s.current && r.page === 'abend' && r.id === s.id) {
       const cur = pick[s.id];
       if ((!cur || cur === prev) && !drafts[`${s.id}:${cur}:${me}`]?.dirty) {
         pick[s.id] = s.current; tastingSeg = 'rate';
-        toast('Neu im Glas: ' + label(beer(s.current), s)); haptic(30);
+        toast('Neu im Glas: ' + label(beer(s.current), s)); haptic(30); pouredAt = Date.now();
       }
     }
     lastCurrent[s.id] = s.current;
@@ -528,9 +531,11 @@ function applyRate(body) {
 }
 
 // ------------------------------------------------------------------ Navigation
+const ROUTE_ALIAS = { tasting: 'abend', tastings: 'abende' };
 function route() {
   const h = location.hash.replace(/^#\/?/, '');
-  const [page = '', ...rest] = h.split('/');
+  let [page = '', ...rest] = h.split('/');
+  page = ROUTE_ALIAS[page] || page;
   return { page: page || 'start', id: rest.length ? decodeURIComponent(rest.join('/')) : null, key: h };
 }
 const href = (page, id) => '#/' + page + (id != null ? '/' + encodeURIComponent(id) : '');
@@ -539,7 +544,7 @@ function go(to) {
   if (location.hash === to) render(); else location.hash = to;
 }
 ACT.go = el => go(el.dataset.to);
-const PARENT = { brauerei: ['#/biere', 'Biere'], bier: ['#/biere', 'Biere'], person: ['#/leute', 'Leute'], tasting: ['#/tastings', 'Tastings'], tastings: ['#/', 'Übersicht'], wein: ['#/weine', 'Weine'], ich: ['#/', 'Übersicht'] };
+const PARENT = { brauerei: ['#/biere', 'Biere'], bier: ['#/biere', 'Biere'], person: ['#/leute', 'Leute'], abend: ['#/abende', 'Abende'], abende: ['#/', 'Übersicht'], wein: ['#/weine', 'Weine'], ich: ['#/', 'Übersicht'] };
 ACT.back = () => { if (history.state?.inApp) history.back(); else go(PARENT[route().page]?.[0] || '#/'); };
 addEventListener('hashchange', () => { history.replaceState({ ...(history.state || {}), inApp: true }, ''); render(); });
 
@@ -557,8 +562,8 @@ const PAGES = {
   bier: { tab: 'biere', fn: renderBeer },
   leute: { tab: 'leute', title: 'Leute', fn: renderPeople },
   person: { tab: 'leute', fn: renderPerson },
-  tastings: { tab: 'start', title: 'Tastings', fn: renderTastings },
-  tasting: { tab: 'start', fn: renderTasting },
+  abende: { tab: 'start', title: 'Abende', fn: renderEvenings },
+  abend: { tab: 'start', fn: renderEvening },
   weine: { tab: 'weine', title: 'Weine', fn: renderWines },
   wein: { tab: 'weine', fn: renderWine },
   brauerei: { tab: 'biere', fn: renderBrewery },
@@ -594,8 +599,9 @@ function render() {
   else if (flipState) flipIn(flipState, $('#main'));
   lastDepth = depth; lastTab = pg.tab;
   upgradeGlasses();
-  const on = $('main .chips .chip.on');
-  if (on && r.page === 'tasting') { const c = on.parentElement; c.scrollLeft = on.offsetLeft - (c.clientWidth - on.offsetWidth) / 2; }
+  for (const el of $$('#main .pint[data-fill-to]')) requestAnimationFrame(() => requestAnimationFrame(() => el.style.setProperty('--fill', el.dataset.fillTo + '%')));
+  const on = $('main .chips .chip.on, main .ev-flight .coaster.on');
+  if (on && r.page === 'abend') { const c = on.parentElement; c.scrollLeft = on.offsetLeft - (c.clientWidth - on.offsetWidth) / 2; }
   lastRouteKey = landing ? '~' : r.key;
   document.title = title && r.page !== 'start' ? `${title} · Fläschle` : 'Fläschle';
 }
@@ -626,7 +632,7 @@ function renderLanding() {
       <div class="feature"><span class="ic">${ICON.bolt}</span><div><b>In Sekunden eingetragen</b><span>Name tippen, Note ziehen, fertig. Bekannte Biere erkennt die App, auch bei Spitznamen und Tippfehlern.</span></div></div>
       <div class="feature"><span class="ic">${ICON.people}</span><div><b>Sieh, was die anderen trinken</b><span>Jede Person hat ihre Seite mit allen Bieren und Noten.</span></div></div>
       <div class="feature"><span class="ic">${ICON.wine}</span><div><b>Gute Weine merken</b><span>Etikett fotografieren, Preis und Note dazu. Im Laden weißt du wieder, welche Flasche es war.</span></div></div>
-      <div class="feature"><span class="ic">${ICON.cheers}</span><div><b>Tastings, wenn ihr zusammensitzt</b><span>Alle bewerten gleichzeitig dasselbe Bier, auf Wunsch auch blind.</span></div></div>
+      <div class="feature"><span class="ic">${ICON.cheers}</span><div><b>Bierabende, wenn ihr zusammensitzt</b><span>Alle bewerten gleichzeitig dasselbe Bier, auf Wunsch auch blind.</span></div></div>
     </div>
     ${nb ? `<p class="small muted" style="margin:-14px 0 22px">${nb} Biere · ${nr} Bewertungen · ${ps.length} ${ps.length === 1 ? 'Person' : 'Personen'} sind schon dabei.</p>` : ''}
     <h2 class="title2" style="margin-bottom:12px">Wer bist du?</h2>
@@ -677,7 +683,7 @@ function renderStart() {
   return {
     title: 'Übersicht', html: `
     <div class="greet"><div class="eyebrow">${esc(date)}</div><h1 class="large-title">${hello}, ${esc(me)}</h1></div>
-    ${live ? `<a class="hint-card live-card" href="${href('tasting', live.id)}"><span class="pill live">LIVE</span><span class="grow"><b>${esc(live.name)}</b><span>Tasting läuft, mach mit</span></span><span class="chev">›</span></a>` : ''}
+    ${live ? `<a class="hint-card live-card" href="${href('abend', live.id)}"><span class="pill live">LIVE</span><span class="grow"><b>${esc(live.name)}</b><span>${live.current ? 'Im Glas: ' + esc(label(beer(live.current), live)) : 'Abend läuft, mach mit'}</span></span><span class="chev">›</span></a>` : ''}
     <div class="cta-pair">
       <button class="drink-cta" data-act="add"><span class="bubbles" aria-hidden="true"><i></i><i></i><i></i><i></i></span><span class="glass-ic">${ICON.glass}</span><span><b>Bier</b><span>eintragen</span></span></button>
       <button class="drink-cta wine-cta" data-act="addWine"><span class="glass-ic">${ICON.wine}</span><span><b>Wein</b><span>merken</span></span></button>
@@ -689,7 +695,7 @@ function renderStart() {
     <div class="section-title">Davor getrunken</div>
     ${feed.length ? `<div class="list feed">${feed.map(x => x.k === 'w' ? wineFeedItem(x.r) : feedItem(x.r)).join('')}</div>`
       : latest ? '<p class="small muted" style="margin:0 4px">Noch nichts weiter. Das nächste Bier erscheint hier für alle.</p>' : emptyCard('🍺', 'Noch nichts getrunken', 'Trag dein erstes Bier ein. Es erscheint hier für alle.')}
-    <a class="hint-card" href="#/tastings" style="margin-top:28px"><span class="hint-ic">${ICON.cheers}</span><span class="grow"><b>Tastings</b><span>${D.sessions.length ? `${D.sessions.length} ${D.sessions.length === 1 ? 'Abend' : 'Abende'} · gemeinsam dasselbe Bier bewerten` : 'Gemeinsam dasselbe Bier bewerten, auf Wunsch blind'}</span></span><span class="chev">›</span></a>
+    <a class="ev-entry" href="#/abende" style="margin-top:28px"><span class="ev-entry-ic">${ICON.cheers}</span><span class="grow"><b>Bierabend</b><span>${D.sessions.length ? `${D.sessions.length} ${D.sessions.length === 1 ? 'Abend' : 'Abende'} · gemeinsam bewerten, Sieger küren` : 'Gemeinsam dasselbe Bier bewerten und den Sieger küren'}</span></span><span class="chev">›</span></a>
     ${ps.length > 1 ? `<div class="section-title">Leute <a href="#/leute">Alle</a></div><div class="people-row">${ps.map(x => `<a href="${href('person', x.p)}">${avatar(x.p)}<span>${esc(x.p)}</span></a>`).join('')}</div>` : ''}
     ${best.length ? `<div class="section-title">Bestenliste <a href="#/biere">Alle Biere</a></div><div class="list">${best.map((x, i) => `<a class="item" href="${href('bier', x.b.id)}"><span class="num faint" style="width:16px;font-weight:700;text-align:center">${i + 1}</span>${thumb(x.b)}<div class="grow"><h3>${esc(x.b.name)}</h3><div class="sub">${x.people} ${x.people === 1 ? 'Person' : 'Personen'}${meta(x.b) ? ' · ' + meta(x.b) : ''}</div></div>${score(x.avg)}</a>`).join('')}</div>` : ''}
     <div class="kpis" style="margin-top:28px"><a class="kpi" href="#/biere"><b data-count="${D.beers.filter(shown).length}">${D.beers.filter(shown).length}</b><span>Biere</span></a><a class="kpi" href="#/weine"><b data-count="${wines().length}">${wines().length}</b><span>Weine</span></a><a class="kpi" href="#/leute"><b data-count="${ps.length}">${ps.length}</b><span>Leute</span></a></div>`,
@@ -782,7 +788,7 @@ function renderBeer(r) {
       ${b.barcode ? `<div class="tiny faint" style="margin-top:2px">EAN ${esc(b.barcode)}</div>` : ''}</div></div>
     <div class="card"><div class="between"><div class="big-avg"><b style="color:${scoreFg(ag.avg)}" ${ag.avg != null ? `data-count="${ag.avg}" data-d="1"` : ''}>${fmt(ag.avg, 1)}</b><span>Ø von ${ag.people} ${ag.people === 1 ? 'Person' : 'Personen'}</span></div></div>
       ${rs.length ? `<div class="strip">${Object.entries(ag.per).map(([u, v]) => `<span class="pt" style="left:${mean(v) * 10}%;background:${toneDot(u)}" title="${esc(u)}"></span>`).join('')}${ag.avg != null ? `<span class="avg" style="left:${ag.avg * 10}%"></span>` : ''}</div><div class="scale"><span>0</span><span>5</span><span>10</span></div>` : ''}
-      <div class="btns"><button class="btn primary" data-act="rate" data-id="${b.id}">${mySolo ? `Meine Note ändern (${fmt(mySolo.value, 1)})` : 'Bewerten'}</button>${b.blind ? '' : `<button class="btn ${wished(b.id) ? 'on-wish' : ''}" data-act="wish" data-id="${b.id}" aria-pressed="${wished(b.id)}">${wished(b.id) ? '✓ Gemerkt' : 'Merken'}</button>`}${canAdd ? `<button class="btn" data-act="addExisting" data-id="${b.id}">Zum Tasting</button>` : ''}</div></div>
+      <div class="btns"><button class="btn primary" data-act="rate" data-id="${b.id}">${mySolo ? `Meine Note ändern (${fmt(mySolo.value, 1)})` : 'Bewerten'}</button>${b.blind ? '' : `<button class="btn ${wished(b.id) ? 'on-wish' : ''}" data-act="wish" data-id="${b.id}" aria-pressed="${wished(b.id)}">${wished(b.id) ? '✓ Gemerkt' : 'Merken'}</button>`}${canAdd ? `<button class="btn" data-act="addExisting" data-id="${b.id}">Zum Abend</button>` : ''}</div></div>
     ${(() => { const ph = rs.filter(x => x.photo); return ph.length ? `<div class="section-title">Fotos</div><div class="photo-row">${ph.map(x => `<img src="${photoUrl(x.photo)}" alt="Foto von ${esc(x.user)}" loading="lazy">`).join('')}</div>` : ''; })()}
     ${missingInfo(b) ? `<button class="hint-card" data-act="enrich" data-id="${b.id}"><span class="hint-ic">${ICON.spark}</span><span class="grow"><b>Infos ergänzen</b><span>${[b.brewery ? '' : 'Brauerei', b.style ? '' : 'Stil', b.abv == null || b.abv === '' ? 'Alkohol' : ''].filter(Boolean).join(', ')} fehlt</span></span><span class="chev">›</span></button>` : ''}
     <div class="section-title">Bewertungen</div>
@@ -850,7 +856,7 @@ function renderBrewery(r) {
 
 ACT.addExisting = async el => {
   const live = liveTasting();
-  try { await send('session/beers', { session: live.id, op: 'add', id: el.dataset.id }); toast('Zum Tasting hinzugefügt'); } catch (e) { toast(e.message); }
+  try { await send('session/beers', { session: live.id, op: 'add', id: el.dataset.id }); toast('Zum Abend hinzugefügt'); } catch (e) { toast(e.message); }
 };
 ACT.editBeer = el => {
   const b = beer(el.dataset.id);
@@ -1140,7 +1146,7 @@ function renderPerson(r) {
     ${st.length ? `<div class="section-title">Nach Stil</div><div class="card">${st.map(x => `<div class="bar-row"><span class="ellipsis">${esc(x.k)} <span class="muted small">${x.n}×</span></span><div class="meter"><i style="width:${x.a * 10}%;background:${scoreBg(x.a)}"></i></div><b class="num small">${fmt(x.a, 1)}</b></div>`).join('')}</div>` : ''}
     ${Object.keys(tags).length ? `<div class="section-title">Eindrücke</div><div class="chips wrap">${Object.entries(tags).sort((x, y) => y[1] - x[1]).map(([t, n]) => `<span class="chip">${esc(t)} <span class="n">${n}</span></span>`).join('')}</div>` : ''}
     ${personWines(p)}
-    ${tastings ? `<p class="small muted" style="margin-top:20px">Bei ${tastings} ${tastings === 1 ? 'Tasting' : 'Tastings'} dabei.</p>` : ''}`
+    ${tastings ? `<p class="small muted" style="margin-top:20px">Bei ${tastings} ${tastings === 1 ? 'Abend' : 'Abenden'} dabei.</p>` : ''}`
       : emptyCard('🍺', 'Noch keine Biere', p === me ? 'Trag dein erstes Bier ein.' : `${esc(p)} hat noch nichts bewertet.`, p === me ? '<button class="btn primary" data-act="add">Bier eintragen</button>' : '')}
     ${bs.length ? '' : personWines(p)}`,
   };
@@ -1157,14 +1163,53 @@ ACT.renameMe = async () => {
   try { await send('person/rename', { old: me, new: name }); me = name; LS.set('bs-user', me); go(href('person', me)); toast('Du heißt jetzt ' + me); } catch (e) { toast(e.message); }
 };
 
-// ---------- Tastings
-function renderTastings() {
-  const list = [...D.sessions].reverse();
+// ---------- Abend: zusammen trinken, gleichzeitig bewerten, am Ende steht der Sieger fest
+const evPeople = s => [...new Set([...s.people, ...D.ratings.filter(x => x.session === s.id).map(x => x.user)])];
+const evDate = s => /^\d{4}-\d{2}-\d{2}/.test(s.date || '') ? new Date(s.date.slice(0, 10) + 'T12:00').toLocaleDateString('de-DE', { weekday: 'long', day: 'numeric', month: 'long' }) : '';
+const avStack = (ps, n = 5) => `<span class="av-stack">${ps.slice(0, n).map(p => avatar(p, 'sm')).join('')}${ps.length > n ? `<span class="av sm more">+${ps.length - n}</span>` : ''}</span>`;
+function evRaters(s, id) { return new Set(D.ratings.filter(x => x.session === s.id && x.beer === id).map(x => x.user)); }
+/** Wie weit ist der Abend? (alle Noten aller Leute zu allen Bieren) */
+function evProgress(s) {
+  const ppl = evPeople(s), total = s.beers.length * Math.max(1, ppl.length), done = D.ratings.filter(x => x.session === s.id).length;
+  return { done, total, all: total > 0 && done >= total };
+}
+function evWinner(s) {
+  if (!s.reveal) return null;
+  const rows = s.beers.map(id => ({ id, a: mean(D.ratings.filter(x => x.session === s.id && x.beer === id && visible(x)).map(x => x.value)) }))
+    .filter(x => x.a != null).sort((a, b) => b.a - a.a);
+  return rows[0] ? { b: beer(rows[0].id), a: rows[0].a } : null;
+}
+function evStatus(s) {
+  if (s.closed) return '<span class="pill">Beendet</span>';
+  return `${D.active === s.id ? '<span class="pill live">Läuft</span>' : ''}${s.reveal ? '' : '<span class="pill accent">Blind</span>'}`;
+}
+function evCard(s) {
+  const w = evWinner(s), ppl = evPeople(s);
+  return `<a class="ev-card" href="${href('abend', s.id)}" data-flip-id="ev-${s.id}">
+    <div class="ev-card-top"><div class="grow"><div class="eyebrow">${esc(evDate(s)) || '&nbsp;'}</div><h3>${esc(s.name)}</h3></div><div class="row" style="gap:6px">${evStatus(s)}</div></div>
+    <div class="ev-card-foot">${avStack(ppl)}<span class="small muted">${s.beers.length} ${s.beers.length === 1 ? 'Bier' : 'Biere'}</span>
+      ${w ? `<span class="ev-win">${ICON.crown}<span class="ellipsis">${esc(label(w.b, s))}</span><b>${fmt(w.a, 1)}</b></span>` : ''}</div></a>`;
+}
+/** Laufender Abend: die eine Glasfläche der Seite, über warmem Hintergrund. */
+function evLiveCard(s) {
+  const pr = evProgress(s), cur = s.current && beer(s.current);
+  return `<a class="ev-live" href="${href('abend', s.id)}">
+    <div class="ev-live-glass"><div class="row" style="gap:8px"><span class="pill live">Läuft</span><span class="small">${esc(evDate(s))}</span></div>
+    <h2>${esc(s.name)}</h2>
+    <div class="small">${cur ? 'Im Glas: <b>' + esc(label(cur, s)) + '</b>' : 'Noch kein Bier im Glas'}</div>
+    <div class="ev-bar" role="progressbar" aria-valuemin="0" aria-valuemax="${pr.total}" aria-valuenow="${pr.done}"><i style="width:${pr.total ? 100 * pr.done / pr.total : 0}%"></i></div>
+    <div class="between small"><span>${avStack(evPeople(s), 6)}</span><span class="ev-go">Mitmachen ›</span></div></div></a>`;
+}
+function renderEvenings() {
+  const live = liveTasting();
+  const list = [...D.sessions].filter(s => s !== live).sort((a, b) => (b.date || b.created_at || '').localeCompare(a.date || a.created_at || ''));
+  const steps = [['1', 'Abend starten', 'Leute auswählen und per QR-Code einladen.'], ['2', 'Bier ins Glas', 'Alle Handys springen zum selben Bier.'], ['3', 'Bewerten und auflösen', 'Das Glas füllt sich mit jeder Note. Am Ende steht der Sieger fest.']];
   return {
-    title: 'Tastings', html: `${largeTitle('Tastings', 'Gemeinsam dasselbe Bier bewerten, auf Wunsch blind.')}
-    <button class="btn primary block" style="margin-top:16px" data-act="newSession">Neues Tasting starten</button>
-    ${list.length ? `<div class="list" style="margin-top:16px">${list.map(s => { const n = D.ratings.filter(r => r.session === s.id).length; return `<a class="item" href="${href('tasting', s.id)}"><span class="thumb" style="background:${tone(s.name)};color:${toneInk(s.name)}">${ICON.cheers}</span><div class="grow"><h3>${esc(s.name)}</h3><div class="sub">${[dateDe(s.date), s.beers.length + ' Biere', n + ' Noten', s.closed ? 'abgeschlossen' : !s.reveal ? 'blind' : ''].filter(Boolean).join(' · ')}</div></div>${D.active === s.id && !s.closed ? '<span class="pill live">LIVE</span>' : ''}<span class="chev">›</span></a>`; }).join('')}</div>`
-      : `<div style="margin-top:16px">${emptyCard('🍻', 'Noch kein Tasting', 'Leg eins an, lade deine Leute per QR-Code ein und setzt gemeinsam das nächste Bier „ins Glas“.')}</div>`}`,
+    title: 'Abende', html: `${largeTitle('Abende', 'Zusammen trinken, gleichzeitig bewerten, am Ende steht der Sieger fest.')}
+    ${live ? evLiveCard(live) : ''}
+    <button class="ev-start" data-act="newSession"><span class="ev-start-ic">${ICON.plus}</span><span class="grow"><b>Neuen Abend starten</b><span>Auf Wunsch als Blindverkostung</span></span><span class="chev">›</span></button>
+    ${list.length ? `<div class="section-title">Bisherige Abende</div><div class="ev-list">${list.map(evCard).join('')}</div>`
+      : live ? '' : `<div class="ev-steps">${steps.map(([n, t, d]) => `<div class="ev-step"><span class="ev-step-n">${n}</span><div><b>${t}</b><span>${d}</span></div></div>`).join('')}</div>`}`,
   };
 }
 function selectedBeer(s) {
@@ -1173,36 +1218,85 @@ function selectedBeer(s) {
   pick[s.id] = id;
   return id;
 }
-function renderTasting(r) {
+/** Füllstand der Bühne merken, damit das Glas beim nächsten Neuzeichnen von dort aus weiter steigt. */
+const evFill = {};
+let pouredAt = 0;
+function evStagePint(s, id, frac) {
+  const key = s.id + ':' + id, to = frac > 0 ? frac * 10 : null, from = evFill[key] ?? null;
+  evFill[key] = to;
+  return pint(to, beer(id), 'lg ev-pint').replace(' data-3d ', ` data-fill-from="${pintFill(from)}" `).replace(`--fill:${pintFill(to)}%`, `--fill:${pintFill(from)}%`).replace('class="pint', `data-fill-to="${pintFill(to)}" class="pint`);
+}
+function evStage(s) {
+  if (!s.beers.length) {
+    return `<section class="ev-stage"><div class="ev-stage-glass ev-empty">${evStagePint(s, '-', 0)}<div class="grow"><div class="eyebrow">Noch leer</div><h2 class="ev-beer">Noch kein Bier im Glas</h2>
+      <p class="small muted">Setz das erste Bier ins Glas. Alle, die mitmachen, sehen es sofort auf ihrem Handy.</p></div></div>
+      ${s.closed ? '' : `<div class="ev-actions"><button class="btn primary" data-act="addToSession" data-id="${s.id}" data-pour="1">${ICON.plus} Erstes Bier ins Glas</button></div>`}</section>`;
+  }
+  const id = selectedBeer(s), b = beer(id), idx = s.beers.indexOf(id), ppl = evPeople(s), raters = evRaters(s, id);
+  const frac = ppl.length ? raters.size / ppl.length : 0, isCur = s.current === id, all = raters.size >= ppl.length && ppl.length > 0;
+  const fresh = isCur && Date.now() - pouredAt < 1500;
+  return `<section class="ev-stage ${isCur ? 'is-current' : ''} ${fresh ? 'poured' : ''}" data-flip-id="ev-stage">
+    <div class="ev-stage-glass">
+      ${evStagePint(s, id, frac)}
+      <div class="grow">
+        <div class="row" style="gap:6px;flex-wrap:wrap">${isCur ? '<span class="pill live">Im Glas</span>' : '<span class="pill">Angeschaut</span>'}<span class="pill">Bier ${idx + 1} von ${s.beers.length}</span></div>
+        <h2 class="ev-beer">${esc(label(b, s))}</h2>
+        <div class="small muted">${meta(b) || '&nbsp;'}</div>
+        <div class="ev-raters" aria-label="${raters.size} von ${ppl.length} haben bewertet">${ppl.map(p => `<span class="ev-r ${raters.has(p) ? 'done' : ''}" title="${esc(p)}${raters.has(p) ? ' hat bewertet' : ''}">${avatar(p, 'sm')}${raters.has(p) ? `<i>${ICON.check}</i>` : ''}</span>`).join('')}</div>
+        <div class="ev-status ${all ? 'all' : ''}">${all ? 'Alle haben bewertet' : `${raters.size} von ${ppl.length} haben bewertet`}</div>
+      </div>
+    </div>
+    ${s.closed ? '' : `<div class="ev-actions">${isCur ? '' : `<button class="btn" data-act="setCurrent" data-s="${s.id}" data-id="${id}">Für alle ins Glas</button>`}<button class="btn primary" data-act="nextBeer" data-id="${s.id}">${ICON.pour} Nächstes Bier</button></div>`}
+  </section>`;
+}
+/** Die Biere des Abends als Bierdeckel: erledigt, im Glas, noch offen. */
+function evFlight(s) {
+  if (!s.beers.length) return '';
+  const id = selectedBeer(s);
+  return `<div class="ev-flight chips" aria-label="Biere des Abends">${s.beers.map((x, i) => {
+    const mine = !!own(s.id, x), cur = s.current === x;
+    return `<button class="coaster ${x === id ? 'on' : ''} ${cur ? 'cur' : ''} ${mine ? 'done' : ''}" data-act="pickBeer" data-s="${s.id}" data-id="${x}" aria-pressed="${x === id}" aria-label="Bier ${i + 1}${cur ? ', im Glas' : ''}${mine ? ', von dir bewertet' : ''}">
+      <span class="coaster-n">${mine ? ICON.check : i + 1}</span><span class="coaster-l">${esc(label(beer(x), s))}</span></button>`;
+  }).join('')}${s.closed ? '' : `<button class="coaster add" data-act="addToSession" data-id="${s.id}" aria-label="Bier hinzufügen"><span class="coaster-n">${ICON.plus}</span><span class="coaster-l">Bier dazu</span></button>`}</div>`;
+}
+function evFinale(s) {
+  const pr = evProgress(s);
+  if (s.closed || !pr.all) return '';
+  return !s.reveal
+    ? `<div class="ev-finale"><b>Alle sind durch</b><span>Zeit, die Biere aufzudecken.</span><button class="btn primary" data-act="reveal" data-id="${s.id}">Auflösen</button></div>`
+    : `<div class="ev-finale"><b>Alle sind durch</b><span>Noch ein Bier oder den Abend beenden?</span><button class="btn" data-act="endEvening" data-id="${s.id}">Abend beenden</button></div>`;
+}
+function renderEvening(r) {
   const s = sessionOf(r.id);
-  if (!s) return emptyCard('🤷', 'Tasting nicht gefunden', 'Vielleicht wurde es gelöscht.', '<a class="btn primary" href="#/tastings">Zu den Tastings</a>');
-  const total = s.beers.length * Math.max(1, s.people.length), done = D.ratings.filter(x => x.session === s.id).length;
-  const status = s.closed ? '<span class="pill">Abgeschlossen</span>' : !s.reveal ? '<span class="pill accent">Blind</span>' : '';
+  if (!s) return emptyCard('', 'Abend nicht gefunden', 'Vielleicht wurde er gelöscht.', '<a class="btn primary" href="#/abende">Zu den Abenden</a>');
+  const ppl = evPeople(s), pr = evProgress(s);
   return {
     title: s.name, html: `
-    <div class="between" style="align-items:flex-start;margin-top:6px"><div class="grow"><div class="row" style="gap:6px;min-height:22px">${D.active === s.id && !s.closed ? '<span class="pill live">LIVE</span>' : ''}${status}</div>
-      <h1 class="large-title">${esc(s.name)}</h1><div class="small muted">${[dateDe(s.date), s.place && esc(s.place), `${s.people.length} dabei`, `${s.beers.length} ${s.beers.length === 1 ? 'Bier' : 'Biere'}`].filter(Boolean).join(' · ')}</div></div>
-      <button class="icon-btn" data-act="sessionMenu" data-id="${s.id}" aria-label="Tasting-Optionen">${ICON.more}</button></div>
-    <div class="seg" style="margin:16px 0"><button class="${tastingSeg === 'rate' ? 'on' : ''}" data-act="tSeg" data-v="rate">Bewerten</button><button class="${tastingSeg === 'res' ? 'on' : ''}" data-act="tSeg" data-v="res">Ergebnis${s.reveal ? '' : ' · blind'} <span class="tiny faint">${Math.round(100 * done / (total || 1))} %</span></button></div>
-    ${tastingSeg === 'res' ? renderResults(s) : renderTastingRate(s)}`,
+    <div class="ev-head"><div class="grow"><div class="eyebrow">${[esc(evDate(s)), s.place && esc(s.place)].filter(Boolean).join(' · ')}</div>
+      <h1 class="large-title">${esc(s.name)}</h1>
+      <div class="ev-meta">${avStack(ppl, 6)}<span class="small muted">${ppl.length} dabei · ${s.beers.length} ${s.beers.length === 1 ? 'Bier' : 'Biere'}</span><span class="ev-pills">${evStatus(s)}</span></div></div>
+      <button class="icon-btn" data-act="sessionMenu" data-id="${s.id}" aria-label="Abend-Optionen">${ICON.more}</button></div>
+    <div class="seg" style="margin:4px 0 16px"><button class="${tastingSeg === 'rate' ? 'on' : ''}" data-act="tSeg" data-v="rate">Jetzt</button><button class="${tastingSeg === 'res' ? 'on' : ''}" data-act="tSeg" data-v="res">Ergebnis${s.reveal ? '' : ' · verdeckt'} <span class="tiny faint">${pr.total ? Math.round(100 * pr.done / pr.total) : 0} %</span></button></div>
+    ${tastingSeg === 'res' ? renderResults(s) : `${evStage(s)}${evFlight(s)}${evFinale(s)}
+      ${s.beers.length ? `<div class="section-title">Deine Note</div><div class="card">${rateForm('m', s.id, selectedBeer(s))}</div>` : ''}`}`,
   };
 }
 ACT.tSeg = el => { tastingSeg = el.dataset.v; render(); };
-function renderTastingRate(s) {
-  if (!s.beers.length) return emptyCard('🍺', 'Noch keine Biere', 'Füge das erste Bier hinzu. Alle sehen es sofort auf ihrem Handy.', s.closed ? '' : `<button class="btn primary" data-act="addToSession" data-id="${s.id}">Bier hinzufügen</button>`);
-  const id = selectedBeer(s), b = beer(id), idx = s.beers.indexOf(id);
-  const raters = new Set(D.ratings.filter(x => x.session === s.id && x.beer === id).map(x => x.user));
-  const ppl = [...new Set([...s.people, ...raters])];
-  return `<div class="chips">${s.beers.map((x, i) => { const l = label(beer(x), s); return `<button class="chip ${x === id ? 'on' : ''}" data-act="pickBeer" data-s="${s.id}" data-id="${x}">${s.current === x ? '● ' : ''}${i + 1}. ${esc(l.length > 18 ? l.slice(0, 17) + '…' : l)}${own(s.id, x) ? ' ✓' : ''}</button>`; }).join('')}${s.closed ? '' : `<button class="chip add-chip" data-act="addToSession" data-id="${s.id}">${ICON.plus}Bier</button>`}</div>
-  <div class="card" style="margin-top:12px">
-    <div class="row" style="gap:14px">${thumb(b, s, 'lg')}<div class="grow"><div class="row" style="gap:6px">${s.current === id ? '<span class="pill live">Im Glas</span>' : ''}<span class="pill">${idx + 1} von ${s.beers.length}</span></div>
-      <h2 class="title2" style="margin:6px 0 2px">${esc(label(b, s))}</h2><div class="small muted">${meta(b) || 'Keine weiteren Infos'}</div></div></div>
-    <div class="who">${ppl.map(p => `<span title="${esc(p)}">${avatar(p, 'sm ' + (raters.has(p) ? '' : 'off'))}</span>`).join('')}</div>
-    <div class="between small muted" style="margin-top:8px"><span>${raters.size} von ${ppl.length} haben bewertet</span>${s.current !== id && !s.closed ? `<button class="btn ghost sm" data-act="setCurrent" data-s="${s.id}" data-id="${id}">Für alle ins Glas</button>` : ''}</div>
-  </div>
-  <div class="card">${rateForm('m', s.id, id)}</div>
-  <div class="btns"><button class="btn" data-act="stepBeer" data-s="${s.id}" data-d="-1" ${idx === 0 ? 'disabled' : ''}>← Zurück</button><button class="btn" data-act="nextOpen" data-s="${s.id}">Nächstes offenes →</button></div>`;
-}
+/** Nächstes Bier: aus den Bieren des Abends wählen oder ein neues dazunehmen. Alle Handys springen mit. */
+ACT.nextBeer = el => {
+  const s = sessionOf(el.dataset.id), ppl = evPeople(s);
+  const rest = s.beers.filter(x => x !== s.current);
+  openSheet(head('Nächstes Bier') + `<p class="sheet-sub">Was als Nächstes ins Glas kommt, sehen alle sofort auf ihrem Handy.</p>
+    <button class="ev-start" data-act="addToSession" data-id="${s.id}" data-pour="1" style="margin:0 0 14px"><span class="ev-start-ic">${ICON.plus}</span><span class="grow"><b>Neues Bier</b><span>Suchen, scannen oder eintippen</span></span><span class="chev">›</span></button>
+    ${rest.length ? `<div class="list">${rest.map(x => { const n = evRaters(s, x).size; return `<button class="item" data-act="pour" data-s="${s.id}" data-id="${x}">${thumb(beer(x), s)}<div class="grow"><h3>${esc(label(beer(x), s))}</h3><div class="sub">Bier ${s.beers.indexOf(x) + 1} · ${n ? `${n} von ${ppl.length} bewertet` : 'noch nicht bewertet'}</div></div><span class="chev">›</span></button>`; }).join('')}</div>` : ''}`);
+};
+ACT.pour = async el => {
+  try { await send('session', { id: el.dataset.s, current: el.dataset.id }); pick[el.dataset.s] = el.dataset.id; closeSheet(); haptic(25); toast('Ist im Glas'); } catch (e) { toast(e.message); }
+};
+ACT.endEvening = async el => {
+  if (!(await ask({ title: 'Abend beenden?', text: 'Danach kann niemand mehr bewerten. Das Ergebnis bleibt erhalten, und du kannst den Abend jederzeit wieder öffnen.', ok: 'Beenden' }))) return;
+  try { await send('session', { id: el.dataset.id, closed: true }); tastingSeg = 'res'; haptic(30); render(); toast('Prost, der Abend ist beendet'); } catch (e) { toast(e.message); }
+};
 function renderResults(s) {
   const rows = s.beers.map(id => {
     const vis = D.ratings.filter(x => x.session === s.id && x.beer === id && visible(x)), a = mean(vis.map(x => x.value));
@@ -1254,38 +1348,39 @@ ACT.sessionMenu = el => {
     ${s.closed ? '' : b('addToSession', 'Bier hinzufügen')}
     ${b('invite', 'Leute einladen (QR-Code)')}
     ${b('manageBeers', 'Reihenfolge und Biere')}
-    ${D.active === s.id ? '' : b('makeLive', 'Als LIVE-Tasting setzen')}
+    ${D.active === s.id ? '' : b('makeLive', 'Als laufenden Abend setzen')}
     ${s.closed ? '' : b('toggle', s.reveal ? 'Ab jetzt blind' : 'Jetzt auflösen', 'data-k="reveal"')}
     ${b('toggle', s.closed ? 'Wieder öffnen' : 'Abschließen', 'data-k="closed"')}</div>
-    <div class="list"><button class="item plain" data-act="deleteSession" data-id="${s.id}"><div class="grow"><h3 style="color:var(--danger)">Tasting löschen</h3></div></button></div>`);
+    <div class="list"><button class="item plain" data-act="deleteSession" data-id="${s.id}"><div class="grow"><h3 style="color:var(--danger)">Abend löschen</h3></div></button></div>`);
 };
 ACT.toggle = async el => {
   const s = sessionOf(el.dataset.id), k = el.dataset.k, v = !s[k];
   if (k === 'reveal' && v && !(await askReveal())) return;
   try { await send('session', { id: s.id, [k]: v }); closeSheet(); toast('Gespeichert'); } catch (e) { toast(e.message); }
 };
-ACT.makeLive = async el => { try { await send('active', { id: el.dataset.id }); closeSheet(); toast('Ist jetzt das LIVE-Tasting'); } catch (e) { toast(e.message); } };
+ACT.makeLive = async el => { try { await send('active', { id: el.dataset.id }); closeSheet(); toast('Ist jetzt der laufende Abend'); } catch (e) { toast(e.message); } };
 ACT.deleteSession = async el => {
   const s = sessionOf(el.dataset.id);
-  if (!(await ask({ title: 'Tasting löschen?', text: `„${s.name}“ mit allen ${D.ratings.filter(r => r.session === s.id).length} Bewertungen. Die Biere bleiben. 30 Tage im Papierkorb.`, ok: 'Löschen', danger: true }))) return;
-  try { const r = await send('session/delete', { id: s.id, user: me }); go('#/tastings'); undoToast('Tasting gelöscht', r.tid); } catch (e) { toast(e.message); }
+  if (!(await ask({ title: 'Abend löschen?', text: `„${s.name}“ mit allen ${D.ratings.filter(r => r.session === s.id).length} Bewertungen. Die Biere bleiben. 30 Tage im Papierkorb.`, ok: 'Löschen', danger: true }))) return;
+  try { const r = await send('session/delete', { id: s.id, user: me }); go('#/abende'); undoToast('Abend gelöscht', r.tid); } catch (e) { toast(e.message); }
 };
 function sessionForm(s) {
   const isNew = !s;
-  s = s || { name: '', date: new Date().toISOString().slice(0, 10), place: '', people: me ? [me] : [], reveal: true };
+  const wd = new Date().toLocaleDateString('de-DE', { weekday: 'long' });
+  s = s || { name: `Bierabend am ${wd}`, date: new Date().toISOString().slice(0, 10), place: '', people: me ? [me] : [], reveal: true };
   const all = [...new Set([...people(), ...s.people])];
-  openSheet(head(isNew ? 'Neues Tasting' : 'Tasting bearbeiten') + `
-    <label class="lbl" for="s-name">Name</label><input class="field" id="s-name" value="${esc(s.name)}" placeholder="z. B. Pils-Battle bei Alex" maxlength="120">
+  openSheet(head(isNew ? 'Neuer Abend' : 'Abend bearbeiten') + `
+    <label class="lbl" for="s-name">Name</label><input class="field" id="s-name" value="${esc(s.name)}" placeholder="z. B. Pils-Battle bei Alex" maxlength="120" autocomplete="off">
     <div class="grid2"><div><label class="lbl" for="s-date">Datum</label><input class="field" id="s-date" type="date" value="${esc(s.date)}"></div>
     <div><label class="lbl" for="s-place">Ort</label><input class="field" id="s-place" value="${esc(s.place)}" maxlength="120"></div></div>
-    <label class="lbl">Wer ist dabei?</label><div class="chips wrap" id="s-people">${all.map(p => `<button class="chip ${s.people.includes(p) ? 'on' : ''}" data-act="togglePerson" data-v="${esc(p)}">${esc(p)}</button>`).join('')}</div>
+    <label class="lbl">Wer ist dabei?</label><div class="chips wrap" id="s-people">${all.map(p => `<button class="chip person-chip ${s.people.includes(p) ? 'on' : ''}" data-act="togglePerson" data-v="${esc(p)}" aria-pressed="${s.people.includes(p)}">${avatar(p, 'sm')}${esc(p)}</button>`).join('')}</div>
     <div class="row" style="margin-top:10px"><input class="field" id="s-newp" placeholder="Weitere Person" maxlength="40"><button class="btn icon-only" data-act="addPersonChip" aria-label="Person hinzufügen">${ICON.plus}</button></div>
     ${isNew ? `<label class="switch"><span><b>Blindverkostung</b><br><span class="small muted">Biernamen und fremde Noten bleiben verdeckt, bis ihr auflöst.</span></span><input type="checkbox" id="s-blind"></label>` : ''}
-    <div class="savebar"><button class="btn primary block" data-act="saveSession" data-id="${isNew ? '' : s.id}">${isNew ? 'Tasting starten' : 'Speichern'}</button></div>`);
+    <div class="savebar"><button class="btn primary block" data-act="saveSession" data-id="${isNew ? '' : s.id}">${isNew ? 'Abend starten' : 'Speichern'}</button></div>`);
 }
 ACT.newSession = () => sessionForm(null);
 ACT.editSession = el => sessionForm(sessionOf(el.dataset.id));
-ACT.togglePerson = el => el.classList.toggle('on');
+ACT.togglePerson = el => { el.classList.toggle('on'); el.setAttribute('aria-pressed', el.classList.contains('on')); haptic(); };
 ACT.addPersonChip = () => {
   const v = $('#s-newp').value.trim().slice(0, 40);
   if (!v) return;
@@ -1294,25 +1389,25 @@ ACT.addPersonChip = () => {
   $('#s-people').append(c); $('#s-newp').value = '';
 };
 ACT.saveSession = async el => {
-  const body = { name: $('#s-name').value || 'Tasting', date: $('#s-date').value, place: $('#s-place').value, people: $$('#s-people .chip.on').map(c => c.dataset.v) };
+  const body = { name: $('#s-name').value.trim() || 'Bierabend', date: $('#s-date').value, place: $('#s-place').value, people: $$('#s-people .chip.on').map(c => c.dataset.v) };
   const isNew = !el.dataset.id;
   if (isNew) Object.assign(body, { new: true, activate: true, reveal: !$('#s-blind').checked }); else body.id = el.dataset.id;
-  try { const r = await send('session', body); tastingSeg = 'rate'; go(href('tasting', r.id)); toast(isNew ? 'Tasting gestartet' : 'Gespeichert'); }
+  try { const r = await send('session', body); tastingSeg = 'rate'; go(href('abend', r.id)); toast(isNew ? 'Abend gestartet. Jetzt das erste Bier ins Glas.' : 'Gespeichert'); }
   catch (e) { toast(e.message); }
 };
 ACT.manageBeers = el => {
   const s = sessionOf(el.dataset.id);
-  openSheet(head('Biere im Tasting') + `<div class="list">${s.beers.map((id, i) => `<div class="item plain"><span class="num faint" style="width:18px">${i + 1}</span><div class="grow"><h3>${esc(label(beer(id), s))}</h3></div>
+  openSheet(head('Biere des Abends') + `<div class="list">${s.beers.map((id, i) => `<div class="item plain"><span class="num faint" style="width:18px">${i + 1}</span><div class="grow"><h3>${esc(label(beer(id), s))}</h3></div>
     <button class="icon-btn" data-act="moveBeer" data-s="${s.id}" data-id="${id}" data-d="-1" aria-label="Nach oben" ${i === 0 ? 'disabled' : ''}>↑</button><button class="icon-btn" data-act="moveBeer" data-s="${s.id}" data-id="${id}" data-d="1" aria-label="Nach unten" ${i === s.beers.length - 1 ? 'disabled' : ''}>↓</button><button class="icon-btn" data-act="removeBeer" data-s="${s.id}" data-id="${id}" aria-label="Entfernen" style="color:var(--danger)">✕</button></div>`).join('') || '<div class="item plain muted">Noch keine Biere.</div>'}</div>`);
 };
 ACT.moveBeer = async el => { try { await send('session/beers', { session: el.dataset.s, op: 'move', id: el.dataset.id, dir: +el.dataset.d }); ACT.manageBeers({ dataset: { id: el.dataset.s } }); } catch (e) { toast(e.message); } };
-ACT.removeBeer = async el => { if (!(await ask({ title: 'Aus dem Tasting entfernen?', text: 'Das Bier bleibt im Bierbuch.', ok: 'Entfernen', danger: true }))) return; try { await send('session/beers', { session: el.dataset.s, op: 'remove', id: el.dataset.id }); ACT.manageBeers({ dataset: { id: el.dataset.s } }); } catch (e) { toast(e.message); } };
+ACT.removeBeer = async el => { if (!(await ask({ title: 'Aus dem Abend entfernen?', text: 'Das Bier bleibt im Bierbuch.', ok: 'Entfernen', danger: true }))) return; try { await send('session/beers', { session: el.dataset.s, op: 'remove', id: el.dataset.id }); ACT.manageBeers({ dataset: { id: el.dataset.s } }); } catch (e) { toast(e.message); } };
 
 // ---------- Einladen
 ACT.invite = el => {
   const sid = el?.dataset?.id;
   const base = (LS.get('bs-base', '') || location.origin).replace(/\/$/, '');
-  const url = base + '/' + (sid ? '#/tasting/' + sid : '');
+  const url = base + '/' + (sid ? '#/abend/' + sid : '');
   let svg = '';
   try { const q = qrcode(0, 'M'); q.addData(url); q.make(); svg = q.createSvgTag({ cellSize: 6, margin: 2, scalable: true }); } catch { }
   const local = /^(localhost|127\.|\[::1\])/.test(location.hostname);
@@ -1343,7 +1438,7 @@ function draftValue(d) {
   return d.value;
 }
 function saveLabel(f, d) {
-  if (sessionOf(f.s)?.closed) return 'Tasting ist abgeschlossen';
+  if (sessionOf(f.s)?.closed) return 'Abend ist beendet';
   if (draftValue(d) == null) return d.mode === 'detail' ? 'Alle fünf Kategorien bewerten' : 'Note wählen';
   return own(f.s, f.b) ? (d.dirty ? 'Änderung speichern' : 'Gespeichert ✓') : 'Speichern';
 }
@@ -1459,7 +1554,7 @@ function rateSheet(id, sid = null) {
   const b = beer(id);
   if (!b) return;
   const s = sessionOf(sid);
-  openSheet(head(label(b, s)) + `<p class="sheet-sub">${s ? 'Im Tasting „' + esc(s.name) + '“' : meta(b) || 'Solo-Bewertung'}</p>` + rateForm('s', sid, id, { sticky: true, onSaved: () => closeSheet() }));
+  openSheet(head(label(b, s)) + `<p class="sheet-sub">${s ? 'Am Abend „' + esc(s.name) + '“' : meta(b) || 'Solo-Bewertung'}</p>` + rateForm('s', sid, id, { sticky: true, onSaved: () => closeSheet() }));
 }
 ACT.rate = el => rateSheet(el.dataset.id, null);
 
@@ -1469,15 +1564,15 @@ ACT.add = el => {
   if (!me) return go('#/');
   if (el?.closest?.('#tabbar') && ['weine', 'wein'].includes(route().page)) return ACT.addWine();
   const live = liveTasting();
-  addState = { q: el?.dataset?.name || '', session: live && live.people.includes(me) && route().page === 'tasting' ? live.id : null, cat: [], web: [], forSession: null };
+  addState = { q: el?.dataset?.name || '', session: live && live.people.includes(me) && route().page === 'abend' ? live.id : null, cat: [], web: [], forSession: null };
   addSheet();
 };
-ACT.addToSession = el => { addState = { q: '', session: el.dataset.id, cat: [], web: [], forSession: el.dataset.id }; addSheet(); };
+ACT.addToSession = el => { addState = { q: '', session: el.dataset.id, cat: [], web: [], forSession: el.dataset.id , pour: el.dataset.pour === '1' }; addSheet(); };
 function addSheet() {
   const st = addState, live = liveTasting(), s = sessionOf(st.forSession);
   const canScan = 'BarcodeDetector' in window && isSecureContext && navigator.mediaDevices;
-  const ctx = !s && live && route().page === 'tasting' ? `<div class="seg ctx"><button class="${!st.session ? 'on' : ''}" data-act="addCtx" data-v="">Einfach so</button><button class="${st.session ? 'on' : ''}" data-act="addCtx" data-v="${live.id}">${esc(live.name.length > 20 ? live.name.slice(0, 19) + '…' : live.name)}</button></div>` : '';
-  openSheet(head(s ? 'Bier zum Tasting' : 'Was trinkst du?') + ctx + `
+  const ctx = !s && live && route().page === 'abend' ? `<div class="seg ctx"><button class="${!st.session ? 'on' : ''}" data-act="addCtx" data-v="">Einfach so</button><button class="${st.session ? 'on' : ''}" data-act="addCtx" data-v="${live.id}">${esc(live.name.length > 20 ? live.name.slice(0, 19) + '…' : live.name)}</button></div>` : '';
+  openSheet(head(s ? (addState.pour ? 'Nächstes Bier' : 'Bier zum Abend') : 'Was trinkst du?') + ctx + `
     <div class="add-input"><div class="row"><div class="search grow">${ICON.search}<input class="field" id="f-q" placeholder="Name, Brauerei oder Barcode" autocomplete="off" autocorrect="off" spellcheck="false" enterkeyhint="search" data-on="addQ" value="${esc(st.q)}" maxlength="120"></div>
     ${canScan ? `<button class="icon-btn" data-act="scan" aria-label="Barcode scannen" style="width:50px;height:50px;border-radius:14px">${ICON.scan}</button>` : ''}</div></div>
     <div id="a-res"></div><div id="a-web"></div>`);
@@ -1515,8 +1610,9 @@ async function rateAfterAdd(id) {
     const s = sessionOf(sid);
     if (s && !s.beers.includes(id)) { try { await send('session/beers', { session: sid, op: 'add', id }); } catch (e) { toast(e.message); } }
     if (addState.forSession) {
-      if (!s.current) await send('session', { id: sid, current: id }).catch(() => { });
-      pick[sid] = id; closeSheet(); toast('Zum Tasting hinzugefügt'); go(href('tasting', sid)); return;
+      const pour = addState.pour || !s.current;
+      if (pour) await send('session', { id: sid, current: id }).catch(() => { });
+      pick[sid] = id; closeSheet(); haptic(25); toast(pour ? 'Ist im Glas' : 'Zum Abend hinzugefügt'); if (pour) pouredAt = Date.now(); go(href('abend', sid)); return;
     }
     pick[sid] = id;
   }
@@ -1644,7 +1740,7 @@ ACT.bulkApply = async el => {
 const ratingCount = id => D.ratings.filter(r => r.beer === id).length;
 async function doMerge(keep, drop) {
   const k = beer(keep), d = beer(drop);
-  if (!(await ask({ title: 'Zusammenführen?', text: `„${d.name}“ geht in „${k.name}“ auf. Alle ${ratingCount(drop)} Bewertungen und Tastings werden übernommen. Rückgängig machen geht über den Papierkorb.`, ok: 'Zusammenführen' }))) return false;
+  if (!(await ask({ title: 'Zusammenführen?', text: `„${d.name}“ geht in „${k.name}“ auf. Alle ${ratingCount(drop)} Bewertungen und Abende werden übernommen. Rückgängig machen geht über den Papierkorb.`, ok: 'Zusammenführen' }))) return false;
   try { const r = await send('beer/merge', { keep, drop, user: me }); haptic(25); undoToast('Zusammengeführt', r.tid); return true; } catch (e) { toast(e.message); return false; }
 }
 ACT.dupes = () => {
@@ -1822,7 +1918,7 @@ setInterval(() => { if (!document.hidden) refresh(); }, 4000);
 
 // Alte Einladungslinks (?s=<id>) und Schnellaktion (?add=1)
 const params = new URLSearchParams(location.search), joinId = params.get('s'), quickAdd = params.has('add'), quickWine = params.has('wine');
-if (joinId) history.replaceState(null, '', '/#/tasting/' + joinId);
+if (joinId) history.replaceState(null, '', '/#/abend/' + joinId);
 else if (location.search) history.replaceState(null, '', '/' + location.hash);
 if ('serviceWorker' in navigator && isSecureContext) navigator.serviceWorker.register('/sw.js').catch(() => { });
 setOnline(online);

@@ -709,3 +709,264 @@ body.theme-wine .item:active .add-dot { background: var(--wine); color: #fff; }
 .chip.add-chip:only-child, .chip.add-chip[aria-label] { padding: 0 12px; }
 .btn.icon-only { width: 52px; min-width: 52px; padding: 0; flex: none; }
 .btn.icon-only svg { width: 20px; height: 20px; stroke-width: 2.1; }
+
+/* ---------------------------------------------------------------- Abend
+   Eine einzige Glasfläche pro Seite (die Bühne), über warmem Bernstein: so hat die Unschärfe etwas,
+   das sie brechen kann. Alles andere bleibt ruhig. Das Glas füllt sich mit jeder Bewertung am Tisch. */
+.ev-entry, .ev-start { display: flex; align-items: center; gap: 14px; width: 100%; padding: 16px 18px; border-radius: 22px; background: var(--surface); box-shadow: var(--shadow); color: var(--text); text-align: left; transition: transform .25s var(--spring), box-shadow .25s ease; }
+.ev-entry:active, .ev-start:active { transform: scale(.985); }
+.ev-entry b, .ev-start b { display: block; font-weight: 640; font-size: 1.05rem; letter-spacing: -.01em; }
+.ev-entry .grow > span, .ev-start .grow > span { font-size: .86rem; color: var(--muted); }
+.ev-entry-ic, .ev-start-ic { width: 44px; height: 44px; border-radius: 14px; display: grid; place-items: center; flex: none; background: var(--flame); color: var(--flame-ink); }
+.ev-entry-ic svg, .ev-start-ic svg { width: 22px; height: 22px; stroke-width: 1.9; }
+.ev-start { margin-top: 16px; }
+
+/* Bühne & Live-Karte: Glas über flüssigem Bernstein */
+.ev-live, .ev-stage { position: relative; display: block; border-radius: 30px; padding: 10px; color: var(--text); isolation: isolate; overflow: hidden;
+  background:
+    radial-gradient(60% 70% at 12% 100%, rgba(242, 167, 27, .95), transparent 70%),
+    radial-gradient(55% 60% at 95% 10%, rgba(247, 199, 80, .85), transparent 70%),
+    radial-gradient(40% 50% at 70% 85%, rgba(255, 246, 220, .9), transparent 70%),
+    linear-gradient(135deg, #F7C750, #E8890C);
+  box-shadow: var(--shadow-amber); }
+.ev-live::before, .ev-stage::before { /* Perlen, die langsam aufsteigen: geben dem Glas etwas zum Brechen */
+  content: ""; position: absolute; inset: -20% 0 0; z-index: -1; opacity: .55;
+  background:
+    radial-gradient(circle at 18% 80%, #fff 0 3px, transparent 4px), radial-gradient(circle at 42% 60%, #fff 0 2px, transparent 3px),
+    radial-gradient(circle at 66% 90%, #fff 0 4px, transparent 5px), radial-gradient(circle at 84% 70%, #fff 0 2px, transparent 3px),
+    radial-gradient(circle at 30% 40%, #fff 0 2px, transparent 3px), radial-gradient(circle at 74% 30%, #fff 0 3px, transparent 4px);
+  animation: ev-bubbles 14s linear infinite; }
+@keyframes ev-bubbles { from { transform: translateY(0); } to { transform: translateY(-18%); } }
+.ev-live-glass, .ev-stage-glass {
+  position: relative; border-radius: 22px; padding: 18px;
+  background: rgba(255, 255, 255, .58);
+  -webkit-backdrop-filter: blur(18px) saturate(170%); backdrop-filter: blur(18px) saturate(170%);
+  border: 1px solid rgba(255, 255, 255, .75);
+  box-shadow: 0 10px 30px -12px rgba(120, 60, 0, .45), inset 0 1px 0 rgba(255, 255, 255, .9), inset 0 -1px 0 rgba(120, 60, 0, .08); }
+.ev-live-glass::after, .ev-stage-glass::after { /* feine Körnung gegen Farbstufen unter der Unschärfe */
+  content: ""; position: absolute; inset: 0; border-radius: inherit; pointer-events: none; opacity: .05; mix-blend-mode: multiply;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='120' height='120' filter='url(%23n)'/%3E%3C/svg%3E"); }
+.ev-live { margin: 6px 0 4px; }
+.ev-live h2 { font-size: 1.6rem; line-height: 1.05; font-weight: 660; font-stretch: 82%; letter-spacing: -.01em; margin: 10px 0 4px; }
+.ev-live .small { color: #3D2A00; }
+.ev-bar { height: 8px; border-radius: 99px; background: rgba(120, 60, 0, .14); overflow: hidden; margin: 14px 0 12px; }
+.ev-bar i { display: block; height: 100%; border-radius: 99px; background: #221B2E; transition: width .9s var(--pour); }
+.ev-go { font-weight: 640; color: #221B2E; }
+
+.ev-stage { margin-bottom: 14px; }
+.ev-stage-glass { display: flex; gap: 18px; align-items: center; }
+.ev-stage .pint.lg { width: 108px; height: 152px; }
+.ev-stage .pint .beer { background: rgba(255, 255, 255, .5); }
+.ev-stage .eyebrow, .ev-stage .small.muted { color: #5B4216; }
+.ev-beer { font-size: 1.7rem; line-height: 1.04; font-weight: 660; font-stretch: 82%; letter-spacing: -.01em; margin: 10px 0 4px; overflow-wrap: anywhere; }
+.ev-raters { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 14px; }
+.ev-r { position: relative; display: inline-grid; transition: opacity .3s ease, transform .35s var(--spring); }
+.ev-r:not(.done) { opacity: .4; }
+.ev-r.done { animation: ev-in .5s var(--spring) both; }
+.ev-r i { position: absolute; right: -3px; bottom: -3px; width: 15px; height: 15px; border-radius: 50%; display: grid; place-items: center; background: #221B2E; color: #fff; box-shadow: 0 0 0 2px rgba(255, 255, 255, .9); }
+.ev-r i svg { width: 10px; height: 10px; stroke-width: 3; }
+@keyframes ev-in { from { transform: scale(.6); } }
+.ev-status { margin-top: 8px; font-size: .88rem; font-weight: 560; color: #3D2A00; }
+.ev-status.all { color: #1F3A1A; }
+.ev-actions { display: flex; gap: 10px; padding: 10px 2px 2px; }
+.ev-actions .btn { flex: 1; }
+.ev-actions .btn:not(.primary) { background: rgba(255, 255, 255, .55); -webkit-backdrop-filter: blur(10px); backdrop-filter: blur(10px); }
+.ev-actions .btn svg, .ev-empty .btn svg { width: 18px; height: 18px; stroke-width: 2; }
+.ev-empty { align-items: center; }
+.ev-empty p { margin: 6px 0 14px; }
+/* Signatur: wenn ein neues Bier ins Glas kommt, läuft ein Lichtstreif über die Bühne */
+.ev-stage.poured .ev-stage-glass::before { content: ""; position: absolute; inset: 0; border-radius: inherit; pointer-events: none;
+  background: linear-gradient(105deg, transparent 30%, rgba(255, 255, 255, .85) 48%, transparent 66%); background-size: 260% 100%; animation: ev-sweep 1.2s var(--ease-out) both; }
+@keyframes ev-sweep { from { background-position: 120% 0; } to { background-position: -40% 0; } }
+
+/* Biere des Abends als Bierdeckel */
+.ev-flight { gap: 10px; padding: 4px 2px 8px; margin-bottom: 6px; }
+.coaster { flex: none; width: 92px; display: grid; justify-items: center; gap: 6px; padding: 12px 8px 10px; border-radius: 20px; background: var(--surface); box-shadow: var(--shadow); color: var(--text); text-align: center; transition: transform .25s var(--spring), box-shadow .25s ease, background-color .2s ease; scroll-snap-align: center; }
+.coaster:active { transform: scale(.95); }
+.coaster-n { width: 34px; height: 34px; border-radius: 50%; display: grid; place-items: center; font-weight: 660; font-variant-numeric: tabular-nums; background: var(--surface-2); }
+.coaster-n svg { width: 16px; height: 16px; stroke-width: 2.6; }
+.coaster-l { font-size: .78rem; font-weight: 540; line-height: 1.2; max-width: 100%; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; min-height: 2.4em; }
+.coaster.done .coaster-n { background: var(--s-hi); color: var(--s-hi-ink); }
+.coaster.cur .coaster-n { background: var(--flame); color: var(--flame-ink); box-shadow: 0 0 0 4px rgba(242, 167, 27, .25); }
+.coaster.on { box-shadow: 0 0 0 2px var(--text), var(--shadow); }
+.coaster.add { background: transparent; box-shadow: inset 0 0 0 1.5px var(--surface-3); color: var(--muted); }
+
+.ev-finale { display: grid; grid-template-columns: 1fr auto; align-items: center; gap: 2px 14px; padding: 16px 18px; margin: 6px 0 4px; border-radius: 22px; background: var(--surface); box-shadow: var(--shadow-lift); }
+.ev-finale b { font-weight: 640; }
+.ev-finale span { grid-column: 1; font-size: .88rem; color: var(--muted); }
+.ev-finale .btn { grid-column: 2; grid-row: 1 / span 2; }
+
+/* Kopf, Liste bisheriger Abende, erste Schritte */
+.ev-head { display: flex; gap: 12px; align-items: flex-start; margin: 6px 0 14px; }
+.ev-meta { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 10px; margin-top: 8px; }
+.av-stack { display: inline-flex; align-items: center; }
+.av-stack .av { box-shadow: 0 0 0 2px var(--bg); }
+.av-stack .av + .av { margin-left: -7px; }
+.av.more { background: var(--surface-2); color: var(--muted); font-size: .64rem; }
+.ev-list { display: grid; gap: 10px; }
+.ev-card { display: block; padding: 16px 18px; border-radius: 22px; background: var(--surface); box-shadow: var(--shadow); color: var(--text); transition: transform .25s var(--spring); }
+.ev-card:active { transform: scale(.985); }
+.ev-card-top { display: flex; gap: 10px; align-items: flex-start; }
+.ev-card h3 { font-size: 1.15rem; font-weight: 640; letter-spacing: -.01em; margin-top: 2px; }
+.ev-card-foot { display: flex; align-items: center; gap: 10px; margin-top: 12px; min-width: 0; }
+.ev-win { margin-left: auto; display: inline-flex; align-items: center; gap: 6px; min-width: 0; max-width: 55%; padding: 4px 10px 4px 8px; border-radius: 99px; background: var(--accent-soft); color: var(--accent-text); font-size: .82rem; font-weight: 560; }
+.ev-win svg { width: 15px; height: 15px; flex: none; }
+.ev-win b { font-variant-numeric: tabular-nums; }
+.ev-steps { display: grid; gap: 16px; margin-top: 26px; }
+.ev-step { display: flex; gap: 14px; align-items: flex-start; }
+.ev-step-n { width: 32px; height: 32px; border-radius: 50%; display: grid; place-items: center; flex: none; background: var(--surface); box-shadow: var(--shadow); font-weight: 660; }
+.ev-step b { display: block; font-weight: 620; }
+.ev-step span { font-size: .9rem; color: var(--muted); }
+.person-chip { padding-left: 4px; }
+.person-chip .av.sm { width: 26px; height: 26px; }
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) .ev-live-glass, :root:not([data-theme="light"]) .ev-stage-glass { background: rgba(33, 28, 43, .58); border-color: rgba(255, 255, 255, .18); box-shadow: 0 10px 30px -12px rgba(0, 0, 0, .6), inset 0 1px 0 rgba(255, 255, 255, .18); }
+  :root:not([data-theme="light"]) .ev-live .small, :root:not([data-theme="light"]) .ev-status, :root:not([data-theme="light"]) .ev-stage .eyebrow, :root:not([data-theme="light"]) .ev-stage .small.muted { color: #F7E2B8; }
+  :root:not([data-theme="light"]) .ev-go { color: #FFF4DC; }
+  :root:not([data-theme="light"]) .ev-bar i { background: #FFF4DC; }
+  :root:not([data-theme="light"]) .ev-live, :root:not([data-theme="light"]) .ev-stage { color: var(--text); }
+}
+:root[data-theme="dark"] .ev-live-glass, :root[data-theme="dark"] .ev-stage-glass { background: rgba(33, 28, 43, .58); border-color: rgba(255, 255, 255, .18); box-shadow: 0 10px 30px -12px rgba(0, 0, 0, .6), inset 0 1px 0 rgba(255, 255, 255, .18); }
+:root[data-theme="dark"] .ev-live .small, :root[data-theme="dark"] .ev-status, :root[data-theme="dark"] .ev-stage .eyebrow, :root[data-theme="dark"] .ev-stage .small.muted { color: #F7E2B8; }
+:root[data-theme="dark"] .ev-go { color: #FFF4DC; }
+:root[data-theme="dark"] .ev-bar i { background: #FFF4DC; }
+
+@media (prefers-reduced-motion: reduce) {
+  .ev-live::before, .ev-stage::before { animation: none; }
+  .ev-stage.poured .ev-stage-glass::before { animation: none; display: none; }
+  .ev-r.done { animation: none; }
+}
+@media (prefers-reduced-transparency: reduce) {
+  .ev-live-glass, .ev-stage-glass { background: var(--surface); -webkit-backdrop-filter: none; backdrop-filter: none; }
+  .ev-live-glass::after, .ev-stage-glass::after, .ev-live::before, .ev-stage::before { display: none; }
+}
+@supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
+  .ev-live-glass, .ev-stage-glass { background: rgba(255, 253, 247, .92); }
+}
+
+.ev-pills { display: inline-flex; gap: 6px; flex-wrap: nowrap; }
+.ev-empty p { margin: 6px 0 2px; }
+
+/* ================================================================ Apple-Feinschliff
+   Nach Apples Human Interface Guidelines (Skill ios-hig-design): ruhiger grauer Grund wie in „Einstellungen“
+   (systemGroupedBackground), weiße Karten ohne Schatten, Text in label/secondaryLabel, eine einzige Akzentfarbe
+   für alles Antippbare (hier Bier-Orange als „Tint“), Apples Schriftgrößen (34 / 22 / 17 / 15 / 13 / 10),
+   Noten als getönte Plaketten wie in der Health-App. Liegt bewusst am Ende und überschreibt Werte von oben. */
+:root {
+  --bg: #F2F2F7;
+  --bg-grad: #F2F2F7;
+  --surface: #FFFFFF;
+  --surface-2: #E9E9EB;
+  --surface-3: #D1D1D6;
+  --text: #000000;
+  --muted: rgba(60, 60, 67, .6);
+  --faint: rgba(60, 60, 67, .3);
+  --line: rgba(60, 60, 67, .18);
+  --tint: #F59E0B;
+  --tint-text: #B45F06;
+  --accent: #F59E0B; --accent-ink: #000000; --accent-text: #B45F06; --accent-soft: rgba(245, 158, 11, .14);
+  --flame: #F59E0B; --flame-ink: #000000;
+  --s-hi: rgba(52, 199, 89, .16); --s-hi-ink: #1E7A35; --t-hi: #248A3D;
+  --s-mid: rgba(255, 159, 10, .18); --s-mid-ink: #A35200; --t-mid: #B45F06;
+  --s-lo: rgba(255, 59, 48, .14); --s-lo-ink: #C4161C; --t-lo: #D70015;
+  --danger: #FF3B30;
+  --chrome: rgba(249, 249, 249, .78);
+  --chrome-line: rgba(60, 60, 67, .12);
+  --shadow: none;
+  --shadow-lift: 0 8px 28px -14px rgba(0, 0, 0, .22);
+  --shadow-float: 0 12px 34px -10px rgba(0, 0, 0, .22), 0 1px 3px rgba(0, 0, 0, .06);
+  --scrim: rgba(0, 0, 0, .3);
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #000000; --bg-grad: #000000; --surface: #1C1C1E; --surface-2: #2C2C2E; --surface-3: #3A3A3C;
+    --text: #FFFFFF; --muted: rgba(235, 235, 245, .6); --faint: rgba(235, 235, 245, .3); --line: rgba(84, 84, 88, .55);
+    --tint: #FF9F0A; --tint-text: #FF9F0A;
+    --accent: #FF9F0A; --accent-ink: #000000; --accent-text: #FF9F0A; --accent-soft: rgba(255, 159, 10, .18);
+    --flame: #FF9F0A; --flame-ink: #000000;
+    --s-hi: rgba(48, 209, 88, .2); --s-hi-ink: #30D158; --t-hi: #30D158;
+    --s-mid: rgba(255, 159, 10, .2); --s-mid-ink: #FF9F0A; --t-mid: #FF9F0A;
+    --s-lo: rgba(255, 69, 58, .2); --s-lo-ink: #FF6961; --t-lo: #FF6961; --danger: #FF453A;
+    --chrome: rgba(30, 30, 30, .76); --chrome-line: rgba(84, 84, 88, .4);
+    --shadow: none; --shadow-lift: none; --shadow-float: 0 14px 40px -10px rgba(0, 0, 0, .7); --scrim: rgba(0, 0, 0, .5);
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #000000; --bg-grad: #000000; --surface: #1C1C1E; --surface-2: #2C2C2E; --surface-3: #3A3A3C;
+  --text: #FFFFFF; --muted: rgba(235, 235, 245, .6); --faint: rgba(235, 235, 245, .3); --line: rgba(84, 84, 88, .55);
+  --tint: #FF9F0A; --tint-text: #FF9F0A;
+  --accent: #FF9F0A; --accent-ink: #000000; --accent-text: #FF9F0A; --accent-soft: rgba(255, 159, 10, .18);
+  --flame: #FF9F0A; --flame-ink: #000000;
+  --s-hi: rgba(48, 209, 88, .2); --s-hi-ink: #30D158; --t-hi: #30D158;
+  --s-mid: rgba(255, 159, 10, .2); --s-mid-ink: #FF9F0A; --t-mid: #FF9F0A;
+  --s-lo: rgba(255, 69, 58, .2); --s-lo-ink: #FF6961; --t-lo: #FF6961; --danger: #FF453A;
+  --chrome: rgba(30, 30, 30, .76); --chrome-line: rgba(84, 84, 88, .4);
+  --shadow: none; --shadow-lift: none; --shadow-float: 0 14px 40px -10px rgba(0, 0, 0, .7); --scrim: rgba(0, 0, 0, .5);
+}
+
+/* Schrift: Apples Größen, normale Breite statt schmal (die Schrift bleibt Instrument Sans) */
+body { font-size: 1.0625rem; line-height: 1.33; letter-spacing: -.01em; }
+body * { font-stretch: 100% !important; }
+.large-title { font-size: 2.125rem; line-height: 1.12; font-weight: 700; letter-spacing: -.02em; }
+.page-head .large-title { font-size: 1.75rem; }
+.title2, .ev-beer, .latest-name, .ev-live h2 { font-weight: 700; letter-spacing: -.015em; }
+.section-title { font-size: 1.375rem; font-weight: 700; letter-spacing: -.015em; margin: 30px 4px 10px; }
+.section-title a, .section-title button { color: var(--tint-text); font-weight: 500; font-size: 1.0625rem; letter-spacing: -.01em; }
+.eyebrow { font-size: .8125rem; font-weight: 500; color: var(--muted); text-transform: none; letter-spacing: 0; }
+.lead, .item .sub { font-size: .9375rem; }
+.small { font-size: .9375rem; }
+.tiny { font-size: .8125rem; }
+.item h3 { font-size: 1.0625rem; font-weight: 500; letter-spacing: -.01em; }
+
+/* Flächen wie „Einstellungen“: weiße Karten auf grauem Grund, feine Trennlinien, keine Schatten */
+.card, .list, .kpi, .latest, .ev-card, .ev-entry, .ev-start, .coaster, .ev-finale, .who-grid button { box-shadow: none; }
+.item + .item::before, .item + .item::after { height: .5px; background: var(--line); }
+.list, .card { border-radius: 22px; }
+.kpi b, .latest-score, .big-avg b, .podium b { font-weight: 700; letter-spacing: -.02em; }
+
+/* Antippbares in der Akzentfarbe */
+a, .link, .back, details.more summary, .btn.ghost, .toast-act { color: var(--tint-text); }
+.back { background: var(--chrome); }
+.back svg { color: var(--tint-text); }
+.tabbar a { font-size: .625rem; font-weight: 500; letter-spacing: .01em; }
+.tabbar a.on { color: var(--tint-text); }
+.lens { background: rgba(120, 120, 128, .12); }
+.btn { min-height: 50px; font-size: 1.0625rem; font-weight: 600; background: var(--surface-2); color: var(--tint-text); }
+.btn.primary { background: var(--tint); color: #000; }
+.btn.danger { color: var(--danger); }
+.btn.sm { font-size: .9375rem; min-height: 34px; }
+.chip { font-size: .9375rem; font-weight: 500; }
+.chip.on { background: var(--text); color: var(--bg); }
+.seg { background: rgba(120, 120, 128, .12); border-radius: 10px; padding: 2px; }
+.seg button { border-radius: 8px; font-size: .8125rem; font-weight: 600; min-height: 30px; color: var(--text); }
+.seg button.on { background: var(--surface); box-shadow: 0 3px 8px rgba(0, 0, 0, .12), 0 3px 1px rgba(0, 0, 0, .04); }
+.switch input:checked { background: #34C759; }
+
+/* Noten als getönte Plaketten (Health-Stil) */
+.score { font-weight: 700; border-radius: 8px; height: 30px; font-size: .9375rem; }
+
+/* Abend: Bühne ruhiger und klar lesbar */
+.ev-bar i, .ev-r i { background: #000; }
+.ev-go { color: #000; }
+.ev-entry-ic, .ev-start-ic, .tab-add { background: var(--tint); color: #000; }
+.coaster.on { box-shadow: 0 0 0 2px var(--tint); }
+.coaster.cur .coaster-n { background: var(--tint); color: #000; box-shadow: 0 0 0 4px var(--accent-soft); }
+.coaster.done .coaster-n { background: var(--s-hi); color: var(--s-hi-ink); }
+.pill { font-weight: 600; }
+.pill.live { background: var(--tint); color: #000; }
+.pill.accent { background: var(--accent-soft); color: var(--tint-text); }
+/* Hinweiskarten: Titel in voller Textfarbe, nur die Unterzeile grau */
+.hint-card > .grow { font-size: 1rem; color: var(--text); }
+.hint-card > .grow > span { display: block; font-size: .9375rem; color: var(--muted); }
+.live-card { background: var(--surface); }
+/* Kacheln „Bier“/„Wein“ schlicht wie Widgets: ohne Schaumkrone und Perlen */
+.drink-cta::before, .drink-cta .bubbles { display: none; }
+/* Auf der farbigen Bühne: dunkle Bedienelemente wie bei Apple Wallet, damit sie sich abheben */
+.ev-stage .btn.primary { background: #000; color: #fff; }
+.ev-stage .btn.primary svg { color: #fff; }
+.ev-stage .pill.live { background: #000; color: #fff; }
+.ev-stage .pill:not(.live) { background: rgba(255, 255, 255, .7); color: #5B4216; }
+.ev-live .pill.live { background: #000; color: #fff; }
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) .seg button.on { background: #636366; } }
+:root[data-theme="dark"] .seg button.on { background: #636366; }
